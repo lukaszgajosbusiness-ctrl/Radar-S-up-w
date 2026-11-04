@@ -261,8 +261,8 @@ $('#csv').onclick=()=>{
 async function search(){
   try{
     status('Szukam miejscowości…',.02);
-    const r=await fetch('https://nominatim.openstreetmap.org/search?countrycodes=pl&format=json&limit=1&q='+encodeURIComponent($('#q').value));
-    const j=await r.json();if(!j.length)return status('Nie znalazłem takiej miejscowości. Dopisz gminę, np. „Tuliszów, Mierzęcice”.',0);
+    const nq=async q=>(await fetch('https://nominatim.openstreetmap.org/search?countrycodes=pl&format=json&limit=1&q='+encodeURIComponent(q))).json();
+    let j=await nq($('#q').value);if(!j.length&&$('#q').value.includes(','))j=await nq($('#q').value.split(',')[0]+', śląskie');if(!j.length)j=await nq($('#q').value.split(',')[0]);if(!j.length)return status('Nie znalazłem takiej miejscowości. Dopisz gminę, np. „Tuliszów, Mierzęcice”.',0);
     const lat=+j[0].lat,lon=+j[0].lon,R=+$('#rad').value;
     const dLat=R/110540,dLon=R/(111320*Math.cos(lat*Math.PI/180));
     const bb={s:lat-dLat,n:lat+dLat,w:lon-dLon,e:lon+dLon};
