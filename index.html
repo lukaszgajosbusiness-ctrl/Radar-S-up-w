@@ -132,7 +132,7 @@ async function overpass(bb,tmo=100000){
 }
 async function overpassNet(bb,tmo=100000){
   const b=`(${bb.s},${bb.w},${bb.n},${bb.e})`;
-  const q=`[out:json][timeout:120];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:60)["building"];way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
+  const q=`[out:json][timeout:120];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
   for(const host of['https://maps.mail.ru/osm/tools/overpass/api/interpreter','https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter']){
     try{status('Pobieram sieci z OpenStreetMap ('+new URL(host).host+')…',.05);const r=await fetch(host,{method:'POST',body:'data='+encodeURIComponent(q),signal:AbortSignal.timeout(tmo)});if(r.ok)return (await r.json()).elements}catch(e){}
   }throw new Error('Overpass (OpenStreetMap) nie odpowiada. Spróbuj za minutę.');
