@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Radar Słupów</title>
+<meta name="theme-color" content="#14324a">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+/* Układ: mapa na górze, lista działek pod spodem (telefon) / mapa obok listy (komputer) */
+:root{--bg:#f3f5f7;--panel:#fff;--fg:#14202b;--mute:#5d6b78;--line:#d9e0e6;--acc:#14324a;--nn:#b0182b;--wn:#e0561b;--sn:#d4a20d;--nnN:#7d8a96;--gaz:#c9a400;--woda:#1c6fd1;--ok:#1f8a4c;--warn:#b86e00;
+--f:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0f161c;--panel:#17212a;--fg:#e6edf3;--mute:#93a3b1;--line:#2a3743;--acc:#8fc1ea;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 var(--f);display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px max(12px,env(safe-area-inset-left));padding-top:max(8px,env(safe-area-inset-top));background:var(--acc);color:#fff}
+header h1{font-size:16px;margin:0 8px 0 0;letter-spacing:.02em}
+header input,header select,header button{font:inherit;padding:6px 8px;border-radius:6px;border:0}
+header input{width:160px}
+button{cursor:pointer;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font:inherit}
+button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
+#main{flex:1;display:flex;min-height:0}
+#map{flex:1.3;min-height:300px}
+#side{flex:1;display:flex;flex-direction:column;min-width:0;border-left:1px solid var(--line);background:var(--panel)}
+@media (max-width:800px){#main{flex-direction:column}#map{flex:none;height:48vh}#side{border-left:0;border-top:1px solid var(--line)}}
+#status{padding:8px 12px;font-size:13px;color:var(--mute);border-bottom:1px solid var(--line)}
+#bar{height:3px;background:var(--line)}#bar i{display:block;height:3px;width:0;background:#ffb703;transition:width .2s}
+#filters{display:flex;flex-wrap:wrap;gap:6px 12px;padding:8px 12px;border-bottom:1px solid var(--line);font-size:13px}
+#list{flex:1;overflow:auto}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:2px 10px;padding:9px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.row:hover,.row.sel{background:color-mix(in srgb,var(--acc) 10%,transparent)}
+.rk{font:600 13px var(--mono);color:var(--mute);grid-row:span 2;align-self:center;width:2.2em}
+.nm{font-weight:600}.sc{font:600 14px var(--mono);text-align:right}
+.tags{grid-column:2/4;display:flex;flex-wrap:wrap;gap:4px}
+.t{font-size:11.5px;padding:1px 6px;border-radius:10px;color:#fff;white-space:nowrap}
+.t.NN{background:var(--nn)}.t.WN{background:var(--wn)}.t.SN{background:var(--sn);color:#222}.t.nN{background:var(--nnN)}.t.gaz{background:var(--gaz);color:#222}.t.woda{background:var(--woda)}
+.t.f{background:transparent;color:var(--fg);border:1px solid var(--line)}.t.dom{background:var(--ok)}.t.x{background:transparent;color:var(--warn);border:1px solid var(--warn)}
+#card{position:fixed;inset:auto 0 0 0;max-height:85vh;overflow:auto;background:var(--panel);border-top:2px solid var(--acc);padding:14px max(16px,env(safe-area-inset-left)) max(16px,env(safe-area-inset-bottom));z-index:1000;box-shadow:0 -6px 24px rgba(0,0,0,.25)}
+@media (min-width:801px){#card{inset:60px 0 auto auto;width:440px;max-height:calc(100% - 70px);border:1px solid var(--line);border-top:2px solid var(--acc)}}
+#card h2{margin:0 0 4px;font-size:17px}
+#card table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+#card td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:top}#card td:first-child{color:var(--mute);width:44%}
+#card input,#card select,#card textarea{font:inherit;width:100%;padding:5px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}
+.calc{background:color-mix(in srgb,#ffb703 14%,var(--panel));border-radius:8px;padding:6px 10px;margin:10px 0}
+.calc b{font-family:var(--mono)}
+.btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.note{font-size:12px;color:var(--mute)}
+.leaflet-container{background:#dde3e8}
+</style>
+</head>
+<body>
+<header>
+  <h1>Radar Słupów</h1>
+  <input id="q" value="Tuliszów, Mierzęcice" aria-label="Miejscowość lub gmina">
+  <select id="rad" aria-label="Promień"><option value="800">0,8 km</option><option value="1500" selected>1,5 km</option><option value="2500">2,5 km</option><option value="4000">4 km</option></select>
+  <button class="pri" id="go">Szukaj działek</button>
+  <button id="goView" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
+  <button id="csv">CSV</button>
+</header>
+<div id="main">
+  <div id="map"></div>
+  <div id="side">
+    <div id="bar"><i></i></div>
+    <div id="status">Wpisz miejscowość i kliknij „Szukaj działek”. Dane: OpenStreetMap (sieci, budynki, lasy) + ULDK GUGiK (działki).</div>
+    <div id="filters">
+      <label><input type="checkbox" id="fOk" checked> tylko spełniające odległość od granicy</label>
+      <label><input type="checkbox" id="fNn"> pokaż nN 0,4 kV</label>
+      <label><input type="checkbox" id="fLas" checked> ukryj lasy</label>
+    </div>
+    <div id="list"></div>
+  </div>
+</div>
+<div id="card" hidden></div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem('rs:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('rs:'+k,JSON.stringify(v));return true}catch(e){return false}}};
+
+// ---------- mapa ----------
+const map=L.map('map',{zoomControl:true}).setView([50.4336,19.1946],14);
+const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+const orto=L.tileLayer.wms('https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution',{layers:'Raster',format:'image/jpeg',maxZoom:20,attribution:'Ortofoto © GUGiK'});
+const wms=(url,layers,o={})=>L.tileLayer.wms(url,Object.assign({layers,format:'image/png',transparent:true,version:'1.3.0',maxZoom:20,minZoom:13},o));
+const ewid=wms('https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow','dzialki,numery_dzialek',{attribution:'EGiB © GUGiK'});
+const kiut=wms('https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu','przewod_elektroenergetyczny,przewod_gazowy,przewod_wodociagowy,przewod_cieplowniczy,przewod_kanalizacyjny',{attribution:'KIUT © GUGiK'});
+const mpzp=wms('https://mapy.geoportal.gov.pl/wss/ext/KrajowaIntegracjaMiejscowychPlanowZagospodarowaniaPrzestrzennego','plany,plany_granice',{opacity:.6,attribution:'MPZP © GUGiK'});
+const gNet=L.layerGroup().addTo(map),gPar=L.layerGroup().addTo(map),gPin=L.layerGroup().addTo(map),gArea=L.layerGroup().addTo(map);
+L.control.layers({'Mapa OSM':osm,'Ortofotomapa':orto},{'Działki (EGiB)':ewid,'Uzbrojenie terenu (KIUT)':kiut,'Plany miejscowe (MPZP)':mpzp,'Sieci z OSM':gNet,'Działki z siecią':gPar,'Top 20':gPin},{collapsed:true}).addTo(map);
+
+// ---------- geometria (metry lokalne) ----------
+let K={lat0:50.43,kx:71000,ky:110540};
+const setK=lat=>{K={lat0:lat,kx:111320*Math.cos(lat*Math.PI/180),ky:110540}};
+const M=([lon,lat])=>[lon*K.kx,lat*K.ky];
+const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+function inRing(p,r){let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const[a,b]=r[i],[cx,cy]=r[j];if((b>p[1])!=(cy>p[1])&&p[0]<(cx-a)*(p[1]-b)/(cy-b)+a)c=!c}return c}
+const inRings=(p,rs)=>{let c=0;for(const r of rs)if(inRing(p,r))c^=1;return !!c};
+function dSeg(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1];let t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy||1);t=Math.max(0,Math.min(1,t));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)}
+const dRings=(p,rs)=>{let m=1e9;for(const r of rs)for(let i=0;i<r.length-1;i++)m=Math.min(m,dSeg(p,r[i],r[i+1]));return m};
+const dLine=(p,g)=>{let m=1e9;for(let i=0;i<g.length-1;i++)m=Math.min(m,dSeg(p,g[i],g[i+1]));return m};
+function wktRings(w){return [...w.replace(/^SRID=\d+;/,'').matchAll(/\(([-\d\. ,]+)\)/g)].map(m=>m[1].split(',').map(s=>s.trim().split(/\s+/).map(Number)))}
+const areaM2=rs=>rs.reduce((A,r)=>{const m=r.map(M);let s=0;for(let i=0;i<m.length-1;i++)s+=m[i][0]*m[i+1][1]-m[i+1][0]*m[i][1];return A+Math.abs(s)/2},0);
+
+// ---------- klasyfikacja sieci ----------
+const TYPES={NN:{w:5,c:'--nn',n:'linia NN (najwyższe napięcie)'},WN:{w:4,c:'--wn',n:'linia WN (wysokie napięcie)'},gaz:{w:4,c:'--gaz',n:'gazociąg'},SN:{w:3,c:'--sn',n:'linia SN (średnie napięcie)'},woda:{w:2,c:'--woda',n:'wodociąg magistralny'},nN:{w:1,c:'--nnN',n:'linia nN 0,4 kV'}};
+function classify(t){
+  if(t.man_made==='pipeline'){const s=(t.substance||t.type||'').toLowerCase();if(s.includes('gas'))return 'gaz';if(s.includes('water'))return 'woda';return null}
+  const v=Math.max(0,...String(t.voltage||'').split(';').map(Number).filter(n=>!isNaN(n)));
+  if(v>=220000)return 'NN';if(v>=60000)return 'WN';if(v>=1000)return 'SN';if(v>0)return 'nN';
+  return t.power==='line'?'WN':'SN'; // brak napięcia w OSM: line ≈ WN, minor_line ≈ SN (do sprawdzenia)
+}
+const kind=t=>(t.power==='cable'||t.location==='underground'||(t.man_made==='pipeline'&&t.location!=='overground'))?'podziemna':'napowietrzna';
+const col=k=>getComputedStyle(document.documentElement).getPropertyValue(TYPES[k].c).trim();
+
+// ---------- pobieranie ----------
+const status=(t,p)=>{$('#status').textContent=t;if(p!=null)$('#bar i').style.width=Math.round(p*100)+'%'};
+async function overpass(bb){
+  const b=`(${bb.s},${bb.w},${bb.n},${bb.e})`;
+  const q=`[out:json][timeout:90];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};way["building"]${b};way["landuse"="forest"]${b};way["natural"="wood"]${b};node["power"~"^(tower|pole)$"]${b};);out tags geom;`;
+  for(const host of['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter']){
+    try{const r=await fetch(host,{method:'POST',body:'data='+encodeURIComponent(q)});if(r.ok)return (await r.json()).elements}catch(e){}
+  }throw new Error('Overpass (OpenStreetMap) nie odpowiada. Spróbuj za minutę.');
+}
+async function uldkXY(lon,lat){
+  const r=await fetch(`https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy=${lon},${lat},4326&result=id,parcel,region,commune,county,geom_wkt&srid=4326`);
+  const l=(await r.text()).trim().split('\n');if(l[0]!=='0')return null;
+  const [id,num,obr,gm,pow,wkt]=l[1].split('|');return{id,num,obr,gm,pow,wkt};
+}
+async function pool(items,n,fn,onp){let i=0,done=0;await Promise.all(Array.from({length:n},async()=>{while(i<items.length){const k=i++;try{await fn(items[k])}catch(e){}onp(++done)}}))}
+
+// ---------- analiza ----------
+let RES=[],NETS=[],AREA=null;
+async function run(bb,label){
+  $('#card').hidden=true;gNet.clearLayers();gPar.clearLayers();gPin.clearLayers();gArea.clearLayers();$('#list').innerHTML='';
+  setK((bb.s+bb.n)/2);AREA={bb,label};
+  gArea.addLayer(L.rectangle([[bb.s,bb.w],[bb.n,bb.e]],{color:'#ffb703',weight:1,fill:false,dashArray:'4 4'}));
+  status('Pobieram sieci, budynki i lasy z OpenStreetMap…',.05);
+  const els=await overpass(bb);
+  const nets=[],blds=[],forests=[],poles=[];
+  for(const e of els){
+    if(e.type==='node'){poles.push(M([e.lon,e.lat]));continue}
+    if(!e.geometry)continue;const g=e.geometry.map(p=>[p.lon,p.lat]);const t=e.tags||{};
+    if(t.building){const m=g.map(M);let cx=0,cy=0;m.forEach(p=>{cx+=p[0];cy+=p[1]});blds.push({c:[cx/m.length,cy/m.length],t});continue}
+    if(t.landuse==='forest'||t.natural==='wood'){forests.push(g.map(M));continue}
+    const k=classify(t);if(!k)continue;
+    nets.push({id:e.id,k,kind:kind(t),t,g,m:g.map(M)});
+  }
+  NETS=nets;
+  for(const n of nets)gNet.addLayer(L.polyline(n.g.map(([x,y])=>[y,x]),{color:col(n.k),weight:n.k==='NN'?5:n.k==='WN'?4:n.k==='nN'?1.5:2.5,dashArray:n.kind==='podziemna'?'6 5':null}).bindTooltip(`${TYPES[n.k].n}${n.t.voltage?' '+(+n.t.voltage.split(';')[0]/1000)+' kV':''} · ${n.t.operator||'operator ?'}`));
+  // próbki co 15 m wzdłuż sieci (bez nN, chyba że zaznaczone)
+  const useNn=$('#fNn').checked, inBB=([x,y])=>x>bb.w&&x<bb.e&&y>bb.s&&y<bb.n;
+  const pts=[];
+  for(const n of nets){if(n.k==='nN'&&!useNn)continue;const g=n.g;
+    for(let i=0;i<g.length-1;i++){const L_=dist(M(g[i]),M(g[i+1]));const s=Math.max(1,Math.ceil(L_/15));for(let k=0;k<s;k++){const t=k/s;const p=[g[i][0]+(g[i+1][0]-g[i][0])*t,g[i][1]+(g[i+1][1]-g[i][1])*t];if(inBB(p))pts.push(p)}}}
+  // usuwanie zbędnych zapytań: punkt wewnątrz już znanej działki
+  const P=new Map();let n=0;
+  status(`Sieci: ${nets.length} odcinków. Sprawdzam działki w ULDK (${pts.length} punktów)…`,.1);
+  await pool(pts,8,async p=>{const m=M(p);for(const d of P.values())if(inRings(m,d.rm))return;const d=await uldkXY(p[0],p[1]);if(!d||P.has(d.id))return;d.rings=wktRings(d.wkt);d.rm=d.rings.map(r=>r.map(M));P.set(d.id,d)},
+    k=>{if(++n%10===0)status(`Sprawdzam działki w ULDK… ${k}/${pts.length} punktów, znaleziono ${P.size} działek`,.1+.85*k/pts.length)});
+  // pomiar każdej sieci w każdej działce
+  RES=[];
+  for(const d of P.values()){
+    const sieci=[];
+    for(const nt of nets){if(nt.k==='nN'&&!useNn)continue;const g=nt.m;let len=0,maxd=0;
+      for(let i=0;i<g.length-1;i++){const S=dist(g[i],g[i+1]);const s=Math.ceil(S);for(let k=0;k<s;k++){const q=[g[i][0]+(g[i+1][0]-g[i][0])*(k+.5)/s,g[i][1]+(g[i+1][1]-g[i][1])*(k+.5)/s];if(inRings(q,d.rm)){len+=S/s;maxd=Math.max(maxd,dRings(q,d.rm))}}}
+      if(len>=1)sieci.push({id:nt.id,k:nt.k,kind:nt.kind,v:nt.t.voltage,op:nt.t.operator,len:Math.round(len),maxd:+maxd.toFixed(1)});
+    }
+    if(!sieci.length)continue;
+    const domy=blds.filter(b=>inRings(b.c,d.rm));
+    const domPrzyLinii=domy.some(b=>sieci.some(s=>s.k!=='nN'&&dLine(b.c,nets.find(x=>x.id===s.id).m)<40));
+    const slupy=poles.some(p=>inRings(p,d.rm));
+    let cx=0,cy=0;d.rm[0].forEach(p=>{cx+=p[0];cy+=p[1]});const cen=[cx/d.rm[0].length,cy/d.rm[0].length];
+    const las=forests.some(f=>inRing(cen,f));
+    RES.push({id:d.id,num:d.num,obr:d.obr,gm:d.gm,area:Math.round(areaM2(d.rings)),rings:d.rings,sieci,domy:domy.length,domPrzyLinii,slupy,las});
+  }
+  RES.forEach(score);render();
+  status(`${label}: ${nets.length} odcinków sieci, ${RES.length} działek przeciętych przez sieć (${RES.filter(r=>r.ok).length} spełnia odległość od granicy).`,1);
+  setTimeout(()=>$('#bar i').style.width='0',800);
+}
+
+// ---------- ocena wg zasad Votum ----------
+const BUD=['MN','MW','PU','U','RM'];
+function score(r){
+  const u=store.get('u:'+r.id,{});r.u=u;
+  const grunt=u.grunt||'?';const bud=BUD.includes(grunt)||(grunt==='?'&&r.domy>0);
+  const prog=BUD.includes(grunt)?5:(grunt==='?'?5:10);
+  r.sieci.forEach(s=>s.ok=s.maxd>=prog);
+  const good=r.sieci.filter(s=>s.ok);
+  r.ok=good.length>0&&!(r.las&&grunt==='?')&&grunt!=='ZL';
+  const typy=new Set(good.map(s=>s.k));
+  let sc=good.reduce((a,s)=>a+TYPES[s.k].w*Math.min(s.len,400)/100,0);
+  sc*=bud?1.8:1; if(typy.size>1)sc*=1+.35*(typy.size-1); if(r.domPrzyLinii)sc*=1.25; if(!r.ok)sc*=.2;
+  r.score=Math.round(sc*10)/10;r.bud=bud;r.prog=prog;
+}
+function render(){
+  const useNn=$('#fNn').checked,onlyOk=$('#fOk').checked,noLas=$('#fLas').checked;
+  const rows=RES.filter(r=>(!onlyOk||r.ok)&&(!noLas||!r.las)).sort((a,b)=>b.score-a.score);
+  gPar.clearLayers();gPin.clearLayers();
+  const frag=document.createDocumentFragment();
+  rows.forEach((r,i)=>{
+    const best=r.sieci.slice().sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0];
+    const poly=L.polygon(r.rings.map(rg=>rg.map(([x,y])=>[y,x])),{color:r.ok?col(best.k):'#888',weight:1.5,fillOpacity:r.ok?.18:.05}).on('click',()=>openCard(r));
+    poly.bindTooltip(`${r.num} (${r.obr}) · ${r.score} pkt`);gPar.addLayer(poly);r.poly=poly;
+    if(i<20){const c=poly.getBounds().getCenter();gPin.addLayer(L.marker(c,{icon:L.divIcon({className:'',html:`<div style="background:#ffb703;color:#14202b;border:2px solid #14324a;border-radius:12px;font:700 12px system-ui;padding:1px 6px;white-space:nowrap">${i+1}</div>`,iconSize:null})}).on('click',()=>openCard(r)))}
+    const el=document.createElement('div');el.className='row';el.innerHTML=`<div class="rk">${i+1}</div><div class="nm">${r.num} <span class="note">${r.obr} · ${(r.area/10000).toFixed(2)} ha</span></div><div class="sc">${r.score}</div>
+    <div class="tags">${r.sieci.map(s=>`<span class="t ${s.k}" title="${TYPES[s.k].n}">${s.k}${s.v?' '+(+String(s.v).split(';')[0]/1000)+'kV':''} ${s.len} m${s.ok?'':' ✗'}</span>`).join('')}
+    ${r.domPrzyLinii?'<span class="t dom">dom przy linii</span>':r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
+    el.onclick=()=>{map.fitBounds(poly.getBounds(),{maxZoom:18});openCard(r)};frag.appendChild(el);
+  });
+  $('#list').innerHTML='';$('#list').appendChild(frag);
+  if(!rows.length&&RES.length)$('#list').innerHTML='<p style="padding:12px" class="note">Żadna działka nie spełnia filtrów. Odznacz „tylko spełniające odległość od granicy”.</p>';
+}
+['#fOk','#fLas'].forEach(s=>$(s).onchange=render);
+$('#fNn').onchange=()=>{if(AREA)run(AREA.bb,AREA.label)};
+
+// ---------- karta działki ----------
+function openCard(r){
+  const u=store.get('u:'+r.id,{});const good=r.sieci.filter(s=>s.ok);const main=(good[0]?good:r.sieci).slice().sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w||b.len-a.len)[0];
+  const geo=`https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${encodeURIComponent(r.id)}`;
+  const c=$('#card');c.hidden=false;
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><h2>Działka ${r.num}</h2><div class="note">${r.obr}, gm. ${r.gm} · ${r.area.toLocaleString('pl')} m² · <span style="font-family:var(--mono)">${r.id}</span></div></div><button id="x" aria-label="Zamknij">✕</button></div>
+  <div class="calc"><div class="note">Do przepisania w kalkulatorze Votum (główna sieć):</div>
+  <table><tr><td>Kategoria</td><td><b>${main.kind}</b></td></tr>
+  <tr><td>Typ infrastruktury</td><td><b>${TYPES[main.k].n}${main.v?' '+(+String(main.v).split(';')[0]/1000)+' kV':''}</b></td></tr>
+  <tr><td>Typ gruntu</td><td><select id="grunt">${['?|nie wiem (sprawdź MPZP)','MN|MN – mieszkaniowa','MW|MW – wielorodzinna','PU|PU – produkcyjno-usługowa','U|U – usługi','RM|RM – zabudowa zagrodowa','R|R – rolna','ZL|ZL – las','Z|zieleń / teren otwarty'].map(o=>{const[v,t]=o.split('|');return`<option value="${v}"${(u.grunt||'?')===v?' selected':''}>${t}</option>`}).join('')}</select></td></tr>
+  <tr><td>Wartość zł/m² (RCN, transakcyjna)</td><td><input id="cena" type="number" inputmode="decimal" placeholder="wpisz ręcznie" value="${u.cena??''}"></td></tr>
+  <tr><td>Długość pasa (m)</td><td><b>${main.len} m</b> <span class="note">(szacunek z OSM)</span></td></tr>
+  <tr><td>Długość wg przeznaczenia</td><td><input id="podzial" placeholder="np. 160 m MN + 14 m R" value="${u.podzial??''}"></td></tr>
+  <tr><td>Słupy na działce</td><td><b>${r.slupy?'tak (wg OSM)':'brak w OSM – sprawdź na ortofoto'}</b></td></tr></table></div>
+  <div class="note">Wszystkie sieci na działce${r.sieci.length>1?' (każda to potencjalnie osobna umowa)':''}:</div>
+  <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}<br><span class="note">${s.op||'operator ?'}</span></td></tr>`).join('')}</table>
+  <table><tr><td>Status</td><td><select id="stat">${['','do sprawdzenia','sprawdzona – pasuje','odrzucona','kontakt z właścicielem','umowa'].map(v=>`<option${(u.stat||'')===v?' selected':''}>${v}</option>`).join('')}</select></td></tr>
+  <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea></td></tr>
+  <tr><td>Zrzut z kalkulatora</td><td><input type="file" id="img" accept="image/*">${u.img?`<img src="${u.img}" style="margin-top:6px;border-radius:6px">`:''}</td></tr></table>
+  ${r.las?'<p class="note" style="color:var(--warn)">Środek działki leży w lesie wg OSM. Sprawdź, zanim zaproponujesz.</p>':''}
+  ${r.domPrzyLinii?'<p class="note" style="color:var(--ok)">Na działce jest budynek bliżej niż 40 m od linii.</p>':''}
+  <div class="btns"><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="zap" class="pri">Zapisz</button></div>
+  <p class="note">Notatki i zrzuty zapisują się tylko na tym urządzeniu.</p>`;
+  $('#x').onclick=()=>c.hidden=true;
+  const save=()=>{const v={grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img};if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
+  $('#zap').onclick=()=>{save();$('#zap').textContent='Zapisano'};
+  ['#grunt','#stat'].forEach(s=>$(s).onchange=()=>{save();openCard(r)});
+  $('#img').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=Math.min(1,900/im.width);const cv=document.createElement('canvas');cv.width=im.width*s;cv.height=im.height*s;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);u.img=cv.toDataURL('image/jpeg',.7);save();openCard(r)};im.src=URL.createObjectURL(f)};
+  $('#kopiuj').onclick=()=>{const t=`Działka ${r.num}, obręb ${r.obr}, gm. ${r.gm} (${r.id})\nKategoria: ${main.kind}\nTyp: ${TYPES[main.k].n}${main.v?' '+(+String(main.v).split(';')[0]/1000)+' kV':''}\nTyp gruntu: ${$('#grunt').value}\nWartość zł/m²: ${$('#cena').value||'?'}\nDługość pasa: ${main.len} m\nSłupy na działce: ${r.slupy?'tak':'?'}`;navigator.clipboard?.writeText(t).then(()=>$('#kopiuj').textContent='Skopiowano',()=>alertBox(t))};
+}
+function alertBox(t){const c=$('#card');c.hidden=false;c.insertAdjacentHTML('afterbegin',`<pre style="white-space:pre-wrap;background:var(--bg);padding:8px">${t}</pre>`)}
+
+// ---------- CSV ----------
+$('#csv').onclick=()=>{
+  if(!RES.length)return status('Najpierw wyszukaj działki.');
+  const h=['ranking','punkty','identyfikator','numer','obreb','gmina','pow_m2','sieci','glowna_kategoria','glowny_typ','dlugosc_m','max_od_granicy_m','spelnia','slupy_osm','budynki','dom_przy_linii','las_osm','typ_gruntu','cena_zl_m2','status','notatka','geoportal'];
+  const rows=RES.slice().sort((a,b)=>b.score-a.score).map((r,i)=>{const m=r.sieci.slice().sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0];const u=store.get('u:'+r.id,{});
+    return[i+1,r.score,r.id,r.num,r.obr,r.gm,r.area,r.sieci.map(s=>`${s.k} ${s.len}m`).join(' + '),m.kind,TYPES[m.k].n,m.len,m.maxd,r.ok?'tak':'nie',r.slupy?'tak':'',r.domy,r.domPrzyLinii?'tak':'',r.las?'tak':'',u.grunt||'',u.cena||'',u.stat||'',(u.not||'').replace(/\n/g,' '),`https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${r.id}`]});
+  const csv='﻿'+[h,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`radar_${(AREA?.label||'obszar').replace(/\W+/g,'_')}.csv`;a.click();
+};
+
+// ---------- wyszukiwanie obszaru ----------
+async function search(){
+  try{
+    status('Szukam miejscowości…',.02);
+    const r=await fetch('https://nominatim.openstreetmap.org/search?countrycodes=pl&format=json&limit=1&q='+encodeURIComponent($('#q').value));
+    const j=await r.json();if(!j.length)return status('Nie znalazłem takiej miejscowości. Dopisz gminę, np. „Tuliszów, Mierzęcice”.',0);
+    const lat=+j[0].lat,lon=+j[0].lon,R=+$('#rad').value;
+    const dLat=R/110540,dLon=R/(111320*Math.cos(lat*Math.PI/180));
+    const bb={s:lat-dLat,n:lat+dLat,w:lon-dLon,e:lon+dLon};
+    map.fitBounds([[bb.s,bb.w],[bb.n,bb.e]]);store.set('last',$('#q').value);
+    await run(bb,j[0].display_name.split(',')[0]);
+  }catch(e){status('Błąd: '+e.message,0)}
+}
+$('#go').onclick=search;$('#q').onkeydown=e=>{if(e.key==='Enter')search()};
+$('#goView').onclick=()=>{const b=map.getBounds();if(map.getZoom()<13)return status('Przybliż mapę (obszar max ok. 5×5 km).');run({s:b.getSouth(),n:b.getNorth(),w:b.getWest(),e:b.getEast()},'Widok mapy').catch(e=>status('Błąd: '+e.message,0))};
+const last=store.get('last',null);if(last)$('#q').value=last;
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
