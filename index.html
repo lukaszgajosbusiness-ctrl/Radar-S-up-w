@@ -118,9 +118,9 @@ const col=k=>getComputedStyle(document.documentElement).getPropertyValue(TYPES[k
 const status=(t,p)=>{$('#status').textContent=t;if(p!=null)$('#bar i').style.width=Math.round(p*100)+'%'};
 async function overpass(bb){
   const b=`(${bb.s},${bb.w},${bb.n},${bb.e})`;
-  const q=`[out:json][timeout:90];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};way["building"]${b};way["landuse"="forest"]${b};way["natural"="wood"]${b};node["power"~"^(tower|pole)$"]${b};);out tags geom;`;
-  for(const host of['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter']){
-    try{const r=await fetch(host,{method:'POST',body:'data='+encodeURIComponent(q)});if(r.ok)return (await r.json()).elements}catch(e){}
+  const q=`[out:json][timeout:120];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:60)["building"];way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
+  for(const host of['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter']){
+    try{status('Pobieram sieci z OpenStreetMap ('+new URL(host).host+')…',.05);const r=await fetch(host,{method:'POST',body:'data='+encodeURIComponent(q),signal:AbortSignal.timeout(100000)});if(r.ok)return (await r.json()).elements}catch(e){}
   }throw new Error('Overpass (OpenStreetMap) nie odpowiada. Spróbuj za minutę.');
 }
 async function uldkXY(lon,lat){
