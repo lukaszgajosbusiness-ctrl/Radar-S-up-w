@@ -117,6 +117,12 @@ const col=k=>getComputedStyle(document.documentElement).getPropertyValue(TYPES[k
 // ---------- pobieranie ----------
 const status=(t,p)=>{$('#status').textContent=t;if(p!=null)$('#bar i').style.width=Math.round(p*100)+'%'};
 async function overpass(bb){
+  const ck='ov:'+[bb.s,bb.w,bb.n,bb.e].map(v=>v.toFixed(3)).join(',');
+  try{const c=JSON.parse(localStorage.getItem(ck)||'null');if(c&&Date.now()-c.t<7*864e5){return c.e}}catch(e){}
+  const els=await overpassNet(bb);try{localStorage.setItem(ck,JSON.stringify({t:Date.now(),e:els}))}catch(e){}
+  return els;
+}
+async function overpassNet(bb){
   const b=`(${bb.s},${bb.w},${bb.n},${bb.e})`;
   const q=`[out:json][timeout:120];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:60)["building"];way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
   for(const host of['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter']){
