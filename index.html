@@ -124,17 +124,17 @@ const col=k=>getComputedStyle(document.documentElement).getPropertyValue(TYPES[k
 
 // ---------- pobieranie ----------
 const status=(t,p)=>{$('#status').textContent=t;if(p!=null)$('#bar i').style.width=Math.round(p*100)+'%'};
-async function overpass(bb){
+async function overpass(bb,tmo=100000){
   const ck='ov:'+[bb.s,bb.w,bb.n,bb.e].map(v=>v.toFixed(3)).join(',');
   try{const c=JSON.parse(localStorage.getItem(ck)||'null');if(c&&Date.now()-c.t<7*864e5){return c.e}}catch(e){}
-  const els=await overpassNet(bb);try{localStorage.setItem(ck,JSON.stringify({t:Date.now(),e:els}))}catch(e){}
+  const els=await overpassNet(bb,tmo);try{localStorage.setItem(ck,JSON.stringify({t:Date.now(),e:els}))}catch(e){}
   return els;
 }
-async function overpassNet(bb){
+async function overpassNet(bb,tmo=100000){
   const b=`(${bb.s},${bb.w},${bb.n},${bb.e})`;
   const q=`[out:json][timeout:120];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:60)["building"];way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
   for(const host of['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter']){
-    try{status('Pobieram sieci z OpenStreetMap ('+new URL(host).host+')…',.05);const r=await fetch(host,{method:'POST',body:'data='+encodeURIComponent(q),signal:AbortSignal.timeout(100000)});if(r.ok)return (await r.json()).elements}catch(e){}
+    try{status('Pobieram sieci z OpenStreetMap ('+new URL(host).host+')…',.05);const r=await fetch(host,{method:'POST',body:'data='+encodeURIComponent(q),signal:AbortSignal.timeout(tmo)});if(r.ok)return (await r.json()).elements}catch(e){}
   }throw new Error('Overpass (OpenStreetMap) nie odpowiada. Spróbuj za minutę.');
 }
 async function uldkXY(lon,lat){
@@ -317,7 +317,7 @@ async function checkNumbers(){
   map.fitBounds([[bb.s,bb.w],[bb.n,bb.e]]);
   let nets=[],poles=[],osmOk=true;
   status('Pobieram sieci z OpenStreetMap dla tych działek…',.35);
-  try{if((bb.n-bb.s)*(bb.e-bb.w)<0.01){const els=await overpass(bb);for(const e of els){if(e.type==='node'){poles.push(M([e.lon,e.lat]));continue}if(!e.geometry)continue;const t=e.tags||{};if(t.building||t.landuse||t.natural)continue;const k=classify(t);if(!k)continue;const g=e.geometry.map(p=>[p.lon,p.lat]);nets.push({id:e.id,k,kind:kind(t),t,g,m:g.map(M)})}}else osmOk=false}catch(e){osmOk=false}
+  try{if((bb.n-bb.s)*(bb.e-bb.w)<0.01){const els=await overpass(bb,25000);for(const e of els){if(e.type==='node'){poles.push(M([e.lon,e.lat]));continue}if(!e.geometry)continue;const t=e.tags||{};if(t.building||t.landuse||t.natural)continue;const k=classify(t);if(!k)continue;const g=e.geometry.map(p=>[p.lon,p.lat]);nets.push({id:e.id,k,kind:kind(t),t,g,m:g.map(M)})}}else osmOk=false}catch(e){osmOk=false}
   NETS=nets;for(const n of nets)gNet.addLayer(L.polyline(n.g.map(([x,y])=>[y,x]),{color:col(n.k),weight:n.k==='NN'?5:n.k==='WN'?4:2.5,dashArray:n.kind==='podziemna'?'6 5':null}).bindTooltip(TYPES[n.k].n));
   if(!osmOk&&!map.hasLayer(kiut))kiut.addTo(map);
   RES=[];let i=0;
