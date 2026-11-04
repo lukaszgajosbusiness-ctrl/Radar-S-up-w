@@ -175,6 +175,19 @@ async function run(bb,label){
     const las=forests.some(f=>inRing(cen,f));
     RES.push({id:d.id,num:d.num,obr:d.obr,gm:d.gm,area:Math.round(areaM2(d.rings)),rings:d.rings,sieci,domy:domy.length,domPrzyLinii,slupy,las});
   }
+  // budynki z oficjalnej bazy GUGiK (ULDK) przy liniach NN/WN i gazociągach: próbki co 25 m, 12 i 28 m w bok
+  const bpts=[];
+  for(const n of nets){if(!['NN','WN','gaz'].includes(n.k))continue;const g=n.m;
+    for(let i=0;i<g.length-1;i++){const S=dist(g[i],g[i+1]);if(!S)continue;const ux=(g[i+1][0]-g[i][0])/S,uy=(g[i+1][1]-g[i][1])/S;const s=Math.max(1,Math.round(S/25));
+      for(let k=0;k<s;k++){const x=g[i][0]+(g[i+1][0]-g[i][0])*(k+.5)/s,y=g[i][1]+(g[i+1][1]-g[i][1])*(k+.5)/s;for(const o of[-28,-12,12,28]){const q=[x-uy*o,y+ux*o];const ll=[q[0]/K.kx,q[1]/K.ky];if(inBB(ll))bpts.push({ll,net:n})}}}}
+  const found=new Map();let bn=0;
+  status(`Szukam budynków przy liniach NN/WN i gazociągach w bazie GUGiK (${bpts.length} punktów)…`,.9);
+  await pool(bpts,8,async p=>{const m=M(p.ll);for(const b of found.values())if(inRings(m,b.rm))return;
+    const t=(await (await fetch(`https://uldk.gugik.gov.pl/?request=GetBuildingByXY&xy=${p.ll[0]},${p.ll[1]},4326&result=id,geom_wkt&srid=4326`)).text()).trim().split('\n');
+    if(t[0]!=='0'||!t[1])return;const [bid,wkt]=t[1].split('|');if(found.has(bid))return;const rm=wktRings(wkt).map(r=>r.map(M));found.set(bid,{rm,net:p.net})},
+    k=>{if(++bn%20===0)status(`Szukam budynków przy liniach… ${k}/${bpts.length}, znaleziono ${found.size}`,.9+.1*k/bpts.length)});
+  for(const b of found.values()){let cx=0,cy=0;b.rm[0].forEach(p=>{cx+=p[0];cy+=p[1]});b.c=[cx/b.rm[0].length,cy/b.rm[0].length];b.d=dLine(b.c,b.net.m)}
+  for(const r of RES){const rm=r.rings.map(rg=>rg.map(M));const bs=[...found.values()].filter(b=>inRings(b.c,rm));if(bs.length){r.domy=Math.max(r.domy,bs.length);const d=Math.min(...bs.map(b=>b.d));if(d<40){r.domPrzyLinii=true;r.domOdl=Math.round(d)}}}
   RES.forEach(score);render();
   status(`${label}: ${nets.length} odcinków sieci, ${RES.length} działek przeciętych przez sieć (${RES.filter(r=>r.ok).length} spełnia odległość od granicy).`,1);
   setTimeout(()=>$('#bar i').style.width='0',800);
@@ -206,7 +219,7 @@ function render(){
     if(i<20){const c=poly.getBounds().getCenter();gPin.addLayer(L.marker(c,{icon:L.divIcon({className:'',html:`<div style="background:#ffb703;color:#14202b;border:2px solid #14324a;border-radius:12px;font:700 12px system-ui;padding:1px 6px;white-space:nowrap">${i+1}</div>`,iconSize:null})}).on('click',()=>openCard(r)))}
     const el=document.createElement('div');el.className='row';el.innerHTML=`<div class="rk">${i+1}</div><div class="nm">${r.num} <span class="note">${r.obr} · ${(r.area/10000).toFixed(2)} ha</span></div><div class="sc">${r.score}</div>
     <div class="tags">${r.sieci.map(s=>`<span class="t ${s.k}" title="${TYPES[s.k].n}">${s.k}${s.v?' '+(+String(s.v).split(';')[0]/1000)+'kV':''} ${s.len} m${s.ok?'':' ✗'}</span>`).join('')}
-    ${r.domPrzyLinii?'<span class="t dom">dom przy linii</span>':r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
+    ${r.domPrzyLinii?`<span class="t dom">budynek ${r.domOdl!=null?r.domOdl+' m ':''}od linii</span>`:r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
     el.onclick=()=>{map.fitBounds(poly.getBounds(),{maxZoom:18});openCard(r)};frag.appendChild(el);
   });
   $('#list').innerHTML='';$('#list').appendChild(frag);
@@ -235,7 +248,7 @@ function openCard(r){
   <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea></td></tr>
   <tr><td>Zrzut z kalkulatora</td><td><input type="file" id="img" accept="image/*">${u.img?`<img src="${u.img}" style="margin-top:6px;border-radius:6px">`:''}</td></tr></table>
   ${r.las?'<p class="note" style="color:var(--warn)">Środek działki leży w lesie wg OSM. Sprawdź, zanim zaproponujesz.</p>':''}
-  ${r.domPrzyLinii?'<p class="note" style="color:var(--ok)">Na działce jest budynek bliżej niż 40 m od linii.</p>':''}
+  ${r.domPrzyLinii?`<p class="note" style="color:var(--ok)">Na działce stoi budynek ${r.domOdl!=null?'ok. '+r.domOdl+' m':'bliżej niż 40 m'} od osi linii (baza budynków GUGiK).</p>`:''}
   <div class="btns"><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="zap" class="pri">Zapisz</button></div>
   <p class="note">Notatki i zrzuty zapisują się tylko na tym urządzeniu.</p>`;
   $('#x').onclick=()=>c.hidden=true;
