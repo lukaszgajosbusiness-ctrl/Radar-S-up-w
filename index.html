@@ -193,11 +193,11 @@ async function run(bb,label){
   // budynki z oficjalnej bazy GUGiK (ULDK) przy liniach NN/WN i gazociągach: próbki co 25 m, 12 i 28 m w bok
   const bpts=[];
   for(const n of nets){if(!['NN','WN','gaz'].includes(n.k))continue;const g=n.m;
-    for(let i=0;i<g.length-1;i++){const S=dist(g[i],g[i+1]);if(!S)continue;const ux=(g[i+1][0]-g[i][0])/S,uy=(g[i+1][1]-g[i][1])/S;const s=Math.max(1,Math.round(S/35));
-      for(let k=0;k<s;k++){const x=g[i][0]+(g[i+1][0]-g[i][0])*(k+.5)/s,y=g[i][1]+(g[i+1][1]-g[i][1])*(k+.5)/s;for(const o of[-25,-10,10,25]){const q=[x-uy*o,y+ux*o];const ll=[q[0]/K.kx,q[1]/K.ky];if(inBB(ll))bpts.push({ll,net:n})}}}}
+    for(let i=0;i<g.length-1;i++){const S=dist(g[i],g[i+1]);if(!S)continue;const ux=(g[i+1][0]-g[i][0])/S,uy=(g[i+1][1]-g[i][1])/S;const s=Math.max(1,Math.round(S/25));
+      for(let k=0;k<s;k++){const x=g[i][0]+(g[i+1][0]-g[i][0])*(k+.5)/s,y=g[i][1]+(g[i+1][1]-g[i][1])*(k+.5)/s;for(const o of[-24,-9,9,24]){const q=[x-uy*o,y+ux*o];const ll=[q[0]/K.kx,q[1]/K.ky];if(inBB(ll))bpts.push({ll,net:n})}}}}
   const found=new Map();let bn=0;
   status(`Szukam budynków przy liniach NN/WN i gazociągach w bazie GUGiK (${bpts.length} punktów)…`,.9);
-  await pool(bpts,12,async p=>{const m=M(p.ll);for(const b of found.values())if(inRings(m,b.rm))return;
+  await pool(bpts,14,async p=>{const m=M(p.ll);for(const b of found.values())if(inRings(m,b.rm))return;
     const t=(await (await fetch(`https://uldk.gugik.gov.pl/?request=GetBuildingByXY&xy=${p.ll[0]},${p.ll[1]},4326&result=id,geom_wkt&srid=4326`)).text()).trim().split('\n');
     if(t[0]!=='0'||!t[1])return;const [bid,wkt]=t[1].split('|');if(found.has(bid))return;const rm=wktRings(wkt).map(r=>r.map(M));found.set(bid,{rm,net:p.net})},
     k=>{if(++bn%20===0)status(`Szukam budynków przy liniach… ${k}/${bpts.length}, znaleziono ${found.size}`,.9+.1*k/bpts.length)});
