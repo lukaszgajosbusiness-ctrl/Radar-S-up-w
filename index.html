@@ -70,6 +70,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
       <label><input type="checkbox" id="fOk" checked> tylko spełniające odległość od granicy</label>
       <label><input type="checkbox" id="fNn"> pokaż nN 0,4 kV</label>
       <label><input type="checkbox" id="fLas" checked> ukryj lasy</label>
+      <label><input type="checkbox" id="fDom"> tylko z budynkiem przy linii</label>
     </div>
     <div id="list"></div>
   </div>
@@ -192,11 +193,11 @@ async function run(bb,label){
   // budynki z oficjalnej bazy GUGiK (ULDK) przy liniach NN/WN i gazociągach: próbki co 25 m, 12 i 28 m w bok
   const bpts=[];
   for(const n of nets){if(!['NN','WN','gaz'].includes(n.k))continue;const g=n.m;
-    for(let i=0;i<g.length-1;i++){const S=dist(g[i],g[i+1]);if(!S)continue;const ux=(g[i+1][0]-g[i][0])/S,uy=(g[i+1][1]-g[i][1])/S;const s=Math.max(1,Math.round(S/25));
-      for(let k=0;k<s;k++){const x=g[i][0]+(g[i+1][0]-g[i][0])*(k+.5)/s,y=g[i][1]+(g[i+1][1]-g[i][1])*(k+.5)/s;for(const o of[-28,-12,12,28]){const q=[x-uy*o,y+ux*o];const ll=[q[0]/K.kx,q[1]/K.ky];if(inBB(ll))bpts.push({ll,net:n})}}}}
+    for(let i=0;i<g.length-1;i++){const S=dist(g[i],g[i+1]);if(!S)continue;const ux=(g[i+1][0]-g[i][0])/S,uy=(g[i+1][1]-g[i][1])/S;const s=Math.max(1,Math.round(S/35));
+      for(let k=0;k<s;k++){const x=g[i][0]+(g[i+1][0]-g[i][0])*(k+.5)/s,y=g[i][1]+(g[i+1][1]-g[i][1])*(k+.5)/s;for(const o of[-25,-10,10,25]){const q=[x-uy*o,y+ux*o];const ll=[q[0]/K.kx,q[1]/K.ky];if(inBB(ll))bpts.push({ll,net:n})}}}}
   const found=new Map();let bn=0;
   status(`Szukam budynków przy liniach NN/WN i gazociągach w bazie GUGiK (${bpts.length} punktów)…`,.9);
-  await pool(bpts,8,async p=>{const m=M(p.ll);for(const b of found.values())if(inRings(m,b.rm))return;
+  await pool(bpts,12,async p=>{const m=M(p.ll);for(const b of found.values())if(inRings(m,b.rm))return;
     const t=(await (await fetch(`https://uldk.gugik.gov.pl/?request=GetBuildingByXY&xy=${p.ll[0]},${p.ll[1]},4326&result=id,geom_wkt&srid=4326`)).text()).trim().split('\n');
     if(t[0]!=='0'||!t[1])return;const [bid,wkt]=t[1].split('|');if(found.has(bid))return;const rm=wktRings(wkt).map(r=>r.map(M));found.set(bid,{rm,net:p.net})},
     k=>{if(++bn%20===0)status(`Szukam budynków przy liniach… ${k}/${bpts.length}, znaleziono ${found.size}`,.9+.1*k/bpts.length)});
@@ -219,12 +220,12 @@ function score(r){
   r.ok=good.length>0&&!(r.las&&grunt==='?')&&grunt!=='ZL';
   const typy=new Set(good.map(s=>s.k));
   let sc=good.reduce((a,s)=>a+TYPES[s.k].w*Math.min(s.len,400)/100,0);
-  sc*=bud?1.8:1; if(typy.size>1)sc*=1+.35*(typy.size-1); if(r.domPrzyLinii)sc*=1.25; if(!r.ok)sc*=.2;
+  sc*=bud?1.8:1; if(typy.size>1)sc*=1+.35*(typy.size-1); if(r.domPrzyLinii)sc=sc*1.5+6; if(!r.ok)sc*=.2;
   r.score=Math.round(sc*10)/10;r.bud=bud;r.prog=prog;
 }
 function render(){
-  const useNn=$('#fNn').checked,onlyOk=$('#fOk').checked,noLas=$('#fLas').checked;
-  const rows=RES.filter(r=>(!onlyOk||r.ok)&&(!noLas||!r.las)).sort((a,b)=>b.score-a.score);
+  const useNn=$('#fNn').checked,onlyOk=$('#fOk').checked,noLas=$('#fLas').checked,onlyDom=$('#fDom').checked;
+  const rows=RES.filter(r=>(!onlyOk||r.ok)&&(!noLas||!r.las)&&(!onlyDom||r.domPrzyLinii)).sort((a,b)=>b.score-a.score);
   gPar.clearLayers();gPin.clearLayers();
   const frag=document.createDocumentFragment();
   rows.forEach((r,i)=>{
@@ -240,7 +241,7 @@ function render(){
   $('#list').innerHTML='';$('#list').appendChild(frag);
   if(!rows.length&&RES.length)$('#list').innerHTML='<p style="padding:12px" class="note">Żadna działka nie spełnia filtrów. Odznacz „tylko spełniające odległość od granicy”.</p>';
 }
-['#fOk','#fLas'].forEach(s=>$(s).onchange=render);
+['#fOk','#fLas','#fDom'].forEach(s=>$(s).onchange=render);
 $('#fNn').onchange=()=>{if(AREA)run(AREA.bb,AREA.label)};
 
 // ---------- karta działki ----------
