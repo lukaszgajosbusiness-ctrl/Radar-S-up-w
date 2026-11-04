@@ -54,7 +54,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 <body>
 <header>
   <h1>Radar Słupów</h1>
-  <input id="q" value="Tuliszów, Mierzęcice" aria-label="Miejscowość lub gmina">
+  <input id="q" value="Tuliszów, Siewierz" aria-label="Miejscowość lub gmina">
   <select id="rad" aria-label="Promień"><option value="800">0,8 km</option><option value="1500" selected>1,5 km</option><option value="2500">2,5 km</option><option value="4000">4 km</option></select>
   <button class="pri" id="go">Szukaj działek</button>
   <button id="goView" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
@@ -133,7 +133,7 @@ async function overpass(bb,tmo=100000){
 async function overpassNet(bb,tmo=100000){
   const b=`(${bb.s},${bb.w},${bb.n},${bb.e})`;
   const q=`[out:json][timeout:120];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:60)["building"];way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
-  for(const host of['https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter','https://maps.mail.ru/osm/tools/overpass/api/interpreter']){
+  for(const host of['https://maps.mail.ru/osm/tools/overpass/api/interpreter','https://overpass-api.de/api/interpreter','https://overpass.private.coffee/api/interpreter']){
     try{status('Pobieram sieci z OpenStreetMap ('+new URL(host).host+')…',.05);const r=await fetch(host,{method:'POST',body:'data='+encodeURIComponent(q),signal:AbortSignal.timeout(tmo)});if(r.ok)return (await r.json()).elements}catch(e){}
   }throw new Error('Overpass (OpenStreetMap) nie odpowiada. Spróbuj za minutę.');
 }
@@ -354,7 +354,7 @@ async function search(){
   try{
     status('Szukam miejscowości…',.02);
     const nq=async q=>(await fetch('https://nominatim.openstreetmap.org/search?countrycodes=pl&format=json&limit=1&q='+encodeURIComponent(q))).json();
-    let j=await nq($('#q').value);if(!j.length&&$('#q').value.includes(','))j=await nq($('#q').value.split(',')[0]+', śląskie');if(!j.length)j=await nq($('#q').value.split(',')[0]);if(!j.length)return status('Nie znalazłem takiej miejscowości. Dopisz gminę, np. „Tuliszów, Mierzęcice”.',0);
+    let j=await nq($('#q').value);if(!j.length&&$('#q').value.includes(','))j=await nq($('#q').value.split(',')[0]+', śląskie');if(!j.length)j=await nq($('#q').value.split(',')[0]);if(!j.length)return status('Nie znalazłem takiej miejscowości. Dopisz gminę, np. „Tuliszów, Siewierz”.',0);
     const lat=+j[0].lat,lon=+j[0].lon,R=+$('#rad').value;
     const dLat=R/110540,dLon=R/(111320*Math.cos(lat*Math.PI/180));
     const bb={s:lat-dLat,n:lat+dLat,w:lon-dLon,e:lon+dLon};
