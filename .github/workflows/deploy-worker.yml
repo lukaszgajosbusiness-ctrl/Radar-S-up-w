@@ -1,0 +1,29 @@
+name: Wdrożenie serwera (Cloudflare)
+on:
+  push:
+    paths: ['worker/**', '.github/workflows/deploy-worker.yml']
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Deploy
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN" || (echo "Brak sekretu CLOUDFLARE_API_TOKEN" && exit 1)
+          npx -y wrangler@3 deploy 2>&1 | tee deploy.log
+          grep -o 'https://[a-z0-9.-]*workers.dev' deploy.log | head -1 > url.txt || true
+      - name: Zapisz adres serwera
+        run: |
+          U=$(cat worker/url.txt); test -n "$U" || exit 0
+          echo "{\"api\":\"$U\"}" > data/api.json
+          git config user.name "radar-bot"; git config user.email "radar-bot@users.noreply.github.com"
+          git add data/api.json; git diff --cached --quiet || (git commit -m "Adres serwera API [skip ci]" && git pull --rebase -q && git push)
+    permissions:
+      contents: write
