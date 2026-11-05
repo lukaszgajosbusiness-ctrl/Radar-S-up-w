@@ -2,5 +2,9 @@
  {"slug":"tuliszow","name":"Tuliszów (gm. Siewierz)","q":"Tuliszów, Siewierz","lat":50.4336,"lon":19.1946,"radius":2500},
  {"slug":"przeczyce","name":"Przeczyce (gm. Mierzęcice)","q":"Przeczyce, Mierzęcice","radius":2000},
  {"slug":"mierzecice","name":"Mierzęcice","q":"Mierzęcice, będziński","radius":2000},
- {"slug":"siewierz","name":"Siewierz","q":"Siewierz, będziński","radius":2000}
+ {"slug":"siewierz","name":"Siewierz","q":"Siewierz, będziński","radius":2000},
+ {"slug":"wojkowice-koscielne","name":"Wojkowice Kościelne (gm. Siewierz)","q":"Wojkowice Kościelne, Siewierz","radius":2000},
+ {"slug":"trzebieslawice","name":"Trzebiesławice (Dąbrowa Górnicza)","q":"Trzebiesławice, Dąbrowa Górnicza","radius":2000},
+ {"slug":"saczow","name":"Sączów (gm. Bobrowniki)","q":"Sączów, Bobrowniki","radius":2000},
+ {"slug":"boguchwalowice","name":"Boguchwałowice (gm. Mierzęcice)","q":"Boguchwałowice, Mierzęcice","radius":2000}
 ]
