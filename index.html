@@ -62,6 +62,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <button id="demoBtn" hidden>Przykładowy lead</button>
   <button id="nrBtn">Po numerze</button>
   <button id="csv">CSV</button>
+  <button id="kontoBtn">Konto</button>
 </header>
 <div id="main">
   <div id="map"></div>
@@ -85,6 +86,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <label class="note" style="display:block;margin:6px 0">Gmina (gdy obręb jest w kilku gminach): <input id="nrGm" placeholder="np. Siewierz" style="width:100%;padding:5px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)"></label>
   <div class="btns"><button class="pri" id="nrGo">Sprawdź działki</button><button id="nrX">Zamknij</button></div>
 </div>
+<div id="kontoPanel" hidden style="position:fixed;z-index:1100;inset:70px 12px auto auto;width:min(420px,calc(100% - 24px));max-height:80vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--acc);border-radius:8px;padding:12px;box-shadow:0 6px 24px rgba(0,0,0,.25)"></div>
 <div id="card" hidden></div>
 <script>
 'use strict';
@@ -211,7 +213,7 @@ async function run(bb,label){
     k=>{if(++bn%20===0)status(`Szukam budynków przy liniach… ${k}/${bpts.length}, znaleziono ${found.size}`,.9+.1*k/bpts.length)});
   for(const b of found.values()){let cx=0,cy=0;b.rm[0].forEach(p=>{cx+=p[0];cy+=p[1]});b.c=[cx/b.rm[0].length,cy/b.rm[0].length];b.d=dLine(b.c,b.net.m)}
   for(const r of RES){const rm=r.rings.map(rg=>rg.map(M));const bs=[...found.values()].filter(b=>inRings(b.c,rm));if(bs.length){r.domy=Math.max(r.domy,bs.length);const d=Math.min(...bs.map(b=>b.d));if(d<40){r.domPrzyLinii=true;r.domOdl=Math.round(d)}}}
-  RES.forEach(score);render();
+  RES.forEach(score);render();loadResv();
   await enrichMpzp(RES.filter(r=>r.ok).sort((a,b)=>b.score-a.score).slice(0,40));
   status(`${label}: ${nets.length} odcinków sieci, ${RES.length} działek przeciętych przez sieć (${RES.filter(r=>r.ok).length} spełnia odległość od granicy).`,1);
   setTimeout(()=>$('#bar i').style.width='0',800);
@@ -244,7 +246,7 @@ function render(){
     if(i<20){const c=poly.getBounds().getCenter();gPin.addLayer(L.marker(c,{icon:L.divIcon({className:'',html:`<div style="background:#ffb703;color:#14202b;border:2px solid #14324a;border-radius:12px;font:700 12px system-ui;padding:1px 6px;white-space:nowrap">${i+1}</div>`,iconSize:null})}).on('click',()=>openCard(r)))}
     const el=document.createElement('div');el.className='row';el.innerHTML=`<div class="rk">${i+1}</div><div class="nm">${r.num} <span class="note">${r.obr} · ${(r.area/10000).toFixed(2)} ha</span></div><div class="sc">${r.score}</div>
     <div class="tags">${r.sieci.map(s=>`<span class="t ${s.k}" title="${TYPES[s.k].n}">${s.k}${s.v?' '+(+String(s.v).split(';')[0]/1000)+'kV':''} ${s.len} m${s.ok?'':' ✗'}</span>`).join('')}
-    ${r.domPrzyLinii?`<span class="t dom">budynek ${r.domOdl!=null?r.domOdl+' m ':''}od linii</span>`:r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:r.mpzp?`<span class="t f" title="z planu miejscowego">MPZP ${r.mpzp}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
+    ${r.domPrzyLinii?`<span class="t dom">budynek ${r.domOdl!=null?r.domOdl+' m ':''}od linii</span>`:r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${RESV[r.id]?(RESV[r.id].mine?'<span class="t dom">moja</span>':`<span class="t x">zajęta: ${RESV[r.id].holder}</span>`):''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:r.mpzp?`<span class="t f" title="z planu miejscowego">MPZP ${r.mpzp}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
     el.onclick=()=>{map.fitBounds(poly.getBounds(),{maxZoom:18});openCard(r)};frag.appendChild(el);
   });
   $('#list').innerHTML='';$('#list').appendChild(frag);
@@ -273,6 +275,7 @@ function openCard(r){
   <tr><td>Odległość od granicy (m)</td><td><input id="rOdl" type="number" inputmode="decimal" value="${u.recznieOdl??''}"></td></tr></table></details>
   <div class="note">Wszystkie sieci na działce${r.sieci.length>1?' (każda to potencjalnie osobna umowa)':''}:</div>
   <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}<br><span class="note">${s.op||'operator ?'}</span></td></tr>`).join('')}</table>
+  ${resvBlock(r)}
   <table><tr><td>Status</td><td><select id="stat">${['','do sprawdzenia','sprawdzona – pasuje','odrzucona','kontakt z właścicielem','umowa'].map(v=>`<option${(u.stat||'')===v?' selected':''}>${v}</option>`).join('')}</select></td></tr>
   <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea></td></tr>
   <tr><td>Zrzut z kalkulatora</td><td><input type="file" id="img" accept="image/*">${u.img?`<img src="${u.img}" style="margin-top:6px;border-radius:6px">`:''}</td></tr></table>
@@ -280,8 +283,8 @@ function openCard(r){
   ${r.domPrzyLinii?`<p class="note" style="color:var(--ok)">Na działce stoi budynek ${r.domOdl!=null?'ok. '+r.domOdl+' m':'bliżej niż 40 m'} od osi linii (baza budynków GUGiK).</p>`:''}
   <div class="btns"><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="zap" class="pri">Zapisz</button></div>
   <p class="note">Notatki i zrzuty zapisują się tylko na tym urządzeniu.</p>`;
-  $('#x').onclick=()=>c.hidden=true;
-  const save=()=>{const v={grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
+  $('#x').onclick=()=>c.hidden=true;bindResv(r);
+  const save=()=>{const v={grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(USER&&RESV[r.id]?.mine&&v.stat!==(u.stat||''))api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:v.stat}).catch(()=>{});if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
   $('#zap').onclick=()=>{save();$('#zap').textContent='Zapisano'};
   ['#grunt','#stat'].forEach(s=>$(s).onchange=()=>{save();openCard(r)});
   $('#img').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=Math.min(1,900/im.width);const cv=document.createElement('canvas');cv.width=im.width*s;cv.height=im.height*s;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);u.img=cv.toDataURL('image/jpeg',.7);save();openCard(r)};im.src=URL.createObjectURL(f)};
@@ -384,7 +387,7 @@ async function loadArea(slug){
     gArea.addLayer(L.rectangle([[d.bbox.s,d.bbox.w],[d.bbox.n,d.bbox.e]],{color:'#ffb703',weight:1,fill:false,dashArray:'4 4'}));
     NETS=d.nets.map(n=>({id:n.id,k:n.k,kind:n.kind,t:{voltage:n.v,operator:n.op},g:n.g,m:n.g.map(M)}));
     for(const n of NETS)gNet.addLayer(L.polyline(n.g.map(([x,y])=>[y,x]),{color:col(n.k),weight:n.k==='NN'?5:n.k==='WN'?4:n.k==='nN'?1.5:2.5,dashArray:n.kind==='podziemna'?'6 5':null}).bindTooltip(TYPES[n.k].n+(n.t.voltage?' '+(+String(n.t.voltage).split(';')[0]/1000)+' kV':'')));
-    RES=d.parcels;RES.forEach(score);$('#fOk').checked=true;render();
+    RES=d.parcels;RES.forEach(score);$('#fOk').checked=true;render();loadResv();
     map.fitBounds([[d.bbox.s,d.bbox.w],[d.bbox.n,d.bbox.e]]);
     const dt=new Date(d.generated).toLocaleDateString('pl');
     status(`${d.name}: ${RES.length} działek z siecią (${RES.filter(r=>r.ok).length} spełnia odległość), ${RES.filter(r=>r.domPrzyLinii).length} z budynkiem przy linii. Dane z ${dt}.`,1);
@@ -413,6 +416,49 @@ async function demo(){
 }
 $('#demoBtn').onclick=demo;
 fetch('data/tuliszow.json',{method:'HEAD',cache:'no-cache'}).then(r=>{if(r.ok){$('#demoBtn').hidden=false;if(!store.get('demoSeen',false)&&!store.get('last',null)){store.set('demoSeen',true);demo()}}}).catch(()=>{});
+
+
+// ---------- konto i rezerwacje (serwer Cloudflare) ----------
+let API=null,USER=null,RESV={};
+const tok=()=>store.get('token','');
+async function api(path,body){const r=await fetch(API+path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(tok()?{Authorization:'Bearer '+tok()}:{})},body:body?JSON.stringify(body):undefined});const j=await r.json().catch(()=>({error:'Błąd serwera'}));if(!r.ok)throw new Error(j.error||('HTTP '+r.status));return j}
+async function initKonto(){try{API=(await (await fetch('data/api.json',{cache:'no-cache'})).json()).api}catch(e){$('#kontoBtn').hidden=true;return}
+  if(tok()){try{USER=(await api('/api/me')).user}catch(e){store.set('token','')}}kontoLabel()}
+function kontoLabel(){$('#kontoBtn').textContent=USER?USER.name.split(' ')[0]:'Zaloguj'}
+async function loadResv(){if(!USER||!RES.length){RESV={};return}try{RESV=(await api('/api/reservations',{ids:RES.map(r=>r.id)})).reservations}catch(e){RESV={}}render()}
+function kontoPanel(){const k=$('#kontoPanel');k.hidden=false;
+  if(!USER){k.innerHTML=`<b>Konto zespołu</b><p class="note">Konto pozwala rezerwować działki, żeby dwie osoby nie szły do tego samego właściciela.</p>
+   <div style="display:grid;gap:6px"><input id="kLogin" placeholder="login" autocomplete="username"><input id="kPass" type="password" placeholder="hasło" autocomplete="current-password">
+   <div class="btns"><button class="pri" id="kIn">Zaloguj</button><button id="kX">Zamknij</button></div>
+   <details><summary class="note">Nie mam konta – mam kod zaproszenia</summary><div style="display:grid;gap:6px;margin-top:6px"><input id="rName" placeholder="Imię i nazwisko"><input id="rLogin" placeholder="login (np. jan.kowalski)"><input id="rPass" type="password" placeholder="hasło (min. 8 znaków)" autocomplete="new-password"><input id="rInv" placeholder="kod zaproszenia"><button id="kReg">Załóż konto</button></div></details>
+   <p class="note" id="kErr" style="color:var(--warn)"></p></div>`;
+   k.querySelectorAll('input').forEach(i=>i.style.cssText='padding:6px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit');
+   $('#kX').onclick=()=>k.hidden=true;
+   const done=j=>{store.set('token',j.token);USER=j.user;kontoLabel();kontoPanel();loadResv()};
+   $('#kIn').onclick=()=>api('/api/login',{login:$('#kLogin').value,password:$('#kPass').value}).then(done,e=>$('#kErr').textContent=e.message);
+   $('#kReg').onclick=()=>api('/api/register',{name:$('#rName').value,login:$('#rLogin').value,password:$('#rPass').value,invite:$('#rInv').value}).then(done,e=>$('#kErr').textContent=e.message);
+   return}
+  const boss=['admin','kierownik'].includes(USER.role);
+  k.innerHTML=`<b>${USER.name}</b> <span class="note">· ${USER.role} · zespół ${USER.team}</span>
+   <div class="btns"><button id="kOut">Wyloguj</button><button id="kX">Zamknij</button></div>
+   ${boss?`<hr style="border:0;border-top:1px solid var(--line)"><b>Zaproś handlowca</b><div class="btns">${USER.role==='admin'?'<select id="iRole"><option value="handlowiec">handlowiec</option><option value="kierownik">kierownik</option></select><input id="iTeam" placeholder="zespół" value="'+USER.team+'" style="width:120px">':''}<button class="pri" id="kInv">Utwórz kod</button></div><p id="kCode" class="note"></p>
+   <b>Wyniki zespołu (30 dni)</b><div id="kStats" class="note">Wczytuję…</div>`:''}`;
+  $('#kX').onclick=()=>k.hidden=true;
+  $('#kOut').onclick=()=>{api('/api/logout',{}).catch(()=>{});store.set('token','');USER=null;RESV={};kontoLabel();render();k.hidden=true};
+  if(boss){$('#kInv').onclick=()=>api('/api/invites',{role:$('#iRole')?.value,team:$('#iTeam')?.value}).then(j=>$('#kCode').innerHTML=`Kod: <b style="font:600 16px var(--mono)">${j.code}</b> (${j.role}, zespół ${j.team}). Przekaż go jednej osobie, działa raz.`,e=>$('#kCode').textContent=e.message);
+    api('/api/stats').then(j=>{const by={};j.users.forEach(u=>by[u.name]={team:u.team,s:{}});j.stats.forEach(s=>{(by[s.name]??={team:s.team,s:{}}).s[s.status]=s.n});
+      const cols=['do sprawdzenia','kontakt z właścicielem','umowa'];
+      $('#kStats').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><tr><th style="text-align:left">Osoba</th>${cols.map(c=>`<th>${c}</th>`).join('')}</tr>${Object.entries(by).map(([n,v])=>`<tr><td>${n} <span class="note">${v.team}</span></td>${cols.map(c=>`<td style="text-align:center;font-family:var(--mono)">${v.s[c]||0}</td>`).join('')}</tr>`).join('')}</table>`},e=>$('#kStats').textContent=e.message)}
+}
+$('#kontoBtn').onclick=()=>$('#kontoPanel').hidden?kontoPanel():($('#kontoPanel').hidden=true);
+function resvBlock(r){if(!API)return'';const v=RESV[r.id];
+  if(!USER)return`<p class="note">Zaloguj się (przycisk „Zaloguj”), żeby zarezerwować działkę dla siebie.</p>`;
+  if(v&&!v.mine)return`<p class="note" style="color:var(--warn)"><b>Zarezerwowana:</b> ${v.holder} (zespół ${v.team}) do ${new Date(v.until).toLocaleDateString('pl')}.</p>`;
+  if(v&&v.mine)return`<p class="note" style="color:var(--ok)"><b>Twoja rezerwacja</b> do ${new Date(v.until).toLocaleDateString('pl')}.</p><div class="btns"><button id="rvExt">Przedłuż o 14 dni</button><button id="rvRel">Zwolnij</button></div>`;
+  return`<div class="btns"><button class="pri" id="rvGo">Rezerwuję na 14 dni</button></div>`}
+function bindResv(r){const go=(extra)=>api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:$('#stat')?.value||undefined,...extra}).then(()=>loadResv().then(()=>openCard(r)),e=>alertBox(e.message));
+  $('#rvGo')&&($('#rvGo').onclick=()=>go({}));$('#rvExt')&&($('#rvExt').onclick=()=>go({}));$('#rvRel')&&($('#rvRel').onclick=()=>go({release:true}))}
+initKonto();
 
 // ---------- CSV ----------
 $('#csv').onclick=()=>{

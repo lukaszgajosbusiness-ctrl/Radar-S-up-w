@@ -69,9 +69,9 @@ async function api(req, env, url) {
     await db.prepare('INSERT INTO invites (code,role,team,created_by,created) VALUES (?,?,?,?,?)').bind(code, role, team, u.id, new Date().toISOString()).run();
     return J({ code, role, team });
   }
-  if (p === '/api/reservations' && m === 'GET') {
+  if (p === '/api/reservations' && (m === 'GET' || m === 'POST')) {
     // rezerwacje widoczne dla wszystkich (żeby nie dublować wizyt); notatki zostają na urządzeniu
-    const ids = (url.searchParams.get('ids') || '').split(',').filter(Boolean).slice(0, 2000);
+    const ids = (Array.isArray(body.ids) ? body.ids : (url.searchParams.get('ids') || '').split(',')).map(String).filter(Boolean).slice(0, 3000);
     const now = Date.now(); const out = {};
     for (let i = 0; i < ids.length; i += 90) {
       const chunk = ids.slice(i, i + 90);
