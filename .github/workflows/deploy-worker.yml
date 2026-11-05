@@ -17,7 +17,12 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           test -n "$CLOUDFLARE_API_TOKEN" || (echo "Brak sekretu CLOUDFLARE_API_TOKEN" && exit 1)
+          ID=$(npx -y wrangler@3 d1 list --json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const a=JSON.parse(s);const x=a.find(d=>d.name==="radar-slupow");console.log(x?x.uuid:"")})')
+          if [ -z "$ID" ]; then npx -y wrangler@3 d1 create radar-slupow; ID=$(npx -y wrangler@3 d1 list --json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const a=JSON.parse(s);console.log(a.find(d=>d.name==="radar-slupow").uuid)})'); fi
+          sed -i "s/__D1_ID__/$ID/" wrangler.toml
+          npx -y wrangler@3 d1 execute radar-slupow --remote --file schema.sql -y
           npx -y wrangler@3 deploy 2>&1 | tee deploy.log
+          printf '%s' "$CLOUDFLARE_ACCOUNT_ID" | npx -y wrangler@3 secret put BOOTSTRAP
           grep -o 'https://[a-z0-9.-]*workers.dev' deploy.log | head -1 > url.txt || true
       - name: Zapisz adres serwera
         run: |

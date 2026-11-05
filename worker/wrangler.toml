@@ -2,3 +2,8 @@ name = "radar-slupow"
 main = "index.js"
 compatibility_date = "2026-10-01"
 workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "radar-slupow"
+database_id = "__D1_ID__"
