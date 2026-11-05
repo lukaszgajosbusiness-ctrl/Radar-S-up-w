@@ -104,9 +104,9 @@ async function runArea(a) {
   const okP = ok.map(r => { const f = r.rm.flat(); return { r, x0: Math.min(...f.map(p => p[0])), x1: Math.max(...f.map(p => p[0])), y0: Math.min(...f.map(p => p[1])), y1: Math.max(...f.map(p => p[1])) } });
   const bpts = [];
   for (const n of nets) { if (!['NN', 'WN', 'gaz'].includes(n.k)) continue; const g = n.m;
-    for (let i = 0; i < g.length - 1; i++) { const S = dist(g[i], g[i + 1]); if (!S) continue; const ux = (g[i + 1][0] - g[i][0]) / S, uy = (g[i + 1][1] - g[i][1]) / S; const s = Math.max(1, Math.round(S / 25));
+    for (let i = 0; i < g.length - 1; i++) { const S = dist(g[i], g[i + 1]); if (!S) continue; const ux = (g[i + 1][0] - g[i][0]) / S, uy = (g[i + 1][1] - g[i][1]) / S; const s = Math.max(1, Math.round(S / 15));
       for (let k = 0; k < s; k++) { const x = g[i][0] + (g[i + 1][0] - g[i][0]) * (k + .5) / s, y = g[i][1] + (g[i + 1][1] - g[i][1]) * (k + .5) / s;
-        for (const o of [-24, -9, 9, 24]) { const q = [x - uy * o, y + ux * o]; const ll = [q[0] / K.kx, q[1] / K.ky]; if (inBB(ll) && okP.some(o2 => q[0] >= o2.x0 && q[0] <= o2.x1 && q[1] >= o2.y0 && q[1] <= o2.y1 && inRings(q, o2.r.rm))) bpts.push({ q, ll, net: n }) } } } }
+        for (const o of [-27, -18, -9, 0, 9, 18, 27]) { const q = [x - uy * o, y + ux * o]; const ll = [q[0] / K.kx, q[1] / K.ky]; if (inBB(ll) && okP.some(o2 => q[0] >= o2.x0 && q[0] <= o2.x1 && q[1] >= o2.y0 && q[1] <= o2.y1 && inRings(q, o2.r.rm))) bpts.push({ q, ll, net: n }) } } } }
   console.log(`   budynki: ${bpts.length} punktów`);
   const found = new Map(); last = Date.now();
   await pool(bpts, 6, async p => { for (const b of found.values()) if (inRings(p.q, b.rm)) return;
