@@ -1,0 +1,50 @@
+[
+ {
+  "slug": "mierzecice",
+  "name": "Mierzęcice",
+  "center": [
+   50.4441,
+   19.12405
+  ],
+  "radius": 2000,
+  "generated": "2026-11-05T15:49:24.034Z",
+  "parcels": 612,
+  "domy": 0
+ },
+ {
+  "slug": "przeczyce",
+  "name": "Przeczyce (gm. Mierzęcice)",
+  "center": [
+   50.43381,
+   19.17286
+  ],
+  "radius": 2000,
+  "generated": "2026-11-05T15:45:33.921Z",
+  "parcels": 800,
+  "domy": 1
+ },
+ {
+  "slug": "siewierz",
+  "name": "Siewierz",
+  "center": [
+   50.4710097,
+   19.2318901
+  ],
+  "radius": 2000,
+  "generated": "2026-11-05T15:55:17.724Z",
+  "parcels": 796,
+  "domy": 1
+ },
+ {
+  "slug": "tuliszow",
+  "name": "Tuliszów (gm. Siewierz)",
+  "center": [
+   50.4336,
+   19.1946
+  ],
+  "radius": 2500,
+  "generated": "2026-11-05T15:39:18.985Z",
+  "parcels": 1073,
+  "domy": 2
+ }
+]
