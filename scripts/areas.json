@@ -1,0 +1,6 @@
+[
+ {"slug":"tuliszow","name":"Tuliszów (gm. Siewierz)","q":"Tuliszów, Siewierz","lat":50.4336,"lon":19.1946,"radius":2500},
+ {"slug":"przeczyce","name":"Przeczyce (gm. Mierzęcice)","q":"Przeczyce, Mierzęcice","radius":2000},
+ {"slug":"mierzecice","name":"Mierzęcice","q":"Mierzęcice, będziński","radius":2000},
+ {"slug":"siewierz","name":"Siewierz","q":"Siewierz, będziński","radius":2000}
+]
