@@ -58,6 +58,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <select id="rad" aria-label="Promień"><option value="800">0,8 km</option><option value="1500" selected>1,5 km</option><option value="2500">2,5 km</option><option value="4000">4 km</option></select>
   <button class="pri" id="go">Szukaj działek</button>
   <button id="goView" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
+  <select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
   <button id="nrBtn">Po numerze</button>
   <button id="csv">CSV</button>
 </header>
@@ -368,6 +369,28 @@ async function enrichMpzp(list){
   },k=>{if(++n%5===0)status(`Sprawdzam plany miejscowe (MPZP)… ${k}/${list.length}`,null)});
   RES.forEach(r=>r.sieci.length&&score(r));render();
 }
+
+
+// ---------- gotowe obszary (przeliczone nocą przez GitHub Actions) ----------
+async function loadIndex(){
+  try{const r=await fetch('data/index.json',{cache:'no-cache'});if(!r.ok)return;const idx=await r.json();if(!idx.length)return;
+    const s=$('#gotowe');s.innerHTML='<option value="">Gotowe obszary…</option>'+idx.map(a=>`<option value="${a.slug}">${a.name} · ${a.parcels} dz.${a.domy?' · '+a.domy+' z domem':''}</option>`).join('');s.hidden=false}catch(e){}
+}
+async function loadArea(slug){
+  if(!slug)return;$('#card').hidden=true;status('Wczytuję gotowy obszar…',.3);
+  try{const d=await (await fetch('data/'+slug+'.json',{cache:'no-cache'})).json();
+    gNet.clearLayers();gPar.clearLayers();gPin.clearLayers();gArea.clearLayers();setK(d.center[0]);AREA=null;
+    gArea.addLayer(L.rectangle([[d.bbox.s,d.bbox.w],[d.bbox.n,d.bbox.e]],{color:'#ffb703',weight:1,fill:false,dashArray:'4 4'}));
+    NETS=d.nets.map(n=>({id:n.id,k:n.k,kind:n.kind,t:{voltage:n.v,operator:n.op},g:n.g,m:n.g.map(M)}));
+    for(const n of NETS)gNet.addLayer(L.polyline(n.g.map(([x,y])=>[y,x]),{color:col(n.k),weight:n.k==='NN'?5:n.k==='WN'?4:n.k==='nN'?1.5:2.5,dashArray:n.kind==='podziemna'?'6 5':null}).bindTooltip(TYPES[n.k].n+(n.t.voltage?' '+(+String(n.t.voltage).split(';')[0]/1000)+' kV':'')));
+    RES=d.parcels;RES.forEach(score);$('#fOk').checked=true;render();
+    map.fitBounds([[d.bbox.s,d.bbox.w],[d.bbox.n,d.bbox.e]]);
+    const dt=new Date(d.generated).toLocaleDateString('pl');
+    status(`${d.name}: ${RES.length} działek z siecią (${RES.filter(r=>r.ok).length} spełnia odległość), ${RES.filter(r=>r.domPrzyLinii).length} z budynkiem przy linii. Dane z ${dt}.`,1);
+    setTimeout(()=>$('#bar i').style.width='0',800);
+  }catch(e){status('Nie udało się wczytać obszaru: '+e.message,0)}
+}
+$('#gotowe').onchange=e=>loadArea(e.target.value);loadIndex();
 
 // ---------- CSV ----------
 $('#csv').onclick=()=>{
