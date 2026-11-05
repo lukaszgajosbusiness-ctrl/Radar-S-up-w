@@ -59,6 +59,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <button class="pri" id="go">Szukaj działek</button>
   <button id="goView" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
   <select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
+  <button id="demoBtn" hidden>Przykładowy lead</button>
   <button id="nrBtn">Po numerze</button>
   <button id="csv">CSV</button>
 </header>
@@ -391,6 +392,27 @@ async function loadArea(slug){
   }catch(e){status('Nie udało się wczytać obszaru: '+e.message,0)}
 }
 $('#gotowe').onchange=e=>loadArea(e.target.value);loadIndex();
+
+
+// ---------- tryb demo: przykładowy lead ----------
+async function demo(){
+  await loadArea('tuliszow');if(!RES.length)return;
+  const best=RES.filter(r=>r.ok&&!r.las).sort((a,b)=>(b.domPrzyLinii-a.domPrzyLinii)||(b.score-a.score))[0];if(!best)return;
+  $('#gotowe').value='tuliszow';map.fitBounds(L.polygon(best.rings.map(rg=>rg.map(([x,y])=>[y,x]))).getBounds(),{maxZoom:18});openCard(best);
+  const main=best.sieci.slice().sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0];
+  $('#card').insertAdjacentHTML('afterbegin',`<div style="background:color-mix(in srgb,var(--acc) 12%,var(--panel));border-radius:8px;padding:10px 12px;margin-bottom:10px">
+   <b>Przykładowy lead</b>
+   <p class="note" style="margin:4px 0">Apka sama znalazła tę działkę: ${TYPES[main.k].n}${main.v?' '+(+String(main.v).split(';')[0]/1000)+' kV':''} przechodzi przez nią na długości ok. ${main.len} m${best.domPrzyLinii?`, a budynek stoi ok. ${best.domOdl} m od linii`:''}.</p>
+   <ol class="note" style="margin:4px 0 0 18px;padding:0">
+    <li>Sprawdź działkę w Geoportalu (przycisk niżej): przebieg sieci i słupy na ortofoto.</li>
+    <li>Ustal przeznaczenie w planie miejscowym (MN/PU = grunt budowlany, wyższa wartość).</li>
+    <li>Porozmawiaj z właścicielem na miejscu, apka nie zbiera danych właścicieli.</li>
+    <li>Przepisz pola z karty do kalkulatora w portalu Votum i dołącz zrzut wyliczenia tutaj.</li>
+    <li>Załóż sprawę przez kreator w portalu Votum i zmień status działki na „umowa”.</li>
+   </ol></div>`);
+}
+$('#demoBtn').onclick=demo;
+fetch('data/tuliszow.json',{method:'HEAD',cache:'no-cache'}).then(r=>{if(r.ok){$('#demoBtn').hidden=false;if(!store.get('demoSeen',false)&&!store.get('last',null)){store.set('demoSeen',true);demo()}}}).catch(()=>{});
 
 // ---------- CSV ----------
 $('#csv').onclick=()=>{
