@@ -129,7 +129,7 @@ async function overpass(bb,tmo=100000){
   const ck='ov:'+[bb.s,bb.w,bb.n,bb.e].map(v=>v.toFixed(3)).join(',');
   try{const c=JSON.parse(localStorage.getItem(ck)||'null');if(c&&Date.now()-c.t<7*864e5){return c.e}}catch(e){}
   // większy obszar z pamięci, który obejmuje ten
-  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k.startsWith('ov:'))continue;const[s,w,n,e]=k.slice(3).split(',').map(Number);if(s<=bb.s&&w<=bb.w&&n>=bb.n&&e>=bb.e){const c=JSON.parse(localStorage.getItem(k));if(c&&Date.now()-c.t<7*864e5)return c.e}}}catch(e){}
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k.startsWith('ov:'))continue;const[s,w,n,e]=k.slice(3).split(',').map(Number);if(s<=bb.s+.0025&&w<=bb.w+.004&&n>=bb.n-.0025&&e>=bb.e-.004){const c=JSON.parse(localStorage.getItem(k));if(c&&Date.now()-c.t<7*864e5)return c.e}}}catch(e){}
   const els=await overpassNet(bb,tmo);try{localStorage.setItem(ck,JSON.stringify({t:Date.now(),e:els}))}catch(e){}
   return els;
 }
