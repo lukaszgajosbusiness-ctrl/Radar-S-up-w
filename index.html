@@ -128,6 +128,8 @@ const status=(t,p)=>{$('#status').textContent=t;if(p!=null)$('#bar i').style.wid
 async function overpass(bb,tmo=100000){
   const ck='ov:'+[bb.s,bb.w,bb.n,bb.e].map(v=>v.toFixed(3)).join(',');
   try{const c=JSON.parse(localStorage.getItem(ck)||'null');if(c&&Date.now()-c.t<7*864e5){return c.e}}catch(e){}
+  // większy obszar z pamięci, który obejmuje ten
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k.startsWith('ov:'))continue;const[s,w,n,e]=k.slice(3).split(',').map(Number);if(s<=bb.s&&w<=bb.w&&n>=bb.n&&e>=bb.e){const c=JSON.parse(localStorage.getItem(k));if(c&&Date.now()-c.t<7*864e5)return c.e}}}catch(e){}
   const els=await overpassNet(bb,tmo);try{localStorage.setItem(ck,JSON.stringify({t:Date.now(),e:els}))}catch(e){}
   return els;
 }
@@ -204,6 +206,7 @@ async function run(bb,label){
   for(const b of found.values()){let cx=0,cy=0;b.rm[0].forEach(p=>{cx+=p[0];cy+=p[1]});b.c=[cx/b.rm[0].length,cy/b.rm[0].length];b.d=dLine(b.c,b.net.m)}
   for(const r of RES){const rm=r.rings.map(rg=>rg.map(M));const bs=[...found.values()].filter(b=>inRings(b.c,rm));if(bs.length){r.domy=Math.max(r.domy,bs.length);const d=Math.min(...bs.map(b=>b.d));if(d<40){r.domPrzyLinii=true;r.domOdl=Math.round(d)}}}
   RES.forEach(score);render();
+  await enrichMpzp(RES.filter(r=>r.ok).sort((a,b)=>b.score-a.score).slice(0,40));
   status(`${label}: ${nets.length} odcinków sieci, ${RES.length} działek przeciętych przez sieć (${RES.filter(r=>r.ok).length} spełnia odległość od granicy).`,1);
   setTimeout(()=>$('#bar i').style.width='0',800);
 }
@@ -213,7 +216,7 @@ const BUD=['MN','MW','PU','U','RM'];
 function score(r){
   if(!r.sieci.length){r.u=store.get('u:'+r.id,{});r.score=0;r.ok=false;r.bud=false;r.prog=5;return}
   const u=store.get('u:'+r.id,{});r.u=u;
-  const grunt=u.grunt||'?';const bud=BUD.includes(grunt)||(grunt==='?'&&r.domy>0);
+  const grunt=(u.grunt&&u.grunt!=='?')?u.grunt:(r.mpzpGrunt||'?');const bud=BUD.includes(grunt)||(grunt==='?'&&r.domy>0);
   const prog=BUD.includes(grunt)?5:(grunt==='?'?5:10);
   r.sieci.forEach(s=>s.ok=s.maxd>=prog);
   const good=r.sieci.filter(s=>s.ok);
@@ -235,7 +238,7 @@ function render(){
     if(i<20){const c=poly.getBounds().getCenter();gPin.addLayer(L.marker(c,{icon:L.divIcon({className:'',html:`<div style="background:#ffb703;color:#14202b;border:2px solid #14324a;border-radius:12px;font:700 12px system-ui;padding:1px 6px;white-space:nowrap">${i+1}</div>`,iconSize:null})}).on('click',()=>openCard(r)))}
     const el=document.createElement('div');el.className='row';el.innerHTML=`<div class="rk">${i+1}</div><div class="nm">${r.num} <span class="note">${r.obr} · ${(r.area/10000).toFixed(2)} ha</span></div><div class="sc">${r.score}</div>
     <div class="tags">${r.sieci.map(s=>`<span class="t ${s.k}" title="${TYPES[s.k].n}">${s.k}${s.v?' '+(+String(s.v).split(';')[0]/1000)+'kV':''} ${s.len} m${s.ok?'':' ✗'}</span>`).join('')}
-    ${r.domPrzyLinii?`<span class="t dom">budynek ${r.domOdl!=null?r.domOdl+' m ':''}od linii</span>`:r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
+    ${r.domPrzyLinii?`<span class="t dom">budynek ${r.domOdl!=null?r.domOdl+' m ':''}od linii</span>`:r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:r.mpzp?`<span class="t f" title="z planu miejscowego">MPZP ${r.mpzp}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
     el.onclick=()=>{map.fitBounds(poly.getBounds(),{maxZoom:18});openCard(r)};frag.appendChild(el);
   });
   $('#list').innerHTML='';$('#list').appendChild(frag);
@@ -253,7 +256,7 @@ function openCard(r){
   <div class="calc"><div class="note">Do przepisania w kalkulatorze Votum (główna sieć):</div>
   <table><tr><td>Kategoria</td><td><b>${main.kind}</b></td></tr>
   <tr><td>Typ infrastruktury</td><td><b>${TN(main.k)}${main.v?' '+(+String(main.v).split(';')[0]/1000)+' kV':''}</b></td></tr>
-  <tr><td>Typ gruntu</td><td><select id="grunt">${['?|nie wiem (sprawdź MPZP)','MN|MN – mieszkaniowa','MW|MW – wielorodzinna','PU|PU – produkcyjno-usługowa','U|U – usługi','RM|RM – zabudowa zagrodowa','R|R – rolna','ZL|ZL – las','Z|zieleń / teren otwarty'].map(o=>{const[v,t]=o.split('|');return`<option value="${v}"${(u.grunt||'?')===v?' selected':''}>${t}</option>`}).join('')}</select></td></tr>
+  <tr><td>Typ gruntu</td><td>${r.mpzp?`<div class="note">Plan miejscowy: <b>${r.mpzp}</b>${r.mpzpGrunt?' → '+r.mpzpGrunt:''}</div>`:r.mpzp===''?'<div class="note">Brak planu w usłudze krajowej – sprawdź uchwałę gminy.</div>':''}<select id="grunt">${['?|nie wiem (sprawdź MPZP)','MN|MN – mieszkaniowa','MW|MW – wielorodzinna','PU|PU – produkcyjno-usługowa','U|U – usługi','RM|RM – zabudowa zagrodowa','R|R – rolna','ZL|ZL – las','Z|zieleń / teren otwarty'].map(o=>{const[v,t]=o.split('|');return`<option value="${v}"${(u.grunt&&u.grunt!=='?'?u.grunt:(r.mpzpGrunt||'?'))===v?' selected':''}>${t}</option>`}).join('')}</select></td></tr>
   <tr><td>Wartość zł/m² (RCN, transakcyjna)</td><td><input id="cena" type="number" inputmode="decimal" placeholder="wpisz ręcznie" value="${u.cena??''}"></td></tr>
   <tr><td>Długość pasa (m)</td><td><b>${main.len} m</b> <span class="note">(${main.reczne?'wpisane ręcznie':'szacunek z OSM'})</span></td></tr>
   <tr><td>Długość wg przeznaczenia</td><td><input id="podzial" placeholder="np. 160 m MN + 14 m R" value="${u.podzial??''}"></td></tr>
@@ -334,11 +337,33 @@ async function checkNumbers(){
     RES.push(r)}
   RES.forEach(r=>r.sieci.length?score(r):(r.score=0,r.ok=false,r.u=store.get('u:'+r.id,{})));
   $('#fOk').checked=false;render();
+  await enrichMpzp(RES);
   status(`Sprawdzono ${RES.length} działek${miss.length?'. Nie znaleziono: '+miss.join(', '):''}. ${osmOk?'Sieci z OpenStreetMap.':'OpenStreetMap nie odpowiada: włączyłem warstwę uzbrojenia terenu (KIUT), sieć wpisz w karcie ręcznie.'}`,1);
   setTimeout(()=>$('#bar i').style.width='0',800);
 }
 $('#nrBtn').onclick=()=>{$('#nrPanel').hidden=false;$('#nrList').value=store.get('nrList','');$('#nrGm').value=store.get('nrGm','');$('#nrList').focus()};
 $('#nrX').onclick=()=>$('#nrPanel').hidden=true;$('#nrGo').onclick=()=>checkNumbers().catch(e=>status('Błąd: '+e.message,0));
+
+
+// ---------- MPZP: symbol przeznaczenia z krajowej integracji planów (WMS GetFeatureInfo, EPSG:2180) ----------
+function to2180(lat,lon){const a=6378137,f=1/298.257222101,e2=2*f-f*f,k0=0.9993,l0=19*Math.PI/180,φ=lat*Math.PI/180,λ=lon*Math.PI/180,ep2=e2/(1-e2),N=a/Math.sqrt(1-e2*Math.sin(φ)**2),T=Math.tan(φ)**2,C=ep2*Math.cos(φ)**2,A=(λ-l0)*Math.cos(φ);
+  const Mx=a*((1-e2/4-3*e2*e2/64-5*e2**3/256)*φ-(3*e2/8+3*e2*e2/32+45*e2**3/1024)*Math.sin(2*φ)+(15*e2*e2/256+45*e2**3/1024)*Math.sin(4*φ)-(35*e2**3/3072)*Math.sin(6*φ));
+  return [k0*(Mx+N*Math.tan(φ)*(A*A/2+(5-T+9*C+4*C*C)*A**4/24+(61-58*T+T*T+600*C-330*ep2)*A**6/720))-5300000,k0*N*(A+(1-T+C)*A**3/6+(5-18*T+T*T+72*C-58*ep2)*A**5/120)+500000]}
+function symbolToGrunt(s){const m=String(s||'').toUpperCase().replace(/^[\d.\s]+/,'').match(/^[A-Z]+/);if(!m)return null;const x=m[0];
+  if(/^(MN|MW|M)/.test(x))return x.startsWith('MW')?'MW':'MN';if(/^(PU|P|UP)/.test(x))return 'PU';if(/^RM/.test(x))return 'RM';if(/^U/.test(x))return 'U';if(/^ZL/.test(x))return 'ZL';if(/^R/.test(x))return 'R';if(/^Z/.test(x))return 'Z';return null}
+async function mpzpAt(lat,lon){const[x,y]=to2180(lat,lon),d=40;
+  const u='https://mapy.geoportal.gov.pl/wss/ext/KrajowaIntegracjaMiejscowychPlanowZagospodarowaniaPrzestrzennego?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=wektor-pow&QUERY_LAYERS=wektor-pow&CRS=EPSG:2180&BBOX='+[x-d,y-d,x+d,y+d].join(',')+'&WIDTH=81&HEIGHT=81&I=40&J=40&INFO_FORMAT=text/html&STYLES=&FORMAT=image/png';
+  const t=await (await fetch(u,{signal:AbortSignal.timeout(20000)})).text();const doc=new DOMParser().parseFromString(t,'text/html');
+  const th=[...doc.querySelectorAll('th')].map(e=>e.textContent.trim()),td=[...doc.querySelectorAll('td')].map(e=>e.textContent.trim());const i=th.indexOf('WR_SYMBOL');
+  if(i<0||!td[i]||td[i]==='Null')return null;return{symbol:td[i],plan:td[th.indexOf('PLAN_ID')]||''}}
+async function enrichMpzp(list){
+  let n=0;await pool(list,6,async r=>{
+    // punkt w środku działki najbliżej sieci: bierzemy środek ciężkości pierwszego pierścienia
+    const rg=r.rings[0];let x=0,y=0;rg.forEach(p=>{x+=p[0];y+=p[1]});x/=rg.length;y/=rg.length;
+    try{const m=await mpzpAt(y,x);r.mpzp=m?m.symbol:'';r.mpzpGrunt=m?symbolToGrunt(m.symbol):null}catch(e){r.mpzp=null}
+  },k=>{if(++n%5===0)status(`Sprawdzam plany miejscowe (MPZP)… ${k}/${list.length}`,null)});
+  RES.forEach(r=>r.sieci.length&&score(r));render();
+}
 
 // ---------- CSV ----------
 $('#csv').onclick=()=>{
