@@ -401,7 +401,7 @@ async function loadArea(slug){
     setTimeout(()=>$('#bar i').style.width='0',800);
   }catch(e){status('Nie udało się wczytać obszaru: '+e.message,0)}
 }
-$('#gotowe').onchange=e=>loadArea(e.target.value);loadIndex();
+$('#gotowe').onchange=e=>{store.set('area',e.target.value);loadArea(e.target.value)};loadIndex().then(()=>{const a=store.get('area','');if(a&&[...$('#gotowe').options].some(o=>o.value===a)){$('#gotowe').value=a;loadArea(a)}});
 
 
 // ---------- tryb demo: przykładowy lead ----------
@@ -422,7 +422,7 @@ async function demo(){
    </ol></div>`);
 }
 $('#demoBtn').onclick=demo;
-fetch('data/tuliszow.json',{method:'HEAD',cache:'no-cache'}).then(r=>{if(r.ok){$('#demoBtn').hidden=false;if(!store.get('demoSeen',false)&&!store.get('last',null)){store.set('demoSeen',true);demo()}}}).catch(()=>{});
+fetch('data/tuliszow.json',{method:'HEAD',cache:'no-cache'}).then(r=>{if(r.ok){$('#demoBtn').hidden=false;if(!store.get('demoSeen',false)&&!store.get('last',null)&&!store.get('area','')){store.set('demoSeen',true);demo()}}}).catch(()=>{});
 
 
 // ---------- konto i rezerwacje (serwer Cloudflare) ----------
