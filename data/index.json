@@ -1,5 +1,17 @@
 [
  {
+  "slug": "boguchwalowice",
+  "name": "Boguchwałowice (gm. Mierzęcice)",
+  "center": [
+   50.45388,
+   19.17427
+  ],
+  "radius": 2000,
+  "generated": "2026-11-06T09:42:47.827Z",
+  "parcels": 325,
+  "domy": 0
+ },
+ {
   "slug": "mierzecice",
   "name": "Mierzęcice",
   "center": [
@@ -7,7 +19,7 @@
    19.12405
   ],
   "radius": 2000,
-  "generated": "2026-11-05T16:25:48.733Z",
+  "generated": "2026-11-06T08:34:02.486Z",
   "parcels": 612,
   "domy": 0
  },
@@ -19,9 +31,21 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-05T16:20:47.608Z",
-  "parcels": 800,
+  "generated": "2026-11-06T08:28:08.081Z",
+  "parcels": 799,
   "domy": 3
+ },
+ {
+  "slug": "saczow",
+  "name": "Sączów (gm. Bobrowniki)",
+  "center": [
+   50.4388612,
+   19.0360868
+  ],
+  "radius": 2000,
+  "generated": "2026-11-06T09:34:56.930Z",
+  "parcels": 576,
+  "domy": 0
  },
  {
   "slug": "siewierz",
@@ -31,9 +55,21 @@
    19.2318901
   ],
   "radius": 2000,
-  "generated": "2026-11-05T16:33:39.596Z",
+  "generated": "2026-11-06T08:48:09.682Z",
   "parcels": 796,
   "domy": 1
+ },
+ {
+  "slug": "trzebieslawice",
+  "name": "Trzebiesławice (Dąbrowa Górnicza)",
+  "center": [
+   50.4301341,
+   19.2503189
+  ],
+  "radius": 2000,
+  "generated": "2026-11-06T09:28:51.826Z",
+  "parcels": 383,
+  "domy": 0
  },
  {
   "slug": "tuliszow",
@@ -43,8 +79,20 @@
    19.1946
   ],
   "radius": 2500,
-  "generated": "2026-11-05T16:13:52.969Z",
+  "generated": "2026-11-06T08:18:27.009Z",
   "parcels": 1073,
   "domy": 5
+ },
+ {
+  "slug": "wojkowice-koscielne",
+  "name": "Wojkowice Kościelne (gm. Siewierz)",
+  "center": [
+   50.4118623,
+   19.204206
+  ],
+  "radius": 2000,
+  "generated": "2026-11-06T09:04:11.346Z",
+  "parcels": 856,
+  "domy": 10
  }
 ]
