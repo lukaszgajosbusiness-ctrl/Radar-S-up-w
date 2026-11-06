@@ -26,6 +26,11 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 #map{flex:1.3;min-height:300px}
 #side{flex:1;display:flex;flex-direction:column;min-width:0;border-left:1px solid var(--line);background:var(--panel)}
 @media (max-width:800px){#main{flex-direction:column}#map{flex:none;height:48vh}#side{border-left:0;border-top:1px solid var(--line)}}
+@media (max-width:800px){header{gap:6px;padding-block:6px}header h1{font-size:15px;width:100%}header input{flex:1;min-width:0}header button,header select{padding:9px 10px;font-size:14px}header #gotowe{flex:1 1 100%}#card .btns button,#card select,#card input{min-height:42px;font-size:15px}.row{padding:12px}#filters{font-size:14px}#filters label{padding:4px 0}}
+ #card{box-sizing:border-box;width:100%}#card table{table-layout:fixed}#card td{overflow-wrap:anywhere}#card input,#card select,#card textarea{box-sizing:border-box;max-width:100%}
+#moreBtn{display:none}
+@media (max-width:800px){#moreBtn{display:inline-block}header.short .extra{display:none}#map{height:42vh}}
+.locbtn{background:#fff;border:2px solid rgba(0,0,0,.2);border-radius:4px;width:34px;height:34px;font-size:18px;line-height:30px;text-align:center;cursor:pointer}
 #status{padding:8px 12px;font-size:13px;color:var(--mute);border-bottom:1px solid var(--line)}
 #bar{height:3px;background:var(--line)}#bar i{display:block;height:3px;width:0;background:#ffb703;transition:width .2s}
 #filters{display:flex;flex-wrap:wrap;gap:6px 12px;padding:8px 12px;border-bottom:1px solid var(--line);font-size:13px}
@@ -52,17 +57,18 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 </style>
 </head>
 <body>
-<header>
+<header class="short">
   <h1>Radar Słupów</h1>
   <input id="q" value="Tuliszów, Siewierz" aria-label="Miejscowość lub gmina">
   <select id="rad" aria-label="Promień"><option value="800">0,8 km</option><option value="1500" selected>1,5 km</option><option value="2500">2,5 km</option><option value="4000">4 km</option></select>
   <button class="pri" id="go">Szukaj działek</button>
-  <button id="goView" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
+  <button id="goView" class="extra" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
   <select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
-  <button id="demoBtn" hidden>Przykładowy lead</button>
-  <button id="nrBtn">Po numerze</button>
-  <button id="csv">CSV</button>
+  <button id="demoBtn" class="extra" hidden>Przykładowy lead</button>
+  <button id="nrBtn" class="extra">Po numerze</button>
+  <button id="csv" class="extra">CSV</button>
   <button id="kontoBtn">Konto</button>
+  <button id="moreBtn" aria-label="Więcej opcji">⋯ Więcej</button>
 </header>
 <div id="main">
   <div id="map"></div>
@@ -75,6 +81,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
       <label><input type="checkbox" id="fLas" checked> ukryj lasy</label>
       <label><input type="checkbox" id="fDom"> tylko z budynkiem przy linii</label>
       <label><input type="checkbox" id="fMoje"> tylko moje (status/notatka)</label>
+      <label><input type="checkbox" id="fNear"> sortuj: najbliżej mnie</label>
     </div>
     <div id="list"></div>
   </div>
@@ -236,7 +243,7 @@ function score(r){
 }
 function render(){
   const useNn=$('#fNn').checked,onlyOk=$('#fOk').checked,noLas=$('#fLas').checked,onlyDom=$('#fDom').checked;
-  const rows=RES.filter(r=>(!onlyOk||r.ok)&&(!noLas||!r.las)&&(!onlyDom||r.domPrzyLinii)&&(!$('#fMoje').checked||r.u?.stat||r.u?.not)).sort((a,b)=>b.score-a.score);
+  const rows=RES.filter(r=>(!onlyOk||r.ok)&&(!noLas||!r.las)&&(!onlyDom||r.domPrzyLinii)&&(!$('#fMoje').checked||r.u?.stat||r.u?.not)).sort(ME&&$('#fNear').checked?((a,b)=>dMe(a)-dMe(b)):((a,b)=>b.score-a.score));
   gPar.clearLayers();gPin.clearLayers();
   const frag=document.createDocumentFragment();
   rows.forEach((r,i)=>{
@@ -281,7 +288,7 @@ function openCard(r){
   <tr><td>Zrzut z kalkulatora</td><td><input type="file" id="img" accept="image/*">${u.img?`<img src="${u.img}" style="margin-top:6px;border-radius:6px">`:''}</td></tr></table>
   ${r.las?'<p class="note" style="color:var(--warn)">Środek działki leży w lesie wg OSM. Sprawdź, zanim zaproponujesz.</p>':''}
   ${r.domPrzyLinii?`<p class="note" style="color:var(--ok)">Na działce stoi budynek ${r.domOdl!=null?'ok. '+r.domOdl+' m':'bliżej niż 40 m'} od osi linii (baza budynków GUGiK).</p>`:''}
-  <div class="btns"><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="zap" class="pri">Zapisz</button></div>
+  <div class="btns"><a href="${navUrl(r)}" target="_blank" rel="noopener"><button class="pri">Nawiguj do działki</button></a><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="zap" class="pri">Zapisz</button></div>
   <p class="note">Notatki i zrzuty zapisują się tylko na tym urządzeniu.</p>`;
   $('#x').onclick=()=>c.hidden=true;bindResv(r);
   const save=()=>{const v={grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(USER&&RESV[r.id]?.mine&&v.stat!==(u.stat||''))api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:v.stat}).catch(()=>{});if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
@@ -491,6 +498,23 @@ async function raport(){
   }catch(e){alertBox(e.message)}
 }
 
+
+// ---------- teren: nawigacja i lokalizacja ----------
+function centroid(r){const rg=r.rings[0];let x=0,y=0;rg.forEach(p=>{x+=p[0];y+=p[1]});return[y/rg.length,x/rg.length]}
+function navUrl(r){const[lat,lon]=centroid(r);return`https://www.google.com/maps/dir/?api=1&destination=${lat.toFixed(6)},${lon.toFixed(6)}`}
+let ME=null,meMark=null;
+function dMe(r){if(!ME)return 0;const[lat,lon]=centroid(r);return Math.hypot((lat-ME[0])*110540,(lon-ME[1])*111320*Math.cos(ME[0]*Math.PI/180))}
+function locate(after){if(!navigator.geolocation)return status('Ten telefon nie udostępnia lokalizacji.',0);
+  status('Ustalam Twoją lokalizację…',.2);
+  navigator.geolocation.getCurrentPosition(p=>{ME=[p.coords.latitude,p.coords.longitude];
+    if(meMark)map.removeLayer(meMark);meMark=L.circleMarker(ME,{radius:8,color:'#fff',weight:3,fillColor:'#1c6fd1',fillOpacity:1}).addTo(map).bindTooltip('Tu jesteś');
+    map.setView(ME,Math.max(map.getZoom(),16));status('Lokalizacja ustalona.',1);setTimeout(()=>$('#bar i').style.width='0',600);after&&after()},
+    e=>status('Nie udało się ustalić lokalizacji: '+(e.code===1?'brak zgody w przeglądarce.':e.message),0),{enableHighAccuracy:true,timeout:15000})}
+const LocCtl=L.Control.extend({options:{position:'topleft'},onAdd(){const b=L.DomUtil.create('div','locbtn');b.title='Gdzie jestem';b.textContent='◎';L.DomEvent.on(b,'click',e=>{L.DomEvent.stop(e);locate()});return b}});
+map.addControl(new LocCtl());
+$('#fNear').onchange=()=>{if($('#fNear').checked&&!ME)locate(render);else render()};
+
+$('#moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('short');setTimeout(()=>map.invalidateSize(),50)};
 // ---------- CSV ----------
 $('#csv').onclick=()=>{
   if(!RES.length)return status('Najpierw wyszukaj działki.');
