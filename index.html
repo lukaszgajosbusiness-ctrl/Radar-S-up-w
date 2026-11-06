@@ -442,10 +442,10 @@ function kontoPanel(){const k=$('#kontoPanel');k.hidden=false;
   k.innerHTML=`<b>${USER.name}</b> <span class="note">· ${USER.role} · zespół ${USER.team}</span>
    <div class="btns"><button id="kOut">Wyloguj</button><button id="kX">Zamknij</button></div>
    ${boss?`<hr style="border:0;border-top:1px solid var(--line)"><b>Zaproś handlowca</b><div class="btns">${USER.role==='admin'?'<select id="iRole"><option value="handlowiec">handlowiec</option><option value="kierownik">kierownik</option></select><input id="iTeam" placeholder="zespół" value="'+USER.team+'" style="width:120px">':''}<button class="pri" id="kInv">Utwórz kod</button></div><p id="kCode" class="note"></p>
-   <b>Wyniki zespołu (30 dni)</b><div id="kStats" class="note">Wczytuję…</div>`:''}`;
+   <b>Wyniki zespołu (30 dni)</b><div id="kStats" class="note">Wczytuję…</div><div class="btns"><button id="kMap">Pokaż rezerwacje zespołu na mapie</button><button id="kRap">Raport pilotażu (druk / PDF)</button></div>`:''}`;
   $('#kX').onclick=()=>k.hidden=true;
   $('#kOut').onclick=()=>{api('/api/logout',{}).catch(()=>{});store.set('token','');USER=null;RESV={};kontoLabel();render();k.hidden=true};
-  if(boss){$('#kInv').onclick=()=>api('/api/invites',{role:$('#iRole')?.value,team:$('#iTeam')?.value}).then(j=>$('#kCode').innerHTML=`Kod: <b style="font:600 16px var(--mono)">${j.code}</b> (${j.role}, zespół ${j.team}). Przekaż go jednej osobie, działa raz.`,e=>$('#kCode').textContent=e.message);
+  if(boss){$('#kMap').onclick=teamMap;$('#kRap').onclick=raport;$('#kInv').onclick=()=>api('/api/invites',{role:$('#iRole')?.value,team:$('#iTeam')?.value}).then(j=>$('#kCode').innerHTML=`Kod: <b style="font:600 16px var(--mono)">${j.code}</b> (${j.role}, zespół ${j.team}). Przekaż go jednej osobie, działa raz.`,e=>$('#kCode').textContent=e.message);
     api('/api/stats').then(j=>{const by={};j.users.forEach(u=>by[u.name]={team:u.team,s:{}});j.stats.forEach(s=>{(by[s.name]??={team:s.team,s:{}}).s[s.status]=s.n});
       const cols=['do sprawdzenia','kontakt z właścicielem','umowa'];
       $('#kStats').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><tr><th style="text-align:left">Osoba</th>${cols.map(c=>`<th>${c}</th>`).join('')}</tr>${Object.entries(by).map(([n,v])=>`<tr><td>${n} <span class="note">${v.team}</span></td>${cols.map(c=>`<td style="text-align:center;font-family:var(--mono)">${v.s[c]||0}</td>`).join('')}</tr>`).join('')}</table>`},e=>$('#kStats').textContent=e.message)}
@@ -459,6 +459,37 @@ function resvBlock(r){if(!API)return'';const v=RESV[r.id];
 function bindResv(r){const go=(extra)=>api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:$('#stat')?.value||undefined,...extra}).then(()=>loadResv().then(()=>openCard(r)),e=>alertBox(e.message));
   $('#rvGo')&&($('#rvGo').onclick=()=>go({}));$('#rvExt')&&($('#rvExt').onclick=()=>go({}));$('#rvRel')&&($('#rvRel').onclick=()=>go({release:true}))}
 initKonto();
+
+
+// ---------- kierownik: mapa zespołu i raport ----------
+const STCOL={'do sprawdzenia':'#d4a20d','sprawdzona – pasuje':'#1c6fd1','kontakt z właścicielem':'#e0561b','umowa':'#1f8a4c','odrzucona':'#7d8a96'};
+const gTeam=L.layerGroup().addTo(map);
+async function teamMap(){
+  $('#kontoPanel').hidden=true;gTeam.clearLayers();status('Wczytuję rezerwacje zespołu…',.3);
+  try{const rs=(await api('/api/team-reservations')).reservations;if(!rs.length)return status('Zespół nie ma jeszcze żadnych rezerwacji.',0);
+    const bounds=[];let i=0;
+    await pool(rs.slice(0,300),6,async r=>{let rings=RES.find(x=>x.id===r.parcel_id)?.rings;
+      if(!rings){const t=(await (await fetch('https://uldk.gugik.gov.pl/?request=GetParcelById&id='+encodeURIComponent(r.parcel_id)+'&result=geom_wkt&srid=4326')).text()).trim().split('\n');if(t[0]!=='0')return;rings=wktRings(t[1])}
+      const pl=L.polygon(rings.map(rg=>rg.map(([x,y])=>[y,x])),{color:STCOL[r.status]||'#888',weight:2.5,fillOpacity:.35}).bindTooltip(`${r.label||r.parcel_id}<br>${r.name} · ${r.status||'rezerwacja'}`);gTeam.addLayer(pl);bounds.push(pl.getBounds())},
+      ()=>{status(`Wczytuję rezerwacje zespołu… ${++i}/${Math.min(rs.length,300)}`,.3+.6*i/Math.min(rs.length,300))});
+    if(bounds.length){let b=bounds[0];bounds.forEach(x=>b=b.extend(x));map.fitBounds(b,{maxZoom:16})}
+    status(`Rezerwacje zespołu: ${rs.length}. Kolory: żółty – do sprawdzenia, niebieski – pasuje, pomarańczowy – kontakt z właścicielem, zielony – umowa, szary – odrzucona.`,1);setTimeout(()=>$('#bar i').style.width='0',800);
+  }catch(e){status('Błąd: '+e.message,0)}
+}
+async function raport(){
+  try{const [st,rv]=await Promise.all([api('/api/stats?days=30'),api('/api/team-reservations')]);
+    const cols=['do sprawdzenia','sprawdzona – pasuje','kontakt z właścicielem','umowa','odrzucona'];
+    const by={};st.users.forEach(u=>by[u.name]={team:u.team,s:{}});st.stats.forEach(s=>{(by[s.name]??={team:s.team,s:{}}).s[s.status]=s.n});
+    const tot=c=>Object.values(by).reduce((a,v)=>a+(v.s[c]||0),0);
+    const w=window.open('','_blank');if(!w)return alertBox('Przeglądarka zablokowała nowe okno – zezwól na wyskakujące okna.');
+    w.document.write(`<!doctype html><meta charset="utf-8"><title>Raport pilotażu – Radar Słupów</title><style>body{font:14px/1.45 system-ui,sans-serif;color:#14202b;max-width:900px;margin:24px auto;padding:0 16px}h1{font-size:22px;margin:0}table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border-bottom:1px solid #d9e0e6;padding:6px;text-align:left}td.n,th.n{text-align:center;font-variant-numeric:tabular-nums}.k{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.k div{border:1px solid #d9e0e6;border-radius:8px;padding:8px 12px}.k b{display:block;font-size:22px}.note{color:#5d6b78;font-size:12px}@media print{button{display:none}}</style>
+     <h1>Raport pilotażu – Radar Słupów</h1><p class="note">Okres: ostatnie 30 dni · wygenerowano ${new Date().toLocaleString('pl')} · zespół: ${USER.role==='admin'?'wszystkie':USER.team}</p>
+     <div class="k"><div><b>${rv.reservations.length}</b>aktywnych rezerwacji</div><div><b>${tot('kontakt z właścicielem')}</b>kontaktów z właścicielem</div><div><b>${tot('umowa')}</b>umów</div><div><b>${Object.keys(by).length}</b>osób w pilotażu</div></div>
+     <h2 style="font-size:16px">Wyniki według osób</h2><table><tr><th>Osoba</th><th>Zespół</th>${cols.map(c=>`<th class="n">${c}</th>`).join('')}</tr>${Object.entries(by).map(([n,v])=>`<tr><td>${n}</td><td>${v.team}</td>${cols.map(c=>`<td class="n">${v.s[c]||0}</td>`).join('')}</tr>`).join('')}</table>
+     <h2 style="font-size:16px">Działki w toku</h2><table><tr><th>Działka</th><th>Osoba</th><th>Status</th><th>Aktualizacja</th></tr>${rv.reservations.map(r=>`<tr><td>${r.label||r.parcel_id}<div class="note">${r.parcel_id}</div></td><td>${r.name}</td><td>${r.status||''}</td><td>${new Date(r.updated).toLocaleDateString('pl')}</td></tr>`).join('')}</table>
+     <p class="note">Źródła danych o działkach i sieciach: OpenStreetMap, ULDK GUGiK (dane publiczne). Raport nie zawiera danych właścicieli.</p><button onclick="print()">Drukuj / zapisz PDF</button>`);w.document.close();
+  }catch(e){alertBox(e.message)}
+}
 
 // ---------- CSV ----------
 $('#csv').onclick=()=>{

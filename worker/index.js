@@ -87,9 +87,14 @@ async function api(req, env, url) {
     if (body.release) { await db.prepare('DELETE FROM reservations WHERE parcel_id=? AND (user_id=? OR ?)').bind(pid, u.id, u.role !== 'handlowiec' ? 1 : 0).run(); return J({ ok: true, released: true }) }
     const status = STATUSES.includes(body.status) ? body.status : (cur?.status || 'do sprawdzenia');
     const days = Math.min(30, Math.max(1, +body.days || 14)); const until = status === 'umowa' ? Date.now() + 3650 * 864e5 : Date.now() + days * 864e5;
-    await db.prepare('INSERT INTO reservations (parcel_id,user_id,label,until,status,updated) VALUES (?,?,?,?,?,?) ON CONFLICT(parcel_id) DO UPDATE SET user_id=excluded.user_id,label=excluded.label,until=excluded.until,status=excluded.status,updated=excluded.updated').bind(pid, u.id, String(body.label || '').slice(0, 120), until, status, Date.now()).run();
+    await db.prepare('INSERT INTO reservations (parcel_id,user_id,label,until,status,updated) VALUES (?,?,?,?,?,?) ON CONFLICT(parcel_id) DO UPDATE SET user_id=excluded.user_id,label=COALESCE(NULLIF(excluded.label,\'\'),reservations.label),until=excluded.until,status=excluded.status,updated=excluded.updated').bind(pid, u.id, String(body.label || '').slice(0, 120), until, status, Date.now()).run();
     if (!cur || cur.status !== status) await db.prepare('INSERT INTO events (user_id,parcel_id,status,at) VALUES (?,?,?,?)').bind(u.id, pid, status, Date.now()).run();
     return J({ ok: true, until, status });
+  }
+  if (p === '/api/team-reservations') {
+    if (!['admin', 'kierownik'].includes(u.role)) return J({ error: 'Tylko dla kierownika.' }, 403);
+    const rs = await db.prepare(`SELECT r.parcel_id,r.label,r.until,r.status,r.updated,u.name,u.team FROM reservations r JOIN users u ON u.id=r.user_id WHERE r.until>? ${u.role === 'kierownik' ? 'AND u.team=?' : ''} ORDER BY r.updated DESC LIMIT 3000`).bind(...(u.role === 'kierownik' ? [Date.now(), u.team] : [Date.now()])).all();
+    return J({ reservations: rs.results });
   }
   if (p === '/api/stats') {
     if (!['admin', 'kierownik'].includes(u.role)) return J({ error: 'Tylko dla kierownika.' }, 403);
