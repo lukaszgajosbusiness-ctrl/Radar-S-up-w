@@ -402,7 +402,7 @@ async function loadIndex(){
     const s=$('#gotowe');s.innerHTML='<option value="">Gotowe obszary…</option>'+idx.map(a=>`<option value="${a.slug}">${a.name} · ${a.parcels} dz.${a.domy?' · '+a.domy+' z domem':''}</option>`).join('');s.hidden=false}catch(e){}
 }
 async function loadArea(slug){
-  if(!slug)return;$('#card').hidden=true;status('Wczytuję gotowy obszar…',.3);
+  if(!slug)return;store.set('area',slug);$('#card').hidden=true;status('Wczytuję gotowy obszar…',.3);
   try{const d=await (await fetch('data/'+slug+'.json',{cache:'no-cache'})).json();
     gNet.clearLayers();gPar.clearLayers();gPin.clearLayers();gArea.clearLayers();setK(d.center[0]);AREA=null;
     gArea.addLayer(L.rectangle([[d.bbox.s,d.bbox.w],[d.bbox.n,d.bbox.e]],{color:'#ffb703',weight:1,fill:false,dashArray:'4 4'}));
