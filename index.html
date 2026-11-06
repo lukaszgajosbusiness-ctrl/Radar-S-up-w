@@ -460,11 +460,15 @@ function kontoPanel(){const k=$('#kontoPanel');k.hidden=false;
 $('#kontoBtn').onclick=()=>$('#kontoPanel').hidden?kontoPanel():($('#kontoPanel').hidden=true);
 function resvBlock(r){if(!API)return'';const v=RESV[r.id];
   if(!USER)return`<p class="note">Zaloguj się (przycisk „Zaloguj”), żeby zarezerwować działkę dla siebie.</p>`;
-  if(v&&!v.mine)return`<p class="note" style="color:var(--warn)"><b>Zarezerwowana:</b> ${v.holder} (zespół ${v.team}) do ${new Date(v.until).toLocaleDateString('pl')}.</p>`;
+  if(v&&!v.mine)return`<p class="note" style="color:var(--warn)"><b>Zarezerwowana:</b> ${v.holder} (zespół ${v.team}) do ${new Date(v.until).toLocaleDateString('pl')}.</p>`+assignBlock();
   if(v&&v.mine)return`<p class="note" style="color:var(--ok)"><b>Twoja rezerwacja</b> do ${new Date(v.until).toLocaleDateString('pl')}.</p><div class="btns"><button id="rvExt">Przedłuż o 14 dni</button><button id="rvRel">Zwolnij</button></div>`;
-  return`<div class="btns"><button class="pri" id="rvGo">Rezerwuję na 14 dni</button></div>`}
+  return`<div class="btns"><button class="pri" id="rvGo">Rezerwuję na 14 dni</button></div>`+assignBlock()}
+let TEAM=null;
+function assignBlock(){if(!USER||!['admin','kierownik'].includes(USER.role))return'';
+  if(!TEAM){api('/api/team-users').then(j=>{TEAM=j.users;const s=$('#asSel');if(s)s.innerHTML=TEAM.map(u=>`<option value="${u.id}">${u.name} (${u.team})</option>`).join('')}).catch(()=>{})}
+  return`<div class="btns"><select id="asSel">${(TEAM||[]).map(u=>`<option value="${u.id}">${u.name} (${u.team})</option>`).join('')}</select><button id="asGo">Przydziel na 14 dni</button></div>`}
 function bindResv(r){const go=(extra)=>api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:$('#stat')?.value||undefined,...extra}).then(()=>loadResv().then(()=>openCard(r)),e=>alertBox(e.message));
-  $('#rvGo')&&($('#rvGo').onclick=()=>go({}));$('#rvExt')&&($('#rvExt').onclick=()=>go({}));$('#rvRel')&&($('#rvRel').onclick=()=>go({release:true}))}
+  $('#rvGo')&&($('#rvGo').onclick=()=>go({}));$('#asGo')&&($('#asGo').onclick=()=>go({for_user:+$('#asSel').value}));$('#rvExt')&&($('#rvExt').onclick=()=>go({}));$('#rvRel')&&($('#rvRel').onclick=()=>go({release:true}))}
 initKonto();
 
 
