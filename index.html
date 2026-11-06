@@ -267,7 +267,7 @@ function openCard(r){
   const u=store.get('u:'+r.id,{});const good=r.sieci.filter(s=>s.ok);const main=(good[0]?good:r.sieci).slice().sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w||b.len-a.len)[0]||{k:null,kind:'? (wpisz niżej)',len:0};const TN=k=>k?TYPES[k].n:'brak danych – wpisz niżej';
   const geo=`https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${encodeURIComponent(r.id)}`;
   const c=$('#card');c.hidden=false;
-  c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><h2>Działka ${r.num}</h2><div class="note">${r.obr}, gm. ${r.gm} · ${r.area.toLocaleString('pl')} m² · <span style="font-family:var(--mono)">${r.id}</span></div></div><button id="x" aria-label="Zamknij">✕</button></div>
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><h2>Działka ${r.num}</h2><div id="addr" class="note">📍 szukam najbliższego adresu…</div><div class="note">${r.obr}, gm. ${r.gm} · ${r.area.toLocaleString('pl')} m² · <span style="font-family:var(--mono)">${r.id}</span></div></div><button id="x" aria-label="Zamknij">✕</button></div>
   <div class="calc"><div class="note">Do przepisania w kalkulatorze Votum (główna sieć):</div>
   <table><tr><td>Kategoria</td><td><b>${main.kind}</b></td></tr>
   <tr><td>Typ infrastruktury</td><td><b>${TN(main.k)}${main.v?' '+(+String(main.v).split(';')[0]/1000)+' kV':''}</b></td></tr>
@@ -290,7 +290,7 @@ function openCard(r){
   ${r.domPrzyLinii?`<p class="note" style="color:var(--ok)">Na działce stoi budynek ${r.domOdl!=null?'ok. '+r.domOdl+' m':'bliżej niż 40 m'} od osi linii (baza budynków GUGiK).</p>`:''}
   <div class="btns"><a href="${navUrl(r)}" target="_blank" rel="noopener"><button class="pri">Nawiguj do działki</button></a><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="zap" class="pri">Zapisz</button></div>
   <p class="note">Notatki i zrzuty zapisują się tylko na tym urządzeniu.</p>`;
-  $('#x').onclick=()=>c.hidden=true;bindResv(r);
+  $('#x').onclick=()=>c.hidden=true;fillAddr(r);bindResv(r);
   const save=()=>{const v={grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(USER&&RESV[r.id]?.mine&&v.stat!==(u.stat||''))api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:v.stat}).catch(()=>{});if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
   $('#zap').onclick=()=>{save();$('#zap').textContent='Zapisano'};
   ['#grunt','#stat'].forEach(s=>$(s).onchange=()=>{save();openCard(r)});
@@ -515,12 +515,19 @@ map.addControl(new LocCtl());
 $('#fNear').onchange=()=>{if($('#fNear').checked&&!ME)locate(render);else render()};
 
 $('#moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('short');setTimeout(()=>map.invalidateSize(),50)};
+
+// ---------- najbliższy adres (OpenStreetMap / Nominatim, 1 zapytanie na kartę, z pamięcią) ----------
+async function fillAddr(r){const el=$('#addr');if(!el)return;const k='adr:'+r.id;let a=store.get(k,null);
+  if(!a){try{const[lat,lon]=centroid(r);const j=await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=${lat}&lon=${lon}`,{headers:{'Accept-Language':'pl'}})).json();
+    const ad=j.address||{};a=[[ad.road,ad.house_number].filter(Boolean).join(' '),ad.village||ad.town||ad.city||ad.hamlet].filter(Boolean).join(', ')||'brak adresu w OSM';store.set(k,a)}catch(e){a=null}}
+  if($('#addr')===el)el.textContent=a?'📍 Najbliższy adres (OSM, orientacyjnie): '+a:'📍 Adres niedostępny – użyj nawigacji do działki.'}
+
 // ---------- CSV ----------
 $('#csv').onclick=()=>{
   if(!RES.length)return status('Najpierw wyszukaj działki.');
-  const h=['ranking','punkty','identyfikator','numer','obreb','gmina','pow_m2','sieci','glowna_kategoria','glowny_typ','dlugosc_m','max_od_granicy_m','spelnia','slupy_osm','budynki','dom_przy_linii','las_osm','typ_gruntu','cena_zl_m2','status','notatka','geoportal'];
+  const h=['ranking','punkty','identyfikator','numer','obreb','gmina','pow_m2','sieci','glowna_kategoria','glowny_typ','dlugosc_m','max_od_granicy_m','spelnia','slupy_osm','budynki','dom_przy_linii','las_osm','typ_gruntu','cena_zl_m2','status','notatka','adres_osm','geoportal'];
   const rows=RES.slice().sort((a,b)=>b.score-a.score).map((r,i)=>{const m=r.sieci.slice().sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0]||{kind:'',k:null,len:'',maxd:''};const u=store.get('u:'+r.id,{});
-    return[i+1,r.score,r.id,r.num,r.obr,r.gm,r.area,r.sieci.map(s=>`${s.k} ${s.len}m`).join(' + '),m.kind,m.k?TYPES[m.k].n:'',m.len,m.maxd,r.ok?'tak':'nie',r.slupy?'tak':'',r.domy,r.domPrzyLinii?'tak':'',r.las?'tak':'',u.grunt||'',u.cena||'',u.stat||'',(u.not||'').replace(/\n/g,' '),`https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${r.id}`]});
+    return[i+1,r.score,r.id,r.num,r.obr,r.gm,r.area,r.sieci.map(s=>`${s.k} ${s.len}m`).join(' + '),m.kind,m.k?TYPES[m.k].n:'',m.len,m.maxd,r.ok?'tak':'nie',r.slupy?'tak':'',r.domy,r.domPrzyLinii?'tak':'',r.las?'tak':'',u.grunt||'',u.cena||'',u.stat||'',(u.not||'').replace(/\n/g,' '),store.get('adr:'+r.id,''),`https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${r.id}`]});
   const csv='﻿'+[h,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`radar_${(AREA?.label||'obszar').replace(/\W+/g,'_')}.csv`;a.click();
 };
