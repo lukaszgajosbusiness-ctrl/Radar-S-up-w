@@ -68,6 +68,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <button id="nrBtn" class="extra">Po numerze</button>
   <button id="csv" class="extra">CSV</button>
   <button id="kontoBtn">Konto</button>
+  <button id="helpBtn" aria-label="Instrukcja">?</button>
   <button id="moreBtn" aria-label="Więcej opcji">⋯ Więcej</button>
 </header>
 <div id="main">
@@ -94,6 +95,19 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <div class="btns"><button class="pri" id="nrGo">Sprawdź działki</button><button id="nrX">Zamknij</button></div>
 </div>
 <div id="kontoPanel" hidden style="position:fixed;z-index:1100;inset:70px 12px auto auto;width:min(420px,calc(100% - 24px));max-height:80vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--acc);border-radius:8px;padding:12px;box-shadow:0 6px 24px rgba(0,0,0,.25)"></div>
+<div id="helpPanel" hidden style="position:fixed;z-index:1200;inset:60px 12px auto auto;width:min(480px,calc(100% - 24px));max-height:82vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--acc);border-radius:8px;padding:14px 16px;box-shadow:0 6px 24px rgba(0,0,0,.25);font-size:14px">
+ <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:16px">Jak korzystać z Radaru</b><button id="helpX" aria-label="Zamknij">✕</button></div>
+ <ol style="padding-left:18px;margin:10px 0">
+  <li><b>Wybierz obszar</b> z listy „Gotowe obszary” (wczytuje się od razu) albo wpisz miejscowość i kliknij „Szukaj działek” (kilka minut). Pojedyncze działki sprawdzisz przyciskiem „Po numerze”.</li>
+  <li><b>Lista jest ułożona od najlepszych.</b> Punkty rosną za linie NN i WN, dłuższy odcinek sieci, kilka sieci na jednej działce, grunt budowlany i budynek blisko linii.</li>
+  <li><b>Kolory sieci:</b> <span class="t NN">NN</span> 220–400 kV, <span class="t WN">WN</span> 110 kV, <span class="t SN">SN</span> 15 kV, <span class="t gaz">gaz</span>, <span class="t woda">woda</span>. Linia przerywana to sieć podziemna.</li>
+  <li><b>Odległość od granicy:</b> sieć musi biec w głębi działki: min. 5 m od granicy na gruncie budowlanym, 10 m na pozostałym. Znak ✗ przy sieci oznacza, że ten warunek nie jest spełniony.</li>
+  <li><b>Karta działki</b> ma pola do przepisania w kalkulatorze Votum. Typ gruntu i cenę zł/m² (transakcyjną, z RCN) wpisujesz sam po sprawdzeniu w Geoportalu.</li>
+  <li><b>W terenie:</b> „◎” na mapie pokazuje, gdzie jesteś, „sortuj: najbliżej mnie” układa działki od najbliższej, a „Nawiguj do działki” otwiera trasę w Mapach Google.</li>
+  <li><b>Z kontem:</b> „Rezerwuję na 14 dni” blokuje działkę dla Ciebie, żeby nikt z zespołu nie szedł do tego samego właściciela. Zmieniaj status aż do „umowa”.</li>
+ </ol>
+ <p class="note">Apka korzysta tylko z danych publicznych (OpenStreetMap, GUGiK) i nie zawiera danych właścicieli. Wynik to wskazówka. Przebieg sieci i słupy zawsze sprawdź w Geoportalu i na miejscu.</p>
+</div>
 <div id="card" hidden></div>
 <script>
 'use strict';
@@ -531,6 +545,7 @@ async function fillAddr(r){const el=$('#addr');if(!el)return;const k='adr:'+r.id
 (()=>{const dz=new URLSearchParams(location.search).get('dz');if(!dz)return;store.set('demoSeen',true);
   setTimeout(()=>{$('#nrList').value=dz;$('#nrGm').value='';checkNumbers().then(()=>{const r=RES.find(x=>x.id===dz);if(r){map.fitBounds(L.polygon(r.rings.map(rg=>rg.map(([x,y])=>[y,x]))).getBounds(),{maxZoom:18});openCard(r)}}).catch(e=>status('Błąd: '+e.message,0))},300)})();
 
+$('#helpBtn').onclick=()=>{$('#helpPanel').hidden=!$('#helpPanel').hidden};$('#helpX').onclick=()=>$('#helpPanel').hidden=true;
 // ---------- CSV ----------
 $('#csv').onclick=()=>{
   if(!RES.length)return status('Najpierw wyszukaj działki.');
