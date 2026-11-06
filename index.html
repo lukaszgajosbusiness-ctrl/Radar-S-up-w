@@ -288,9 +288,9 @@ function openCard(r){
   <tr><td>Zrzut z kalkulatora</td><td><input type="file" id="img" accept="image/*">${u.img?`<img src="${u.img}" style="margin-top:6px;border-radius:6px">`:''}</td></tr></table>
   ${r.las?'<p class="note" style="color:var(--warn)">Środek działki leży w lesie wg OSM. Sprawdź, zanim zaproponujesz.</p>':''}
   ${r.domPrzyLinii?`<p class="note" style="color:var(--ok)">Na działce stoi budynek ${r.domOdl!=null?'ok. '+r.domOdl+' m':'bliżej niż 40 m'} od osi linii (baza budynków GUGiK).</p>`:''}
-  <div class="btns"><a href="${navUrl(r)}" target="_blank" rel="noopener"><button class="pri">Nawiguj do działki</button></a><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="zap" class="pri">Zapisz</button></div>
+  <div class="btns"><a href="${navUrl(r)}" target="_blank" rel="noopener"><button class="pri">Nawiguj do działki</button></a><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="share">Link do działki</button><button id="zap" class="pri">Zapisz</button></div>
   <p class="note">Notatki i zrzuty zapisują się tylko na tym urządzeniu.</p>`;
-  $('#x').onclick=()=>c.hidden=true;fillAddr(r);bindResv(r);
+  $('#x').onclick=()=>c.hidden=true;$('#share').onclick=()=>{const u=location.origin+location.pathname+'?dz='+encodeURIComponent(r.id);(navigator.share?navigator.share({title:`Działka ${r.num} (${r.obr})`,url:u}):navigator.clipboard.writeText(u).then(()=>$('#share').textContent='Skopiowano link')).catch(()=>alertBox(u))};fillAddr(r);bindResv(r);
   const save=()=>{const v={grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(USER&&RESV[r.id]?.mine&&v.stat!==(u.stat||''))api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:v.stat}).catch(()=>{});if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
   $('#zap').onclick=()=>{save();$('#zap').textContent='Zapisano'};
   ['#grunt','#stat'].forEach(s=>$(s).onchange=()=>{save();openCard(r)});
@@ -401,7 +401,7 @@ async function loadArea(slug){
     setTimeout(()=>$('#bar i').style.width='0',800);
   }catch(e){status('Nie udało się wczytać obszaru: '+e.message,0)}
 }
-$('#gotowe').onchange=e=>{store.set('area',e.target.value);loadArea(e.target.value)};loadIndex().then(()=>{const a=store.get('area','');if(a&&[...$('#gotowe').options].some(o=>o.value===a)){$('#gotowe').value=a;loadArea(a)}});
+$('#gotowe').onchange=e=>{store.set('area',e.target.value);loadArea(e.target.value)};loadIndex().then(()=>{const a=store.get('area','');if(a&&!location.search.includes('dz=')&&[...$('#gotowe').options].some(o=>o.value===a)){$('#gotowe').value=a;loadArea(a)}});
 
 
 // ---------- tryb demo: przykładowy lead ----------
@@ -521,6 +521,11 @@ async function fillAddr(r){const el=$('#addr');if(!el)return;const k='adr:'+r.id
   if(!a){try{const[lat,lon]=centroid(r);const j=await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=${lat}&lon=${lon}`,{headers:{'Accept-Language':'pl'}})).json();
     const ad=j.address||{};a=[[ad.road,ad.house_number].filter(Boolean).join(' '),ad.village||ad.town||ad.city||ad.hamlet].filter(Boolean).join(', ')||'brak adresu w OSM';store.set(k,a)}catch(e){a=null}}
   if($('#addr')===el)el.textContent=a?'📍 Najbliższy adres (OSM, orientacyjnie): '+a:'📍 Adres niedostępny – użyj nawigacji do działki.'}
+
+
+// ---------- link do działki (?dz=identyfikator) ----------
+(()=>{const dz=new URLSearchParams(location.search).get('dz');if(!dz)return;store.set('demoSeen',true);
+  setTimeout(()=>{$('#nrList').value=dz;$('#nrGm').value='';checkNumbers().then(()=>{const r=RES.find(x=>x.id===dz);if(r){map.fitBounds(L.polygon(r.rings.map(rg=>rg.map(([x,y])=>[y,x]))).getBounds(),{maxZoom:18});openCard(r)}}).catch(e=>status('Błąd: '+e.message,0))},300)})();
 
 // ---------- CSV ----------
 $('#csv').onclick=()=>{
