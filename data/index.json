@@ -7,9 +7,9 @@
    18.9911874
   ],
   "radius": 2000,
-  "generated": "2026-11-07T13:51:01.127Z",
-  "parcels": 418,
-  "domy": 0
+  "generated": "2026-11-07T19:57:11.966Z",
+  "parcels": 919,
+  "domy": 1
  },
  {
   "slug": "boguchwalowice",
@@ -19,8 +19,8 @@
    19.17427
   ],
   "radius": 2000,
-  "generated": "2026-11-07T13:22:50.118Z",
-  "parcels": 401,
+  "generated": "2026-11-07T19:42:00.960Z",
+  "parcels": 449,
   "domy": 2
  },
  {
@@ -31,8 +31,20 @@
    19.0827779
   ],
   "radius": 2000,
-  "generated": "2026-11-07T13:59:02.469Z",
-  "parcels": 842,
+  "generated": "2026-11-07T20:12:20.392Z",
+  "parcels": 979,
+  "domy": 0
+ },
+ {
+  "slug": "kuznica-warezynska",
+  "name": "Kuźnica Warężyńska (Dąbrowa Górnicza)",
+  "center": [
+   50.3482328,
+   19.191968
+  ],
+  "radius": 2000,
+  "generated": "2026-11-07T20:47:34.157Z",
+  "parcels": 0,
   "domy": 0
  },
  {
@@ -43,7 +55,7 @@
    19.12405
   ],
   "radius": 2000,
-  "generated": "2026-11-07T12:33:27.784Z",
+  "generated": "2026-11-07T19:03:09.281Z",
   "parcels": 612,
   "domy": 0
  },
@@ -55,7 +67,7 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-07T12:27:54.691Z",
+  "generated": "2026-11-07T18:58:30.521Z",
   "parcels": 800,
   "domy": 3
  },
@@ -67,9 +79,9 @@
    19.1110804
   ],
   "radius": 2000,
-  "generated": "2026-11-07T13:37:48.653Z",
-  "parcels": 691,
-  "domy": 1
+  "generated": "2026-11-07T19:48:48.452Z",
+  "parcels": 872,
+  "domy": 3
  },
  {
   "slug": "saczow",
@@ -79,8 +91,8 @@
    19.0360868
   ],
   "radius": 2000,
-  "generated": "2026-11-07T13:16:48.159Z",
-  "parcels": 638,
+  "generated": "2026-11-07T19:38:31.543Z",
+  "parcels": 795,
   "domy": 0
  },
  {
@@ -91,7 +103,7 @@
    19.2318901
   ],
   "radius": 2000,
-  "generated": "2026-11-07T12:43:25.544Z",
+  "generated": "2026-11-07T19:11:48.048Z",
   "parcels": 796,
   "domy": 1
  },
@@ -103,7 +115,7 @@
    19.2503189
   ],
   "radius": 2000,
-  "generated": "2026-11-07T13:12:52.111Z",
+  "generated": "2026-11-07T19:36:12.226Z",
   "parcels": 683,
   "domy": 2
  },
@@ -115,9 +127,21 @@
    19.1946
   ],
   "radius": 2500,
-  "generated": "2026-11-07T12:18:43.518Z",
+  "generated": "2026-11-07T18:50:56.273Z",
   "parcels": 1073,
   "domy": 5
+ },
+ {
+  "slug": "warezyn",
+  "name": "Warężyn (gm. Siewierz)",
+  "center": [
+   50.4071027,
+   19.1795899
+  ],
+  "radius": 2000,
+  "generated": "2026-11-07T20:31:29.447Z",
+  "parcels": 0,
+  "domy": 0
  },
  {
   "slug": "wojkowice-koscielne",
@@ -127,7 +151,7 @@
    19.204206
   ],
   "radius": 2000,
-  "generated": "2026-11-07T12:58:53.787Z",
+  "generated": "2026-11-07T19:28:13.102Z",
   "parcels": 856,
   "domy": 10
  },
@@ -139,8 +163,8 @@
    19.2560112
   ],
   "radius": 2000,
-  "generated": "2026-11-07T13:26:30.170Z",
-  "parcels": 411,
+  "generated": "2026-11-07T19:44:03.544Z",
+  "parcels": 480,
   "domy": 0
  }
 ]
