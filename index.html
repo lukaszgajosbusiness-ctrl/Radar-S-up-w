@@ -517,7 +517,7 @@ async function teamMap(){
   }catch(e){status('Błąd: '+e.message,0)}
 }
 async function raport(){
-  try{const [st,rv]=await Promise.all([api('/api/stats?days=30'),api('/api/team-reservations')]);
+  try{const [st,rv,fb]=await Promise.all([api('/api/stats?days=30'),api('/api/team-reservations'),api('/api/feedback').catch(()=>({feedback:[]}))]);const fv={};fb.feedback.forEach(x=>fv[x.verdict]=(fv[x.verdict]||0)+1);const fn=fb.feedback.length,fok=Object.entries(fv).filter(([k])=>k.startsWith('Zgadza się')).reduce((a,[,v])=>a+v,0);
     const cols=['do sprawdzenia','sprawdzona – pasuje','kontakt z właścicielem','umowa','odrzucona'];
     const by={};st.users.forEach(u=>by[u.name]={team:u.team,s:{}});st.stats.forEach(s=>{(by[s.name]??={team:s.team,s:{}}).s[s.status]=s.n});
     const tot=c=>Object.values(by).reduce((a,v)=>a+(v.s[c]||0),0);
@@ -526,7 +526,7 @@ async function raport(){
      <h1>Raport pilotażu – Radar Słupów</h1><p class="note">Okres: ostatnie 30 dni · wygenerowano ${new Date().toLocaleString('pl')} · zespół: ${USER.role==='admin'?'wszystkie':USER.team}</p>
      <div class="k"><div><b>${rv.reservations.length}</b>aktywnych rezerwacji</div><div><b>${tot('kontakt z właścicielem')}</b>kontaktów z właścicielem</div><div><b>${tot('umowa')}</b>umów</div><div><b>${Object.keys(by).length}</b>osób w pilotażu</div></div>
      <h2 style="font-size:16px">Wyniki według osób</h2><table><tr><th>Osoba</th><th>Zespół</th>${cols.map(c=>`<th class="n">${c}</th>`).join('')}</tr>${Object.entries(by).map(([n,v])=>`<tr><td>${n}</td><td>${v.team}</td>${cols.map(c=>`<td class="n">${v.s[c]||0}</td>`).join('')}</tr>`).join('')}</table>
-     <h2 style="font-size:16px">Działki w toku</h2><table><tr><th>Działka</th><th>Osoba</th><th>Status</th><th>Aktualizacja</th></tr>${rv.reservations.map(r=>`<tr><td>${r.label||r.parcel_id}<div class="note">${r.parcel_id}</div></td><td>${r.name}</td><td>${r.status||''}</td><td>${new Date(r.updated).toLocaleDateString('pl')}</td></tr>`).join('')}</table>
+     <h2 style="font-size:16px">Uwagi z terenu${fn?` (${fn}, zgodnych z apką: ${Math.round(100*fok/fn)}%)`:''}</h2>${fn?`<table><tr><th>Ocena</th><th class="n">Liczba</th></tr>${Object.entries(fv).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${k}</td><td class="n">${v}</td></tr>`).join('')}</table>`:'<p class="note">Brak zgłoszeń.</p>'}<h2 style="font-size:16px">Działki w toku</h2><table><tr><th>Działka</th><th>Osoba</th><th>Status</th><th>Aktualizacja</th></tr>${rv.reservations.map(r=>`<tr><td>${r.label||r.parcel_id}<div class="note">${r.parcel_id}</div></td><td>${r.name}</td><td>${r.status||''}</td><td>${new Date(r.updated).toLocaleDateString('pl')}</td></tr>`).join('')}</table>
      <p class="note">Źródła danych o działkach i sieciach: OpenStreetMap, ULDK GUGiK (dane publiczne). Raport nie zawiera danych właścicieli.</p><button onclick="print()">Drukuj / zapisz PDF</button>`);w.document.close();
   }catch(e){alertBox(e.message)}
 }
