@@ -72,5 +72,29 @@
   "name": "Góra Siewierska (gm. Psary)",
   "q": "Góra Siewierska, Psary",
   "radius": 2000
+ },
+ {
+  "slug": "warezyn",
+  "name": "Warężyn (gm. Siewierz)",
+  "q": "Warężyn, Siewierz, będziński",
+  "radius": 2000
+ },
+ {
+  "slug": "kuznica-warezynska",
+  "name": "Kuźnica Warężyńska (Dąbrowa Górnicza)",
+  "q": "Kuźnica Warężyńska, Dąbrowa Górnicza",
+  "radius": 2000
+ },
+ {
+  "slug": "siemonia",
+  "name": "Siemonia (gm. Siewierz)",
+  "q": "Siemonia, Siewierz, będziński",
+  "radius": 2000
+ },
+ {
+  "slug": "ciagowice",
+  "name": "Ciągowice (gm. Siewierz)",
+  "q": "Ciągowice, Siewierz, będziński",
+  "radius": 2000
  }
 ]
