@@ -64,6 +64,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <button class="pri" id="go">Szukaj działek</button>
   <button id="goView" class="extra" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
   <select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
+  <button id="offBtn" class="extra" hidden title="Pobierz wszystkie gotowe obszary do pamięci telefonu (kilka MB, najlepiej na Wi-Fi)">Offline</button>
   <button id="demoBtn" class="extra" hidden>Przykładowy lead</button>
   <button id="nrBtn" class="extra">Po numerze</button>
   <button id="csv" class="extra">CSV</button>
@@ -415,7 +416,7 @@ async function enrichMpzp(list){
 // ---------- gotowe obszary (przeliczone nocą przez GitHub Actions) ----------
 async function loadIndex(){
   try{const r=await fetch('data/index.json',{cache:'no-cache'});if(!r.ok)return;const idx=await r.json();if(!idx.length)return;
-    const s=$('#gotowe');s.innerHTML='<option value="">Gotowe obszary…</option>'+idx.map(a=>`<option value="${a.slug}">${a.name} · ${a.parcels} dz.${a.domy?' · '+a.domy+' z domem':''}</option>`).join('');s.hidden=false}catch(e){}
+    const s=$('#gotowe');s.innerHTML='<option value="">Gotowe obszary…</option>'+idx.map(a=>`<option value="${a.slug}">${a.name} · ${a.parcels} dz.${a.domy?' · '+a.domy+' z domem':''}</option>`).join('');s.hidden=false;$('#offBtn').hidden=false;$('#offBtn').onclick=async()=>{let i=0,bad=0;for(const a of idx){status(`Pobieram do pamięci telefonu: ${a.name} (${++i}/${idx.length})…`,i/idx.length);try{const r=await fetch('data/'+a.slug+'.json');if(!r.ok)throw 0;await r.arrayBuffer()}catch(e){bad++}}status(bad?`Pobrano ${idx.length-bad} z ${idx.length} obszarów (${bad} się nie udało, spróbuj z lepszym zasięgiem).`:`Pobrano wszystkie ${idx.length} obszarów. Działają bez zasięgu.`,1);setTimeout(()=>$('#bar i').style.width='0',800)}}catch(e){}
 }
 async function loadArea(slug){
   if(!slug)return;store.set('area',slug);$('#card').hidden=true;status('Wczytuję gotowy obszar…',.3);
