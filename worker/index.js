@@ -27,7 +27,7 @@ async function hashPass(pw, salt) {
 async function newSession(db, uid) { const t = rnd(32); await db.prepare('INSERT INTO sessions VALUES (?,?,?)').bind(t, uid, Date.now() + 60 * 864e5).run(); return t }
 async function me(db, req) {
   const t = (req.headers.get('Authorization') || '').replace(/^Bearer\s+/, ''); if (!t) return null;
-  return await db.prepare('SELECT u.id,u.login,u.name,u.role,u.team FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires>?').bind(t, Date.now()).first();
+  return await db.prepare('SELECT u.id,u.login,u.name,u.role,u.team FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token=? AND s.expires>? AND u.id NOT IN (SELECT user_id FROM disabled)').bind(t, Date.now()).first();
 }
 const STATUSES = ['', 'do sprawdzenia', 'sprawdzona – pasuje', 'odrzucona', 'kontakt z właścicielem', 'umowa'];
 async function api(req, env, url) {
@@ -60,7 +60,9 @@ async function api(req, env, url) {
     if (!u || await hashPass(String(body.password || ''), u.salt) !== u.pass) {
       await db.prepare('INSERT INTO loginfail (login,n,first) VALUES (?,1,?) ON CONFLICT(login) DO UPDATE SET n=CASE WHEN ?-loginfail.first>=900000 THEN 1 ELSE loginfail.n+1 END, first=CASE WHEN ?-loginfail.first>=900000 THEN ? ELSE loginfail.first END').bind(lg, now, now, now, now).run();
       await new Promise(r => setTimeout(r, 600)); return J({ error: 'Zły login lub hasło.' }, 401) }
+    if (await db.prepare('SELECT 1 FROM disabled WHERE user_id=?').bind(u.id).first()) return J({ error: 'Konto wyłączone. Skontaktuj się z kierownikiem.' }, 403);
     await db.prepare('DELETE FROM loginfail WHERE login=?').bind(lg).run();
+    await db.prepare('DELETE FROM sessions WHERE expires<?').bind(now).run();
     return J({ token: await newSession(db, u.id), user: { login: u.login, name: u.name, role: u.role, team: u.team } });
   }
   const u = await me(db, req);
@@ -114,9 +116,17 @@ async function api(req, env, url) {
     const rs = await db.prepare(`SELECT f.id,f.parcel_id,f.label,f.verdict,f.note,f.snap,f.at,u.name,u.team FROM feedback f JOIN users u ON u.id=f.user_id ${u.role === 'kierownik' ? 'WHERE u.team=?' : ''} ORDER BY f.at DESC LIMIT 300`).bind(...(u.role === 'kierownik' ? [u.team] : [])).all();
     return J({ feedback: rs.results });
   }
+  if (p === '/api/disable' && m === 'POST') {
+    if (!['admin', 'kierownik'].includes(u.role)) return J({ error: 'Tylko dla kierownika.' }, 403);
+    const t = await db.prepare('SELECT id,team,role FROM users WHERE id=?').bind(+body.user_id).first();
+    if (!t || t.id === u.id || (u.role === 'kierownik' && (t.team !== u.team || t.role !== 'handlowiec'))) return J({ error: 'Nie możesz zmienić tego konta.' }, 403);
+    if (body.off) { await db.prepare('INSERT OR REPLACE INTO disabled (user_id,at) VALUES (?,?)').bind(t.id, Date.now()).run(); await db.prepare('DELETE FROM sessions WHERE user_id=?').bind(t.id).run() }
+    else await db.prepare('DELETE FROM disabled WHERE user_id=?').bind(t.id).run();
+    return J({ ok: true });
+  }
   if (p === '/api/team-users') {
     if (!['admin', 'kierownik'].includes(u.role)) return J({ error: 'Tylko dla kierownika.' }, 403);
-    const rs = await db.prepare(`SELECT id,name,team,role FROM users ${u.role === 'kierownik' ? 'WHERE team=?' : ''} ORDER BY name`).bind(...(u.role === 'kierownik' ? [u.team] : [])).all();
+    const rs = await db.prepare(`SELECT id,name,team,role,(SELECT 1 FROM disabled d WHERE d.user_id=users.id) off FROM users ${u.role === 'kierownik' ? 'WHERE team=?' : ''} ORDER BY name`).bind(...(u.role === 'kierownik' ? [u.team] : [])).all();
     return J({ users: rs.results });
   }
   if (p === '/api/team-reservations') {
