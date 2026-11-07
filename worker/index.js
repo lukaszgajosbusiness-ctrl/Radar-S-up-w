@@ -53,8 +53,14 @@ async function api(req, env, url) {
     return J({ token: await newSession(db, uid), user: { login: login.toLowerCase(), name: name.trim(), role, team } });
   }
   if (p === '/api/login' && m === 'POST') {
-    const u = await db.prepare('SELECT * FROM users WHERE login=?').bind(String(body.login || '').toLowerCase()).first();
-    if (!u || await hashPass(String(body.password || ''), u.salt) !== u.pass) { await new Promise(r => setTimeout(r, 600)); return J({ error: 'Zły login lub hasło.' }, 401) }
+    const lg = String(body.login || '').toLowerCase().slice(0, 40), now = Date.now();
+    const lf = await db.prepare('SELECT n,first FROM loginfail WHERE login=?').bind(lg).first();
+    if (lf && now - lf.first < 15 * 60e3 && lf.n >= 8) return J({ error: 'Za dużo błędnych prób. Spróbuj za 15 minut.' }, 429);
+    const u = await db.prepare('SELECT * FROM users WHERE login=?').bind(lg).first();
+    if (!u || await hashPass(String(body.password || ''), u.salt) !== u.pass) {
+      await db.prepare('INSERT INTO loginfail (login,n,first) VALUES (?,1,?) ON CONFLICT(login) DO UPDATE SET n=CASE WHEN ?-loginfail.first>=900000 THEN 1 ELSE loginfail.n+1 END, first=CASE WHEN ?-loginfail.first>=900000 THEN ? ELSE loginfail.first END').bind(lg, now, now, now, now).run();
+      await new Promise(r => setTimeout(r, 600)); return J({ error: 'Zły login lub hasło.' }, 401) }
+    await db.prepare('DELETE FROM loginfail WHERE login=?').bind(lg).run();
     return J({ token: await newSession(db, u.id), user: { login: u.login, name: u.name, role: u.role, team: u.team } });
   }
   const u = await me(db, req);
