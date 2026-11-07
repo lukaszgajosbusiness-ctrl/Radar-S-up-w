@@ -261,7 +261,7 @@ function score(r){
   const good=r.sieci.filter(s=>s.ok);
   r.ok=good.length>0&&!(r.las&&grunt==='?')&&grunt!=='ZL';
   const typy=new Set(good.map(s=>s.k));
-  let sc=good.reduce((a,s)=>a+TYPES[s.k].w*Math.min(s.len,400)/100,0);
+  let sc=good.reduce((a,s)=>a+TYPES[s.k].w*(s.k==='SN'&&!s.v&&!s.reczne?.6:1)*Math.min(s.len,400)/100,0); // SN bez podanego napięcia w OSM to często nN – niższa waga
   sc*=bud?1.8:1; if(typy.size>1)sc*=1+.35*(typy.size-1); if(r.domPrzyLinii)sc=sc*1.5+6; if(!r.ok)sc*=.2;
   r.score=Math.round(sc*10)/10;r.bud=bud;r.prog=prog;
 }
@@ -305,7 +305,7 @@ function openCard(r){
   <tr><td>Długość na działce (m)</td><td><input id="rLen" type="number" inputmode="decimal" value="${u.recznieLen??''}"></td></tr>
   <tr><td>Odległość od granicy (m)</td><td><input id="rOdl" type="number" inputmode="decimal" value="${u.recznieOdl??''}"></td></tr></table></details>
   <div class="note">Wszystkie sieci na działce${r.sieci.length>1?' (każda to potencjalnie osobna umowa)':''}:</div>
-  <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}<br><span class="note">${s.op||'operator ?'}</span></td></tr>`).join('')}</table>
+  <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}<br><span class="note">${s.op||'operator ?'}${s.k==='SN'&&!s.v&&!s.reczne?' · napięcie nieznane w OSM (sprawdź słupy)':''}</span></td></tr>`).join('')}</table>
   ${resvBlock(r)}
   <table><tr><td>Status</td><td><select id="stat">${['','do sprawdzenia','sprawdzona – pasuje','odrzucona','kontakt z właścicielem','umowa'].map(v=>`<option${(u.stat||'')===v?' selected':''}>${v}</option>`).join('')}</select></td></tr>
   <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea></td></tr>
