@@ -81,6 +81,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
       <label><input type="checkbox" id="fNn"> pokaż nN 0,4 kV</label>
       <label><input type="checkbox" id="fLas" checked> ukryj lasy</label>
       <label><input type="checkbox" id="fDom"> tylko z budynkiem przy linii</label>
+      <label><input type="checkbox" id="fBig"> ukryj duże działki (&gt;20 ha)</label>
       <label><input type="checkbox" id="fMoje"> tylko moje (status/notatka)</label>
       <label><input type="checkbox" id="fNear"> sortuj: najbliżej mnie</label>
     </div>
@@ -266,8 +267,8 @@ function score(r){
   r.score=Math.round(sc*10)/10;r.bud=bud;r.prog=prog;
 }
 function render(){
-  const useNn=$('#fNn').checked,onlyOk=$('#fOk').checked,noLas=$('#fLas').checked,onlyDom=$('#fDom').checked;
-  const rows=RES.filter(r=>(!onlyOk||r.ok)&&(!noLas||!r.las)&&(!onlyDom||r.domPrzyLinii)&&(!$('#fMoje').checked||r.u?.stat||r.u?.not)).sort(ME&&$('#fNear').checked?((a,b)=>dMe(a)-dMe(b)):((a,b)=>b.score-a.score));
+  const useNn=$('#fNn').checked,onlyOk=$('#fOk').checked,noLas=$('#fLas').checked,onlyDom=$('#fDom').checked,noBig=$('#fBig').checked;
+  const rows=RES.filter(r=>(!onlyOk||r.ok)&&(!noLas||!r.las)&&(!onlyDom||r.domPrzyLinii)&&(!noBig||r.area<=200000)&&(!$('#fMoje').checked||r.u?.stat||r.u?.not)).sort(ME&&$('#fNear').checked?((a,b)=>dMe(a)-dMe(b)):((a,b)=>b.score-a.score));
   gPar.clearLayers();gPin.clearLayers();
   const frag=document.createDocumentFragment();
   rows.forEach((r,i)=>{
@@ -283,7 +284,7 @@ function render(){
   $('#list').innerHTML='';$('#list').appendChild(frag);
   if(!rows.length&&RES.length)$('#list').innerHTML='<p style="padding:12px" class="note">Żadna działka nie spełnia filtrów. Odznacz „tylko spełniające odległość od granicy”.</p>';
 }
-['#fOk','#fLas','#fDom','#fMoje'].forEach(s=>$(s).onchange=render);
+['#fOk','#fLas','#fDom','#fBig','#fMoje'].forEach(s=>$(s).onchange=render);
 $('#fNn').onchange=()=>{if(AREA)run(AREA.bb,AREA.label)};
 
 // ---------- karta działki ----------
