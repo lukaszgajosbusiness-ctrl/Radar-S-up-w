@@ -97,6 +97,17 @@ async function api(req, env, url) {
     if (!cur || cur.status !== status) await db.prepare('INSERT INTO events (user_id,parcel_id,status,at) VALUES (?,?,?,?)').bind(owner, pid, status, Date.now()).run();
     return J({ ok: true, until, status });
   }
+  if (p === '/api/feedback' && m === 'POST') {
+    const pid = String(body.parcel_id || ''); if (!/^\d{6}_\d\.\d{4}\./.test(pid)) return J({ error: 'Zły identyfikator działki.' }, 400);
+    const verdict = String(body.verdict || '').slice(0, 80); if (!verdict) return J({ error: 'Brak oceny.' }, 400);
+    await db.prepare('INSERT INTO feedback (user_id,parcel_id,label,verdict,note,snap,at) VALUES (?,?,?,?,?,?,?)').bind(u.id, pid, String(body.label || '').slice(0, 120), verdict, String(body.note || '').slice(0, 1000), String(body.snap || '').slice(0, 1500), Date.now()).run();
+    return J({ ok: true });
+  }
+  if (p === '/api/feedback' && m === 'GET') {
+    if (!['admin', 'kierownik'].includes(u.role)) return J({ error: 'Tylko dla kierownika.' }, 403);
+    const rs = await db.prepare(`SELECT f.id,f.parcel_id,f.label,f.verdict,f.note,f.snap,f.at,u.name,u.team FROM feedback f JOIN users u ON u.id=f.user_id ${u.role === 'kierownik' ? 'WHERE u.team=?' : ''} ORDER BY f.at DESC LIMIT 300`).bind(...(u.role === 'kierownik' ? [u.team] : [])).all();
+    return J({ feedback: rs.results });
+  }
   if (p === '/api/team-users') {
     if (!['admin', 'kierownik'].includes(u.role)) return J({ error: 'Tylko dla kierownika.' }, 403);
     const rs = await db.prepare(`SELECT id,name,team,role FROM users ${u.role === 'kierownik' ? 'WHERE team=?' : ''} ORDER BY name`).bind(...(u.role === 'kierownik' ? [u.team] : [])).all();
