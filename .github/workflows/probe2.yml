@@ -1,0 +1,34 @@
+name: Sonda BDOT10k paczka powiatu (jednorazowa)
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobranie paczki powiatu będzińskiego (2401)
+        run: |
+          mkdir -p b && cd b
+          for U in https://opendata.geoportal.gov.pl/bdot10k/schemat2021/SHP/24/2401_SHP.zip https://opendata.geoportal.gov.pl/bdot10k/SHP/24/2401_SHP.zip https://opendata.geoportal.gov.pl/bdot10k/schemat2021/GML/24/2401_GML.zip; do
+            echo "== $U"; curl -sSL -m 280 -A 'RadarSlupow/1.0' -o p.zip -w '%{http_code} %{content_type} %{size_download}\n' "$U" || true
+            if [ -s p.zip ] && file p.zip | grep -qi zip; then echo OK; break; fi
+          done
+          ls -la; file p.zip
+          unzip -l p.zip | head -80
+      - name: Pliki sieci uzbrojenia (SU)
+        run: |
+          cd b && unzip -o -q p.zip || true
+          find . -iname '*SU*' | head -30
+          pip install -q pyshp
+          python3 - <<'PY'
+          import glob, shapefile, collections
+          for f in sorted(glob.glob('b/**/*.shp', recursive=True) + glob.glob('**/*.shp', recursive=True)):
+              if not any(k in f.upper() for k in ('SULN','SUPR','SUPE','SUKN','SUPG','SUPW','SUPC','SUPO','SUZN','SUBK','SUIN')): continue
+              try:
+                  r = shapefile.Reader(f)
+              except Exception as e:
+                  print(f, 'ERR', e); continue
+              print('\n###', f, 'rekordy:', len(r), 'pola:', [x[0] for x in r.fields[1:]])
+              recs = r.records()
+              for i, fld in enumerate([x[0] for x in r.fields[1:]]):
+                  c = collections.Counter(str(x[i]) for x in recs)
+                  if len(c) <= 25: print('  ', fld, dict(c.most_common(25)))
+          PY
