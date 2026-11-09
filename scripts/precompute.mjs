@@ -2,9 +2,11 @@
 // Dane wyłącznie publiczne: OpenStreetMap (Overpass), ULDK GUGiK (działki, budynki).
 // Wynik: data/<slug>.json + data/index.json – apka wczytuje je bez odpytywania usług.
 import fs from 'node:fs/promises';
+import { mergeBdot } from './bdot_merge.mjs';
 
 const AREAS = JSON.parse(await fs.readFile(new URL('./areas.json', import.meta.url), 'utf8'));
 const ONLY = process.env.ONLY_AREA || '';
+let BDOT = []; try { BDOT = JSON.parse(await fs.readFile(new URL('./bdot.json', import.meta.url), 'utf8')).lines } catch (e) { console.log('BDOT10k: brak scripts/bdot.json – tylko OSM') }
 const UA = 'RadarSlupow/1.0 (github.com/lukaszgajosbusiness-ctrl/Radar-S-up-w)';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -86,6 +88,7 @@ async function runArea(a) {
     const k = classify(t); if (!k) continue;
     nets.push({ id: e.id, k, kind: kind(t), t, g, m: g.map(M) });
   }
+  if (BDOT.length) { const st = mergeBdot(nets, BDOT, M, bb); console.log(`   BDOT10k: linii ${st.lines}, pokrycie OSM ${Math.round(100 * st.covered / Math.max(1, st.pts))}%, nowe odcinki ${st.newNets} (${Math.round(st.newLen)} m), potwierdzone ${st.confirm}, zmiana klasy ${st.relabel}, sprzeczne ${st.mismatch}`) }
   // punkty co 15 m wzdłuż sieci (bez nN)
   const pts = [];
   for (const n of nets) { if (n.k === 'nN') continue; const g = n.g;
@@ -99,7 +102,7 @@ async function runArea(a) {
     const sieci = [];
     for (const nt of nets) { if (nt.k === 'nN') continue; const g = nt.m; let len = 0, maxd = 0;
       for (let i = 0; i < g.length - 1; i++) { const S = dist(g[i], g[i + 1]); const s = Math.ceil(S); for (let k = 0; k < s; k++) { const q = [g[i][0] + (g[i + 1][0] - g[i][0]) * (k + .5) / s, g[i][1] + (g[i + 1][1] - g[i][1]) * (k + .5) / s]; if (inRings(q, d.rm)) { len += S / s; maxd = Math.max(maxd, dRings(q, d.rm)) } } }
-      if (len >= 1) sieci.push({ id: nt.id, k: nt.k, kind: nt.kind, v: nt.t.voltage || '', op: nt.t.operator || '', len: Math.round(len), maxd: +maxd.toFixed(1) }) }
+      if (len >= 1) sieci.push({ id: nt.id, k: nt.k, kind: nt.kind, v: nt.t.voltage || '', op: nt.t.operator || '', bd: nt.bd ? 1 : 0, len: Math.round(len), maxd: +maxd.toFixed(1) }) }
     if (!sieci.length) continue;
     let cx = 0, cy = 0; d.rm[0].forEach(p => { cx += p[0]; cy += p[1] }); const cen = [cx / d.rm[0].length, cy / d.rm[0].length];
     RES.push({ id: d.id, num: d.num, obr: d.obr, gm: d.gm, area: Math.round(areaM2(d.rings)), rings: round6(d.rings), rm: d.rm, sieci,
@@ -123,8 +126,8 @@ async function runArea(a) {
   const usedNets = new Set(RES.flatMap(r => r.sieci.map(s => s.id)));
   const out = {
     name: a.name, slug: a.slug, center: [lat, lon], radius: R, bbox: bb, generated: new Date().toISOString(),
-    zrodla: 'OpenStreetMap (ODbL), ULDK GUGiK – dane publiczne',
-    nets: nets.filter(n => n.k !== 'nN' || usedNets.has(n.id)).map(n => ({ id: n.id, k: n.k, kind: n.kind, v: n.t.voltage || '', op: n.t.operator || '', g: n.g.map(([x, y]) => [+x.toFixed(6), +y.toFixed(6)]) })),
+    zrodla: 'OpenStreetMap (ODbL), BDOT10k i ULDK GUGiK – dane publiczne',
+    nets: nets.filter(n => n.k !== 'nN' || usedNets.has(n.id)).map(n => ({ id: n.id, k: n.k, kind: n.kind, v: n.t.voltage || '', op: n.t.operator || '', bd: n.bd ? 1 : 0, g: n.g.map(([x, y]) => [+x.toFixed(6), +y.toFixed(6)]) })),
     parcels: RES
   };
   const errRate = U.err / Math.max(1, U.ok + U.err);

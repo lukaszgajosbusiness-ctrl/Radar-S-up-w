@@ -263,7 +263,7 @@ function score(r){
   const good=r.sieci.filter(s=>s.ok);
   r.ok=good.length>0&&!(r.las&&grunt==='?')&&grunt!=='ZL';
   const typy=new Set(good.map(s=>s.k));
-  let sc=good.reduce((a,s)=>a+TYPES[s.k].w*(s.k==='SN'&&!s.v&&!s.reczne?.6:1)*Math.min(s.len,400)/100,0); // SN bez podanego napięcia w OSM to często nN – niższa waga
+  let sc=good.reduce((a,s)=>a+TYPES[s.k].w*(s.k==='SN'&&!s.v&&!s.bd&&!s.reczne?.6:1)*Math.min(s.len,400)/100,0); // SN bez podanego napięcia w OSM to często nN – niższa waga
   sc*=bud?1.8:1; if(typy.size>1)sc*=1+.35*(typy.size-1); if(r.domPrzyLinii)sc=sc*1.5+6; if(!r.ok)sc*=.2;
   r.score=Math.round(sc*10)/10;r.bud=bud;r.prog=prog;
 }
@@ -307,7 +307,7 @@ function openCard(r){
   <tr><td>Długość na działce (m)</td><td><input id="rLen" type="number" inputmode="decimal" value="${u.recznieLen??''}"></td></tr>
   <tr><td>Odległość od granicy (m)</td><td><input id="rOdl" type="number" inputmode="decimal" value="${u.recznieOdl??''}"></td></tr></table></details>
   <div class="note">Wszystkie sieci na działce${r.sieci.length>1?' (każda to potencjalnie osobna umowa)':''}:</div>
-  <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}<br><span class="note">${s.op||'operator ?'}${s.k==='SN'&&!s.v&&!s.reczne?' · napięcie nieznane w OSM (sprawdź słupy)':''}</span></td></tr>`).join('')}</table>
+  <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}<br><span class="note">${s.op||'operator ?'}${s.k==='SN'&&!s.v&&!s.bd&&!s.reczne?' · napięcie nieznane w OSM (sprawdź słupy)':''}${s.bd?' · potwierdzone w BDOT10k (GUGiK)':''}</span></td></tr>`).join('')}</table>
   ${resvBlock(r)}
   <table><tr><td>Status</td><td><select id="stat">${['','do sprawdzenia','sprawdzona – pasuje','odrzucona','kontakt z właścicielem','umowa'].map(v=>`<option${(u.stat||'')===v?' selected':''}>${v}</option>`).join('')}</select></td></tr>
   <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea></td></tr>
@@ -532,7 +532,7 @@ async function raport(){
      <div class="k"><div><b>${rv.reservations.length}</b>aktywnych rezerwacji</div><div><b>${tot('kontakt z właścicielem')}</b>kontaktów z właścicielem</div><div><b>${tot('umowa')}</b>umów</div><div><b>${Object.keys(by).length}</b>osób w pilotażu</div></div>
      <h2 style="font-size:16px">Wyniki według osób</h2><table><tr><th>Osoba</th><th>Zespół</th>${cols.map(c=>`<th class="n">${c}</th>`).join('')}</tr>${Object.entries(by).map(([n,v])=>`<tr><td>${n}</td><td>${v.team}</td>${cols.map(c=>`<td class="n">${v.s[c]||0}</td>`).join('')}</tr>`).join('')}</table>
      <h2 style="font-size:16px">Uwagi z terenu${fn?` (${fn}, zgodnych z apką: ${Math.round(100*fok/fn)}%)`:''}</h2>${fn?`<table><tr><th>Ocena</th><th class="n">Liczba</th></tr>${Object.entries(fv).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${k}</td><td class="n">${v}</td></tr>`).join('')}</table>`:'<p class="note">Brak zgłoszeń.</p>'}<h2 style="font-size:16px">Działki w toku</h2><table><tr><th>Działka</th><th>Osoba</th><th>Status</th><th>Aktualizacja</th></tr>${rv.reservations.map(r=>`<tr><td>${r.label||r.parcel_id}<div class="note">${r.parcel_id}</div></td><td>${r.name}</td><td>${r.status||''}</td><td>${new Date(r.updated).toLocaleDateString('pl')}</td></tr>`).join('')}</table>
-     <p class="note">Źródła danych o działkach i sieciach: OpenStreetMap, ULDK GUGiK (dane publiczne). Raport nie zawiera danych właścicieli.</p><button onclick="print()">Drukuj / zapisz PDF</button>`);w.document.close();
+     <p class="note">Źródła danych o działkach i sieciach: OpenStreetMap, BDOT10k i ULDK GUGiK (dane publiczne). Raport nie zawiera danych właścicieli.</p><button onclick="print()">Drukuj / zapisz PDF</button>`);w.document.close();
   }catch(e){alertBox(e.message)}
 }
 
