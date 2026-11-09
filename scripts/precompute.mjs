@@ -18,6 +18,8 @@ async function get(url, opt = {}, tries = 4) {
     } catch (e) { if (i === tries - 1) throw e; await sleep(2000 * (i + 1)) }
   }
 }
+const U = { ok: 0, err: 0 };
+async function uldk(url) { try { const t = await get(url, {}, 6); U.ok++; return t } catch (e) { U.err++; throw e } }
 async function pool(items, n, fn, onp = () => {}) {
   let i = 0, done = 0;
   await Promise.all(Array.from({ length: n }, async () => { while (i < items.length) { const k = i++; try { await fn(items[k]) } catch (e) {} onp(++done) } }));
@@ -55,13 +57,16 @@ async function overpass(bb) {
   throw new Error('Overpass niedostępny');
 }
 async function uldkXY(lon, lat) {
-  const t = (await get(`https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy=${lon},${lat},4326&result=id,parcel,region,commune,geom_wkt&srid=4326`)).trim().split('\n');
+  const t = (await uldk(`https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy=${lon},${lat},4326&result=id,parcel,region,commune,geom_wkt&srid=4326`)).trim().split('\n');
   if (t[0] !== '0') return null; const [id, num, obr, gm, wkt] = t[1].split('|'); return { id, num, obr, gm, wkt };
 }
 
-async function geocode(q) {
-  const j = JSON.parse(await get('https://nominatim.openstreetmap.org/search?countrycodes=pl&format=json&limit=1&q=' + encodeURIComponent(q)));
-  await sleep(1100); if (!j.length) throw new Error('nie znaleziono: ' + q); return [+j[0].lat, +j[0].lon];
+async function geocode(qs) {
+  for (const q of [].concat(qs)) {
+    const j = JSON.parse(await get('https://nominatim.openstreetmap.org/search?countrycodes=pl&format=json&limit=1&q=' + encodeURIComponent(q)));
+    await sleep(1100); if (j.length) return [+j[0].lat, +j[0].lon];
+  }
+  throw new Error('nie znaleziono: ' + [].concat(qs).join(' | '));
 }
 async function runArea(a) {
   if (a.lat == null) [a.lat, a.lon] = await geocode(a.q);
@@ -70,6 +75,7 @@ async function runArea(a) {
   const dLat = R / 110540, dLon = R / (111320 * Math.cos(lat * Math.PI / 180));
   const bb = { s: lat - dLat, n: lat + dLat, w: lon - dLon, e: lon + dLon };
   const inBB = ([x, y]) => x > bb.w && x < bb.e && y > bb.s && y < bb.n;
+  U.ok = 0; U.err = 0;
   console.log(`== ${a.name}: OSM`);
   const els = await overpass(bb);
   const nets = [], forests = [], poles = [];
@@ -86,7 +92,7 @@ async function runArea(a) {
     for (let i = 0; i < g.length - 1; i++) { const s = Math.max(1, Math.ceil(dist(M(g[i]), M(g[i + 1])) / 15)); for (let k = 0; k < s; k++) { const t = k / s; const p = [g[i][0] + (g[i + 1][0] - g[i][0]) * t, g[i][1] + (g[i + 1][1] - g[i][1]) * t]; if (inBB(p)) pts.push(p) } } }
   console.log(`   sieci ${nets.length}, punkty ${pts.length}`);
   const P = new Map(); let last = Date.now();
-  await pool(pts, 6, async p => { const m = M(p); for (const d of P.values()) if (inRings(m, d.rm)) return; const d = await uldkXY(p[0], p[1]); if (!d || P.has(d.id)) return; d.rings = wktRings(d.wkt); d.rm = d.rings.map(r => r.map(M)); P.set(d.id, d) },
+  await pool(pts, 4, async p => { const m = M(p); for (const d of P.values()) if (inRings(m, d.rm)) return; const d = await uldkXY(p[0], p[1]); if (!d || P.has(d.id)) return; d.rings = wktRings(d.wkt); d.rm = d.rings.map(r => r.map(M)); P.set(d.id, d) },
     k => { if (Date.now() - last > 30000) { last = Date.now(); console.log(`   ULDK ${k}/${pts.length}, działki ${P.size}`) } });
   const RES = [];
   for (const d of P.values()) {
@@ -110,7 +116,7 @@ async function runArea(a) {
   console.log(`   budynki: ${bpts.length} punktów`);
   const found = new Map(); last = Date.now();
   await pool(bpts, 6, async p => { for (const b of found.values()) if (inRings(p.q, b.rm)) return;
-    const t = (await get(`https://uldk.gugik.gov.pl/?request=GetBuildingByXY&xy=${p.ll[0]},${p.ll[1]},4326&result=id,geom_wkt&srid=4326`)).trim().split('\n');
+    const t = (await uldk(`https://uldk.gugik.gov.pl/?request=GetBuildingByXY&xy=${p.ll[0]},${p.ll[1]},4326&result=id,geom_wkt&srid=4326`)).trim().split('\n');
     if (t[0] !== '0' || !t[1]) return; const [bid, wkt] = t[1].split('|'); if (found.has(bid)) return; const rm = wktRings(wkt).map(r => r.map(M)); let cx = 0, cy = 0; rm[0].forEach(q => { cx += q[0]; cy += q[1] }); const c = [cx / rm[0].length, cy / rm[0].length]; let a = 0; for (let i = 0; i < rm[0].length - 1; i++) a += rm[0][i][0] * rm[0][i + 1][1] - rm[0][i + 1][0] * rm[0][i][1]; found.set(bid, { rm, c, d: dLine(c, p.net.m), a: Math.abs(a) / 2 }) },
     k => { if (Date.now() - last > 30000) { last = Date.now(); console.log(`   budynki ${k}/${bpts.length}, znalezione ${found.size}`) } });
   for (const r of RES) { const bs = [...found.values()].filter(b => b.a >= 40 && inRings(b.c, r.rm)); if (bs.length) { r.domy = bs.length; const d = Math.min(...bs.map(b => b.d)); if (d < 40) { r.domPrzyLinii = true; r.domOdl = Math.round(d) } } delete r.rm }
@@ -121,6 +127,11 @@ async function runArea(a) {
     nets: nets.filter(n => n.k !== 'nN' || usedNets.has(n.id)).map(n => ({ id: n.id, k: n.k, kind: n.kind, v: n.t.voltage || '', op: n.t.operator || '', g: n.g.map(([x, y]) => [+x.toFixed(6), +y.toFixed(6)]) })),
     parcels: RES
   };
+  const errRate = U.err / Math.max(1, U.ok + U.err);
+  let prev = 0; try { prev = JSON.parse(await fs.readFile(`data/${a.slug}.json`, 'utf8')).parcels.length } catch (e) {}
+  if (errRate > 0.1) throw new Error(`ULDK zawodzi (${U.err} błędów na ${U.ok + U.err} zapytań) – zostawiam poprzednie dane`);
+  if (!RES.length) throw new Error('0 działek – nie zapisuję');
+  if (prev && RES.length < prev * 0.7) throw new Error(`wynik słabszy niż poprzedni (${RES.length} < ${prev}) – zostawiam poprzednie dane`);
   await fs.mkdir('data', { recursive: true });
   await fs.writeFile(`data/${a.slug}.json`, JSON.stringify(out));
   console.log(`   zapisano data/${a.slug}.json: ${RES.length} działek, ${RES.filter(r => r.domPrzyLinii).length} z budynkiem przy linii`);

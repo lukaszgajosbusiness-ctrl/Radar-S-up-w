@@ -36,18 +36,6 @@
   "domy": 0
  },
  {
-  "slug": "kuznica-warezynska",
-  "name": "Kuźnica Warężyńska (Dąbrowa Górnicza)",
-  "center": [
-   50.3482328,
-   19.191968
-  ],
-  "radius": 2000,
-  "generated": "2026-11-09T10:49:28.717Z",
-  "parcels": 0,
-  "domy": 0
- },
- {
   "slug": "mierzecice",
   "name": "Mierzęcice",
   "center": [
@@ -132,18 +120,6 @@
   "domy": 5
  },
  {
-  "slug": "warezyn",
-  "name": "Warężyn (gm. Siewierz)",
-  "center": [
-   50.4071027,
-   19.1795899
-  ],
-  "radius": 2000,
-  "generated": "2026-11-09T10:32:12.239Z",
-  "parcels": 0,
-  "domy": 0
- },
- {
   "slug": "wojkowice-koscielne",
   "name": "Wojkowice Kościelne (gm. Siewierz)",
   "center": [
@@ -164,7 +140,7 @@
   ],
   "radius": 2000,
   "generated": "2026-11-09T09:22:23.684Z",
-  "parcels": 8,
+  "parcels": 480,
   "domy": 0
  }
 ]

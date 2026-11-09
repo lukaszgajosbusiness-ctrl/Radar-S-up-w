@@ -88,13 +88,21 @@
  {
   "slug": "siemonia",
   "name": "Siemonia (gm. Siewierz)",
-  "q": "Siemonia, Siewierz, będziński",
+  "q": [
+   "Siemonia, Siewierz",
+   "Siemonia, śląskie",
+   "Siemonia"
+  ],
   "radius": 2000
  },
  {
   "slug": "ciagowice",
   "name": "Ciągowice (gm. Siewierz)",
-  "q": "Ciągowice, Siewierz, będziński",
+  "q": [
+   "Ciągowice, Siewierz",
+   "Ciągowice, śląskie",
+   "Ciągowice"
+  ],
   "radius": 2000
  }
 ]
