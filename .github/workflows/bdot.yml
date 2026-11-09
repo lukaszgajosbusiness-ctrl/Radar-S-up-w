@@ -1,0 +1,22 @@
+name: Linie z BDOT10k (Radar Słupów)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 3 1 * *'   # raz w miesiącu
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i --no-save shapefile@0.6.6 proj4@2.12.1
+      - run: node scripts/bdot_build.mjs
+      - name: Zapisz wyniki
+        run: |
+          git config user.name "radar-bot"
+          git config user.email "radar-bot@users.noreply.github.com"
+          git add scripts/bdot.json
+          git diff --cached --quiet || (git commit -m "BDOT10k: odświeżenie linii $(date -u +%F)" && git pull --rebase -q && git push)
