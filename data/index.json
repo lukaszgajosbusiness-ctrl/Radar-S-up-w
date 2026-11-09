@@ -7,9 +7,9 @@
    18.9911874
   ],
   "radius": 2000,
-  "generated": "2026-11-09T16:06:15.551Z",
-  "parcels": 919,
-  "domy": 1
+  "generated": "2026-11-09T21:09:50.405Z",
+  "parcels": 944,
+  "domy": 0
  },
  {
   "slug": "boguchwalowice",
@@ -19,8 +19,8 @@
    19.17427
   ],
   "radius": 2000,
-  "generated": "2026-11-09T15:45:55.430Z",
-  "parcels": 449,
+  "generated": "2026-11-09T20:34:28.791Z",
+  "parcels": 530,
   "domy": 2
  },
  {
@@ -55,8 +55,8 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-09T15:03:00.940Z",
-  "parcels": 800,
+  "generated": "2026-11-09T19:17:40.143Z",
+  "parcels": 877,
   "domy": 3
  },
  {
@@ -79,8 +79,8 @@
    19.0360868
   ],
   "radius": 2000,
-  "generated": "2026-11-09T15:40:45.156Z",
-  "parcels": 795,
+  "generated": "2026-11-09T20:28:09.896Z",
+  "parcels": 817,
   "domy": 0
  },
  {
@@ -91,9 +91,9 @@
    19.2318901
   ],
   "radius": 2000,
-  "generated": "2026-11-09T08:38:50.600Z",
-  "parcels": 796,
-  "domy": 1
+  "generated": "2026-11-09T19:45:32.394Z",
+  "parcels": 895,
+  "domy": 2
  },
  {
   "slug": "trzebieslawice",
@@ -103,8 +103,8 @@
    19.2503189
   ],
   "radius": 2000,
-  "generated": "2026-11-09T15:37:28.026Z",
-  "parcels": 683,
+  "generated": "2026-11-09T20:24:57.283Z",
+  "parcels": 726,
   "domy": 2
  },
  {
@@ -115,8 +115,8 @@
    19.1946
   ],
   "radius": 2500,
-  "generated": "2026-11-09T14:54:35.981Z",
-  "parcels": 1073,
+  "generated": "2026-11-09T19:09:02.374Z",
+  "parcels": 1176,
   "domy": 5
  },
  {
@@ -127,8 +127,8 @@
    19.204206
   ],
   "radius": 2000,
-  "generated": "2026-11-09T15:28:01.543Z",
-  "parcels": 856,
+  "generated": "2026-11-09T20:08:33.297Z",
+  "parcels": 883,
   "domy": 10
  },
  {
@@ -139,8 +139,8 @@
    19.2560112
   ],
   "radius": 2000,
-  "generated": "2026-11-09T15:48:24.004Z",
-  "parcels": 480,
+  "generated": "2026-11-09T20:37:23.436Z",
+  "parcels": 493,
   "domy": 0
  }
 ]
