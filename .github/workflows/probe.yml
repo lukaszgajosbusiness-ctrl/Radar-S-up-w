@@ -1,0 +1,14 @@
+name: Sonda usług Geoportalu (jednorazowa)
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: BDOT10k WFS GetCapabilities
+        run: |
+          U='https://mapy.geoportal.gov.pl/wss/service/PZGIK/BDOT/WFS/PobieranieBDOT10k'
+          curl -sS -m 60 -A 'RadarSlupow/1.0' "$U?SERVICE=WFS&REQUEST=GetCapabilities" -o cap.xml; ls -la cap.xml; head -c 400 cap.xml; echo
+          grep -o '<Name>[^<]*</Name>\|<wfs:Name>[^<]*</wfs:Name>' cap.xml | head -40
+      - name: KIUT GetFeatureInfo Tuliszów (EPSG:2180)
+        run: |
+          curl -sS -m 60 -A 'RadarSlupow/1.0' 'https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaUzbrojeniaTerenu?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=przewod_elektroenergetyczny&STYLES=&SRS=EPSG:2180&BBOX=520000,350000,521000,350750&WIDTH=800&HEIGHT=600&FORMAT=image/png&TRANSPARENT=TRUE' -o k.png -w '%{http_code} %{content_type} %{size_download}\n'
