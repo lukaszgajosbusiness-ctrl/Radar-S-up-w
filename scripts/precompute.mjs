@@ -104,6 +104,8 @@ async function runArea(a) {
         for (const o of offs) { const ll = [(x - uy * o) / K.kx, (y + ux * o) / K.ky]; if (inBB(ll)) pts.push(ll) } } } }
   console.log(`   sieci ${nets.length}, punkty ${pts.length}`);
   const P = new Map(); let last = Date.now();
+  // działki z poprzedniego przebiegu (granice zmieniają się rzadko) – mniej zapytań do ULDK; w niedzielę pełne odświeżenie
+  if (!process.env.FULL && new Date().getUTCDay() !== 0) { try { const old = JSON.parse(await fs.readFile(`data/${a.slug}.json`, 'utf8')).parcels; for (const d of old) { if (!d.rings) continue; P.set(d.id, { id: d.id, num: d.num, obr: d.obr, gm: d.gm, rings: d.rings, rm: d.rings.map(r => r.map(M)) }) } console.log(`   z pamięci: ${P.size} działek`) } catch (e) {} }
   await pool(pts, 4, async p => { const m = M(p); for (const d of P.values()) if (inRings(m, d.rm)) return; const d = await uldkXY(p[0], p[1]); if (!d || P.has(d.id)) return; d.rings = wktRings(d.wkt); d.rm = d.rings.map(r => r.map(M)); P.set(d.id, d) },
     k => { if (Date.now() - last > 30000) { last = Date.now(); console.log(`   ULDK ${k}/${pts.length}, działki ${P.size}`) } });
   const RES = [];
