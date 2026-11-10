@@ -52,10 +52,12 @@ const kind = t => (t.power === 'cable' || t.location === 'underground' || (t.man
 async function overpass(bb) {
   const b = `(${bb.s},${bb.w},${bb.n},${bb.e})`;
   const q = `[out:json][timeout:180];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
-  for (const host of ['https://overpass-api.de/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter', 'https://overpass.private.coffee/api/interpreter']) {
-    try { const t = await get(host, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, tmo: 200000 }, 2); return JSON.parse(t).elements }
-    catch (e) { console.log('overpass fail', host, e.message) }
-  }
+  const H = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
+  for (let round = 0; round < 3; round++) { if (round) { console.log(`   Overpass: runda ${round + 1} za 90 s`); await sleep(90000) }
+    for (const host of H) {
+      try { const t = await get(host, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, tmo: 200000 }, 2); const j = JSON.parse(t); if (j.elements) return j.elements; throw new Error('brak elements') }
+      catch (e) { console.log('overpass fail', host, e.message) }
+    } }
   throw new Error('Overpass niedostępny');
 }
 async function uldkXY(lon, lat) {
