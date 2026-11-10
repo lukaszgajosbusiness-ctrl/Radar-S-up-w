@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import proj4 from 'proj4';
 import * as shapefile from 'shapefile';
-const TER = ['2401', '2465', '2416']; // powiat będziński, m. Dąbrowa Górnicza, powiat zawierciański
+const TER = ['2401', '2465', '2416', '2414']; // powiat będziński, m. Dąbrowa Górnicza, powiat zawierciański
 const DEF = '+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs';
 const tr = ([x, y]) => (Math.abs(x) < 190 ? [x, y] : proj4(DEF, 'WGS84', [x, y])).map(v => +v.toFixed(6));
 const CLS = { 'linia elektroenergetyczna najwyższego napięcia': 'NN', 'linia elektroenergetyczna wysokiego napięcia': 'WN', 'linia elektroenergetyczna średniego napięcia': 'SN' };

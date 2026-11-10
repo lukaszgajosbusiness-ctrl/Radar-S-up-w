@@ -104,5 +104,153 @@
    "Ciągowice"
   ],
   "radius": 2000
+ },
+ {
+  "slug": "ozarowice",
+  "name": "Ożarowice (gm. Ożarowice)",
+  "q": [
+   "Ożarowice, tarnogórski",
+   "Ożarowice, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "pyrzowice",
+  "name": "Pyrzowice (gm. Ożarowice)",
+  "q": [
+   "Pyrzowice, Ożarowice",
+   "Pyrzowice, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "tapkowice",
+  "name": "Tąpkowice (gm. Ożarowice)",
+  "q": [
+   "Tąpkowice, Ożarowice",
+   "Tąpkowice, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "zendek",
+  "name": "Zendek (gm. Ożarowice)",
+  "q": [
+   "Zendek, Ożarowice",
+   "Zendek, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "niezdara",
+  "name": "Niezdara (gm. Mierzęcice)",
+  "q": [
+   "Niezdara, Mierzęcice",
+   "Niezdara, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "toporowice",
+  "name": "Toporowice (gm. Siewierz)",
+  "q": [
+   "Toporowice, Siewierz",
+   "Toporowice, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "najdziszow",
+  "name": "Najdziszów (gm. Mierzęcice)",
+  "q": [
+   "Najdziszów, Mierzęcice",
+   "Najdziszów, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "nowa-wies-mierzecice",
+  "name": "Nowa Wieś (gm. Mierzęcice)",
+  "q": [
+   "Nowa Wieś, Mierzęcice",
+   "Nowa Wieś, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "brudzowice",
+  "name": "Brudzowice (gm. Siewierz)",
+  "q": [
+   "Brudzowice, Siewierz",
+   "Brudzowice, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "dziewki",
+  "name": "Dziewki (gm. Siewierz)",
+  "q": [
+   "Dziewki, Siewierz",
+   "Dziewki, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "strzyzowice",
+  "name": "Strzyżowice (gm. Psary)",
+  "q": [
+   "Strzyżowice, Psary",
+   "Strzyżowice, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "grodkow",
+  "name": "Gródków (gm. Psary)",
+  "q": [
+   "Gródków, Psary",
+   "Gródków, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "sarnow",
+  "name": "Sarnów (gm. Psary)",
+  "q": [
+   "Sarnów, Psary",
+   "Sarnów, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "rogoznik",
+  "name": "Rogoźnik (gm. Bobrowniki)",
+  "q": [
+   "Rogoźnik, Bobrowniki",
+   "Rogoźnik, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "myszkowice",
+  "name": "Myszkowice (gm. Bobrowniki)",
+  "q": [
+   "Myszkowice, Bobrowniki",
+   "Myszkowice, śląskie"
+  ],
+  "radius": 1500
+ },
+ {
+  "slug": "dobieszowice",
+  "name": "Dobieszowice (gm. Bobrowniki)",
+  "q": [
+   "Dobieszowice, Bobrowniki",
+   "Dobieszowice, śląskie"
+  ],
+  "radius": 1500
  }
 ]
