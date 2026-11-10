@@ -51,7 +51,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 #card td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:top}#card td:first-child{color:var(--mute);width:44%}
 #card input,#card select,#card textarea{font:inherit;width:100%;padding:5px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}
 .calc{background:color-mix(in srgb,#ffb703 14%,var(--panel));border-radius:8px;padding:6px 10px;margin:10px 0}
-.calc b{font-family:var(--mono)}
+.calc b{font:600 15px var(--f)}.why1{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:10px 0;padding:10px 12px;border-left:4px solid var(--nn);background:color-mix(in srgb,var(--nn) 8%,var(--panel));border-radius:0 8px 8px 0}.why1 p{margin:0;font-size:15px}.why1 b{color:var(--nn)}.why1 .nav{background:var(--acc);color:#fff;text-decoration:none;padding:9px 14px;border-radius:8px;font-weight:600;white-space:nowrap}
 .btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .note{font-size:12px;color:var(--mute)}
 .leaflet-container{background:#dde3e8}
@@ -330,6 +330,7 @@ function openCard(r){
   const geo=`https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${encodeURIComponent(r.id)}`;
   const c=$('#card');c.hidden=false;
   c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><h2>Działka ${r.num}</h2><div id="addr" class="note">📍 szukam najbliższego adresu…</div><div class="note">${r.obr}, gm. ${r.gm} · ${r.area.toLocaleString('pl')} m² · <span style="font-family:var(--mono)">${r.id}</span></div></div><button id="x" aria-label="Zamknij">✕</button></div>
+  ${r.sieci.length?`<div class="why1"><p>${trWhy(r)}</p><a class="nav" href="${navUrl(r)}" target="_blank" rel="noopener">Nawiguj</a></div>`:''}
   <div class="calc"><div class="note">Do przepisania w kalkulatorze Votum (główna sieć):</div>
   <table><tr><td>Kategoria</td><td><b>${main.kind}</b></td></tr>
   <tr><td>Typ infrastruktury</td><td><b>${TN(main.k)}${main.v?' '+(+String(main.v).split(';')[0]/1000)+' kV':''}</b></td></tr>
