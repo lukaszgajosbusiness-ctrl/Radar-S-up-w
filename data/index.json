@@ -7,9 +7,9 @@
    18.9911874
   ],
   "radius": 2000,
-  "generated": "2026-11-10T15:02:54.752Z",
-  "parcels": 942,
-  "domy": 1
+  "generated": "2026-11-10T21:17:27.699Z",
+  "parcels": 1074,
+  "domy": 2
  },
  {
   "slug": "boguchwalowice",
@@ -19,9 +19,9 @@
    19.17427
   ],
   "radius": 2000,
-  "generated": "2026-11-10T14:53:51.902Z",
-  "parcels": 525,
-  "domy": 2
+  "generated": "2026-11-10T20:59:30.911Z",
+  "parcels": 548,
+  "domy": 14
  },
  {
   "slug": "ciagowice",
@@ -31,9 +31,9 @@
    19.3640011
   ],
   "radius": 2000,
-  "generated": "2026-11-10T15:22:47.783Z",
-  "parcels": 350,
-  "domy": 8
+  "generated": "2026-11-10T21:52:03.392Z",
+  "parcels": 423,
+  "domy": 31
  },
  {
   "slug": "gora-siewierska",
@@ -43,8 +43,8 @@
    19.0827779
   ],
   "radius": 2000,
-  "generated": "2026-11-07T20:12:20.392Z",
-  "parcels": 979,
+  "generated": "2026-11-10T21:18:50.409Z",
+  "parcels": 1041,
   "domy": 0
  },
  {
@@ -55,9 +55,9 @@
    19.191968
   ],
   "radius": 2000,
-  "generated": "2026-11-10T15:11:45.534Z",
-  "parcels": 591,
-  "domy": 30
+  "generated": "2026-11-10T21:39:04.279Z",
+  "parcels": 746,
+  "domy": 104
  },
  {
   "slug": "mierzecice",
@@ -67,9 +67,9 @@
    19.12405
   ],
   "radius": 2000,
-  "generated": "2026-11-10T19:04:22.837Z",
+  "generated": "2026-11-10T20:27:27.022Z",
   "parcels": 613,
-  "domy": 0
+  "domy": 2
  },
  {
   "slug": "przeczyce",
@@ -79,9 +79,9 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-10T19:36:10.115Z",
-  "parcels": 974,
-  "domy": 10
+  "generated": "2026-11-10T20:41:12.780Z",
+  "parcels": 962,
+  "domy": 17
  },
  {
   "slug": "psary",
@@ -91,9 +91,9 @@
    19.1110804
   ],
   "radius": 2000,
-  "generated": "2026-11-10T15:03:25.795Z",
-  "parcels": 879,
-  "domy": 3
+  "generated": "2026-11-10T21:48:50.006Z",
+  "parcels": 911,
+  "domy": 5
  },
  {
   "slug": "saczow",
@@ -103,8 +103,8 @@
    19.0360868
   ],
   "radius": 2000,
-  "generated": "2026-11-10T14:52:34.832Z",
-  "parcels": 811,
+  "generated": "2026-11-10T20:44:35.666Z",
+  "parcels": 805,
   "domy": 0
  },
  {
@@ -115,9 +115,9 @@
    19.0547555
   ],
   "radius": 2000,
-  "generated": "2026-11-10T15:17:04.915Z",
-  "parcels": 950,
-  "domy": 5
+  "generated": "2026-11-10T21:40:15.208Z",
+  "parcels": 998,
+  "domy": 12
  },
  {
   "slug": "siewierz",
@@ -127,9 +127,9 @@
    19.2318901
   ],
   "radius": 2000,
-  "generated": "2026-11-10T14:48:53.340Z",
-  "parcels": 893,
-  "domy": 2
+  "generated": "2026-11-10T20:45:14.745Z",
+  "parcels": 1070,
+  "domy": 9
  },
  {
   "slug": "trzebieslawice",
@@ -139,9 +139,9 @@
    19.2503189
   ],
   "radius": 2000,
-  "generated": "2026-11-10T09:52:19.678Z",
-  "parcels": 726,
-  "domy": 2
+  "generated": "2026-11-10T20:59:42.500Z",
+  "parcels": 760,
+  "domy": 5
  },
  {
   "slug": "tuliszow",
@@ -151,8 +151,8 @@
    19.1946
   ],
   "radius": 2500,
-  "generated": "2026-11-10T18:55:47.686Z",
-  "parcels": 1329,
+  "generated": "2026-11-10T20:59:50.371Z",
+  "parcels": 1317,
   "domy": 23
  },
  {
@@ -163,8 +163,8 @@
    19.1795899
   ],
   "radius": 2000,
-  "generated": "2026-11-10T15:16:51.153Z",
-  "parcels": 883,
+  "generated": "2026-11-10T21:46:55.111Z",
+  "parcels": 1098,
   "domy": 3
  },
  {
@@ -175,9 +175,9 @@
    19.204206
   ],
   "radius": 2000,
-  "generated": "2026-11-10T14:53:03.845Z",
-  "parcels": 880,
-  "domy": 10
+  "generated": "2026-11-10T20:55:59.343Z",
+  "parcels": 1064,
+  "domy": 20
  },
  {
   "slug": "zelislawice",
@@ -187,8 +187,8 @@
    19.2560112
   ],
   "radius": 2000,
-  "generated": "2026-11-10T15:00:09.494Z",
-  "parcels": 492,
+  "generated": "2026-11-10T20:50:24.543Z",
+  "parcels": 518,
   "domy": 0
  }
 ]
