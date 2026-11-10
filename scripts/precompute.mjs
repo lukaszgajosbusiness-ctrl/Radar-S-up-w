@@ -132,10 +132,17 @@ async function runArea(a) {
   // nowe domy, których nie ma w bazie GUGiK, uzupełniają budynki z OSM (niżej) – bez gęstej siatki zapytań
   console.log(`   budynki: ${bpts.length} punktów`);
   const found = new Map(); last = Date.now();
-  await pool(bpts, 6, async p => { for (const b of found.values()) if (inRings(p.q, b.rm)) return;
+  // pamięć budynków z poprzednich przebiegów: znalezione budynki i punkty, w których budynku nie było
+  const cfile = `data/cache/${a.slug}-bud.json`; let neg = new Set(), cb = [];
+  if (!process.env.FULL && new Date().getUTCDay() !== 0) { try { const c = JSON.parse(await fs.readFile(cfile, 'utf8')); neg = new Set(c.neg); cb = c.bud || [] } catch (e) {} }
+  const key = q => Math.round(q[0] / 4) + ',' + Math.round(q[1] / 4);
+  for (const b of cb) { const rm = b.rings.map(r => r.map(M)); let cx = 0, cy = 0; rm[0].forEach(q => { cx += q[0]; cy += q[1] }); const c = [cx / rm[0].length, cy / rm[0].length]; let ar = 0; for (let i = 0; i < rm[0].length - 1; i++) ar += rm[0][i][0] * rm[0][i + 1][1] - rm[0][i + 1][0] * rm[0][i][1]; let d = 1e9; for (const n of nets) if (['NN', 'WN', 'gaz'].includes(n.k)) d = Math.min(d, dLine(c, n.m)); found.set(b.id, { rm, c, d, a: Math.abs(ar) / 2, rings: b.rings }) }
+  if (cb.length || neg.size) console.log(`   budynki z pamięci: ${cb.length}, puste punkty: ${neg.size}`);
+  await pool(bpts, 6, async p => { for (const b of found.values()) if (inRings(p.q, b.rm)) return; const kk = key(p.q); if (neg.has(kk)) return;
     const t = (await uldk(`https://uldk.gugik.gov.pl/?request=GetBuildingByXY&xy=${p.ll[0]},${p.ll[1]},4326&result=id,geom_wkt&srid=4326`)).trim().split('\n');
-    if (t[0] !== '0' || !t[1]) return; const [bid, wkt] = t[1].split('|'); if (found.has(bid)) return; const rm = wktRings(wkt).map(r => r.map(M)); let cx = 0, cy = 0; rm[0].forEach(q => { cx += q[0]; cy += q[1] }); const c = [cx / rm[0].length, cy / rm[0].length]; let a = 0; for (let i = 0; i < rm[0].length - 1; i++) a += rm[0][i][0] * rm[0][i + 1][1] - rm[0][i + 1][0] * rm[0][i][1]; found.set(bid, { rm, c, d: dLine(c, p.net.m), a: Math.abs(a) / 2 }) },
+    if (t[0] !== '0' || !t[1]) { if (t[0] === '-1' || t[0] === '0') neg.add(kk); return } const [bid, wkt] = t[1].split('|'); if (found.has(bid)) return; const rm = wktRings(wkt).map(r => r.map(M)); let cx = 0, cy = 0; rm[0].forEach(q => { cx += q[0]; cy += q[1] }); const c = [cx / rm[0].length, cy / rm[0].length]; let a = 0; for (let i = 0; i < rm[0].length - 1; i++) a += rm[0][i][0] * rm[0][i + 1][1] - rm[0][i + 1][0] * rm[0][i][1]; found.set(bid, { rm, c, d: dLine(c, p.net.m), a: Math.abs(a) / 2, rings: wktRings(wkt).map(r => r.map(([x, y]) => [+x.toFixed(6), +y.toFixed(6)])) }) },
     k => { if (Date.now() - last > 30000) { last = Date.now(); console.log(`   budynki ${k}/${bpts.length}, znalezione ${found.size}`) } });
+  try { await fs.mkdir('data/cache', { recursive: true }); await fs.writeFile(cfile, JSON.stringify({ neg: [...neg], bud: [...found.entries()].filter(([k, b]) => b.rings).map(([id, b]) => ({ id, rings: b.rings })) })) } catch (e) {}
   // budynki z OSM jako uzupełnienie (nowe domy, których nie ma jeszcze w bazie GUGiK)
   const hv = nets.filter(n => ['NN', 'WN', 'gaz'].includes(n.k)); let osmAdd = 0;
   for (const b of osmB) { if ([...found.values()].some(f => inRings(b.c, f.rm))) continue; let d = 1e9, nn = null; for (const n of hv) { const x = dLine(b.c, n.m); if (x < d) { d = x; nn = n } } if (!nn || d > 60) continue; found.set('osm' + (++osmAdd), { rm: b.rm, c: b.c, d, a: b.a, osm: 1 }) }

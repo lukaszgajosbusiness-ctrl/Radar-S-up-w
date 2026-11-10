@@ -35,7 +35,7 @@ jobs:
       - run: node scripts/precompute.mjs
         env: { ONLY_AREA: '${{ matrix.slug }}' }
       - name: Wynik obszaru
-        run: mkdir -p out && if [ -f data/${{ matrix.slug }}.json ] && ! git diff --quiet -- data/${{ matrix.slug }}.json 2>/dev/null || [ -n "$(git status --porcelain data/${{ matrix.slug }}.json)" ]; then cp data/${{ matrix.slug }}.json out/; fi; ls out
+        run: mkdir -p out && if [ -f data/${{ matrix.slug }}.json ] && ! git diff --quiet -- data/${{ matrix.slug }}.json 2>/dev/null || [ -n "$(git status --porcelain data/${{ matrix.slug }}.json)" ]; then cp data/${{ matrix.slug }}.json out/; fi; mkdir -p out/cache; cp data/cache/${{ matrix.slug }}-*.json out/cache/ 2>/dev/null || true; ls -R out
       - uses: actions/upload-artifact@v4
         with: { name: 'area-${{ matrix.slug }}', path: out, if-no-files-found: ignore }
   commit:
@@ -50,7 +50,7 @@ jobs:
         with: { path: art, pattern: 'area-*', merge-multiple: true }
       - name: Zapisz wyniki
         run: |
-          mkdir -p art; cp art/*.json data/ 2>/dev/null || true
+          mkdir -p art data/cache; cp art/*.json data/ 2>/dev/null || true; cp art/cache/*.json data/cache/ 2>/dev/null || true
           node scripts/build_index.mjs
           git config user.name "radar-bot"
           git config user.email "radar-bot@users.noreply.github.com"
