@@ -51,7 +51,7 @@ const kind = t => (t.power === 'cable' || t.location === 'underground' || (t.man
 
 async function overpass(bb) {
   const b = `(${bb.s},${bb.w},${bb.n},${bb.e})`;
-  const q = `[out:json][timeout:180];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:15)["landuse"="forest"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
+  const q = `[out:json][timeout:180];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:15)["landuse"="forest"];way(around.n:45)["building"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
   const H = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
   for (let round = 0; round < 3; round++) { if (round) { console.log(`   Overpass: runda ${round + 1} za 90 s`); await sleep(90000) }
     for (const host of H) {
@@ -82,11 +82,12 @@ async function runArea(a) {
   U.ok = 0; U.err = 0;
   console.log(`== ${a.name}: OSM`);
   const els = await overpass(bb);
-  const nets = [], forests = [], poles = [];
+  const nets = [], forests = [], poles = [], osmB = [];
   for (const e of els) {
     if (e.type === 'node') { poles.push(M([e.lon, e.lat])); continue }
     if (!e.geometry) continue; const g = e.geometry.map(p => [p.lon, p.lat]); const t = e.tags || {};
     if (t.landuse === 'forest' || t.natural === 'wood') { forests.push(g.map(M)); continue }
+    if (t.building) { const rm = g.map(M); let cx = 0, cy = 0, ar = 0; rm.forEach(q => { cx += q[0]; cy += q[1] }); for (let i = 0; i < rm.length - 1; i++) ar += rm[i][0] * rm[i + 1][1] - rm[i + 1][0] * rm[i][1]; osmB.push({ rm: [rm], c: [cx / rm.length, cy / rm.length], a: Math.abs(ar) / 2 }); continue }
     const k = classify(t); if (!k) continue;
     nets.push({ id: e.id, k, kind: kind(t), t, g, m: g.map(M) });
   }
@@ -135,6 +136,10 @@ async function runArea(a) {
     const t = (await uldk(`https://uldk.gugik.gov.pl/?request=GetBuildingByXY&xy=${p.ll[0]},${p.ll[1]},4326&result=id,geom_wkt&srid=4326`)).trim().split('\n');
     if (t[0] !== '0' || !t[1]) return; const [bid, wkt] = t[1].split('|'); if (found.has(bid)) return; const rm = wktRings(wkt).map(r => r.map(M)); let cx = 0, cy = 0; rm[0].forEach(q => { cx += q[0]; cy += q[1] }); const c = [cx / rm[0].length, cy / rm[0].length]; let a = 0; for (let i = 0; i < rm[0].length - 1; i++) a += rm[0][i][0] * rm[0][i + 1][1] - rm[0][i + 1][0] * rm[0][i][1]; found.set(bid, { rm, c, d: dLine(c, p.net.m), a: Math.abs(a) / 2 }) },
     k => { if (Date.now() - last > 30000) { last = Date.now(); console.log(`   budynki ${k}/${bpts.length}, znalezione ${found.size}`) } });
+  // budynki z OSM jako uzupełnienie (nowe domy, których nie ma jeszcze w bazie GUGiK)
+  const hv = nets.filter(n => ['NN', 'WN', 'gaz'].includes(n.k)); let osmAdd = 0;
+  for (const b of osmB) { if ([...found.values()].some(f => inRings(b.c, f.rm))) continue; let d = 1e9, nn = null; for (const n of hv) { const x = dLine(b.c, n.m); if (x < d) { d = x; nn = n } } if (!nn || d > 60) continue; found.set('osm' + (++osmAdd), { rm: b.rm, c: b.c, d, a: b.a }) }
+  console.log(`   budynki z OSM (uzupełnienie): ${osmAdd}`);
   for (const r of RES) { const bs = [...found.values()].filter(b => b.a >= 40 && inRings(b.c, r.rm)); if (bs.length) { r.domy = bs.length; const d = Math.min(...bs.map(b => b.d)); if (d < 40) { r.domPrzyLinii = true; r.domOdl = Math.round(d); const b = bs.find(x => x.d === d); r.domLL = [+(b.c[1] / K.ky).toFixed(6), +(b.c[0] / K.kx).toFixed(6)] } } delete r.rm }
   const usedNets = new Set(RES.flatMap(r => r.sieci.map(s => s.id)));
   const out = {
