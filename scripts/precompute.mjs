@@ -117,7 +117,7 @@ async function runArea(a) {
       slupy: poles.some(p => inRings(p, d.rm)), las: forests.some(f => inRing(cen, f)), domy: 0, domPrzyLinii: false, domOdl: null });
   }
   // budynki (baza budynków GUGiK) tylko na działkach spełniających odległość 5 m
-  const ok = RES.filter(r => !r.las && r.sieci.some(s => s.maxd >= 5 || s.pas));
+  const ok = RES.filter(r => !r.las && r.sieci.some(s => s.maxd >= 5 || s.pas || s.k === 'NN' || s.k === 'WN'));
   const okP = ok.map(r => { const f = r.rm.flat(); return { r, x0: Math.min(...f.map(p => p[0])), x1: Math.max(...f.map(p => p[0])), y0: Math.min(...f.map(p => p[1])), y1: Math.max(...f.map(p => p[1])) } });
   const bpts = [];
   for (const n of nets) { if (!['NN', 'WN', 'gaz'].includes(n.k)) continue; const g = n.m;

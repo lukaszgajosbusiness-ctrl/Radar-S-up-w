@@ -259,7 +259,7 @@ function score(r){
   const u=store.get('u:'+r.id,{});r.u=u;
   const grunt=(u.grunt&&u.grunt!=='?')?u.grunt:(r.mpzpGrunt||'?');const bud=BUD.includes(grunt)||(grunt==='?'&&r.domy>0);
   const prog=BUD.includes(grunt)?5:(grunt==='?'?5:10);
-  r.sieci.forEach(s=>s.ok=s.pas?true:s.maxd>=prog);
+  r.sieci.forEach(s=>s.ok=s.pas||(s.k==='NN'||s.k==='WN')&&s.len>=1?true:s.maxd>=prog); // przy NN/WN przewody skrajne wiszą kilka m od osi, więc każde przecięcie liczy się
   const good=r.sieci.filter(s=>s.ok);
   r.ok=good.length>0&&!(r.las&&grunt==='?')&&grunt!=='ZL';
   const typy=new Set(good.map(s=>s.k));
