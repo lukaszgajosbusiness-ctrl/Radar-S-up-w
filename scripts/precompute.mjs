@@ -55,7 +55,7 @@ async function overpass(bb) {
   const H = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
   for (let round = 0; round < 3; round++) { if (round) { console.log(`   Overpass: runda ${round + 1} za 90 s`); await sleep(90000) }
     for (const host of H) {
-      try { const t = await get(host, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, tmo: 200000 }, 2); const j = JSON.parse(t); if (j.elements) return j.elements; throw new Error('brak elements') }
+      try { const t = await get(host, { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, tmo: 200000 }, 2); const j = JSON.parse(t); if (j.remark && /error|timed out|out of memory/i.test(j.remark)) throw new Error('niepełna odpowiedź: ' + j.remark.slice(0, 80)); if (j.elements) return j.elements; throw new Error('brak elements') }
       catch (e) { console.log('overpass fail', host, e.message) }
     } }
   throw new Error('Overpass niedostępny');
@@ -156,7 +156,9 @@ async function runArea(a) {
     parcels: RES
   };
   const errRate = U.err / Math.max(1, U.ok + U.err);
-  let prev = 0; try { prev = JSON.parse(await fs.readFile(`data/${a.slug}.json`, 'utf8')).parcels.length } catch (e) {}
+  let prev = 0, prevDom = 0; try { const pp = JSON.parse(await fs.readFile(`data/${a.slug}.json`, 'utf8')).parcels; prev = pp.length; prevDom = pp.filter(r => r.domPrzyLinii).length } catch (e) {}
+  const nDom = RES.filter(r => r.domPrzyLinii).length;
+  if (prevDom >= 6 && nDom < prevDom * 0.6) throw new Error(`mniej domów przy linii niż poprzednio (${nDom} < ${prevDom}) – pewnie niepełne dane z OSM, zostawiam poprzednie`);
   if (errRate > 0.1) throw new Error(`ULDK zawodzi (${U.err} błędów na ${U.ok + U.err} zapytań) – zostawiam poprzednie dane`);
   if (!RES.length) throw new Error('0 działek – nie zapisuję');
   if (prev && RES.length < prev * 0.7) throw new Error(`wynik słabszy niż poprzedni (${RES.length} < ${prev}) – zostawiam poprzednie dane`);
