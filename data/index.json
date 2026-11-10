@@ -7,9 +7,9 @@
    18.9911874
   ],
   "radius": 2000,
-  "generated": "2026-11-09T21:09:50.405Z",
-  "parcels": 944,
-  "domy": 0
+  "generated": "2026-11-10T15:02:54.752Z",
+  "parcels": 942,
+  "domy": 1
  },
  {
   "slug": "boguchwalowice",
@@ -19,9 +19,21 @@
    19.17427
   ],
   "radius": 2000,
-  "generated": "2026-11-10T10:02:11.506Z",
-  "parcels": 530,
+  "generated": "2026-11-10T14:53:51.902Z",
+  "parcels": 525,
   "domy": 2
+ },
+ {
+  "slug": "ciagowice",
+  "name": "Ciągowice (gm. Łazy)",
+  "center": [
+   50.446918,
+   19.3640011
+  ],
+  "radius": 2000,
+  "generated": "2026-11-10T15:22:47.783Z",
+  "parcels": 350,
+  "domy": 8
  },
  {
   "slug": "gora-siewierska",
@@ -36,6 +48,18 @@
   "domy": 0
  },
  {
+  "slug": "kuznica-warezynska",
+  "name": "Kuźnica Warężyńska (Dąbrowa Górnicza)",
+  "center": [
+   50.3482328,
+   19.191968
+  ],
+  "radius": 2000,
+  "generated": "2026-11-10T15:11:45.534Z",
+  "parcels": 591,
+  "domy": 30
+ },
+ {
   "slug": "mierzecice",
   "name": "Mierzęcice",
   "center": [
@@ -43,7 +67,7 @@
    19.12405
   ],
   "radius": 2000,
-  "generated": "2026-11-10T09:06:12.578Z",
+  "generated": "2026-11-10T14:34:55.105Z",
   "parcels": 612,
   "domy": 0
  },
@@ -55,8 +79,8 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-10T08:52:45.382Z",
-  "parcels": 877,
+  "generated": "2026-11-10T14:38:42.866Z",
+  "parcels": 872,
   "domy": 3
  },
  {
@@ -67,8 +91,8 @@
    19.1110804
   ],
   "radius": 2000,
-  "generated": "2026-11-09T15:53:32.371Z",
-  "parcels": 872,
+  "generated": "2026-11-10T15:03:25.795Z",
+  "parcels": 879,
   "domy": 3
  },
  {
@@ -79,9 +103,21 @@
    19.0360868
   ],
   "radius": 2000,
-  "generated": "2026-11-10T09:55:42.781Z",
-  "parcels": 817,
+  "generated": "2026-11-10T14:52:34.832Z",
+  "parcels": 811,
   "domy": 0
+ },
+ {
+  "slug": "siemonia",
+  "name": "Siemonia (gm. Bobrowniki)",
+  "center": [
+   50.4222163,
+   19.0547555
+  ],
+  "radius": 2000,
+  "generated": "2026-11-10T15:17:04.915Z",
+  "parcels": 950,
+  "domy": 5
  },
  {
   "slug": "siewierz",
@@ -91,8 +127,8 @@
    19.2318901
   ],
   "radius": 2000,
-  "generated": "2026-11-10T09:24:24.359Z",
-  "parcels": 895,
+  "generated": "2026-11-10T14:48:53.340Z",
+  "parcels": 893,
   "domy": 2
  },
  {
@@ -115,9 +151,21 @@
    19.1946
   ],
   "radius": 2500,
-  "generated": "2026-11-10T08:43:16.428Z",
-  "parcels": 1176,
+  "generated": "2026-11-10T14:44:00.850Z",
+  "parcels": 1168,
   "domy": 5
+ },
+ {
+  "slug": "warezyn",
+  "name": "Warężyn (gm. Siewierz)",
+  "center": [
+   50.4071027,
+   19.1795899
+  ],
+  "radius": 2000,
+  "generated": "2026-11-10T15:16:51.153Z",
+  "parcels": 883,
+  "domy": 3
  },
  {
   "slug": "wojkowice-koscielne",
@@ -127,8 +175,8 @@
    19.204206
   ],
   "radius": 2000,
-  "generated": "2026-11-10T09:39:32.514Z",
-  "parcels": 883,
+  "generated": "2026-11-10T14:53:03.845Z",
+  "parcels": 880,
   "domy": 10
  },
  {
@@ -139,8 +187,8 @@
    19.2560112
   ],
   "radius": 2000,
-  "generated": "2026-11-10T14:08:34.884Z",
-  "parcels": 493,
+  "generated": "2026-11-10T15:00:09.494Z",
+  "parcels": 492,
   "domy": 0
  }
 ]
