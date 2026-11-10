@@ -67,8 +67,8 @@
    19.12405
   ],
   "radius": 2000,
-  "generated": "2026-11-10T14:34:55.105Z",
-  "parcels": 612,
+  "generated": "2026-11-10T19:04:22.837Z",
+  "parcels": 613,
   "domy": 0
  },
  {
@@ -79,9 +79,9 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-10T14:38:42.866Z",
-  "parcels": 872,
-  "domy": 3
+  "generated": "2026-11-10T19:36:10.115Z",
+  "parcels": 974,
+  "domy": 10
  },
  {
   "slug": "psary",
