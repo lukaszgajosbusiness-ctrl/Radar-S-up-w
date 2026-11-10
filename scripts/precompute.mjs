@@ -138,9 +138,9 @@ async function runArea(a) {
     k => { if (Date.now() - last > 30000) { last = Date.now(); console.log(`   budynki ${k}/${bpts.length}, znalezione ${found.size}`) } });
   // budynki z OSM jako uzupełnienie (nowe domy, których nie ma jeszcze w bazie GUGiK)
   const hv = nets.filter(n => ['NN', 'WN', 'gaz'].includes(n.k)); let osmAdd = 0;
-  for (const b of osmB) { if ([...found.values()].some(f => inRings(b.c, f.rm))) continue; let d = 1e9, nn = null; for (const n of hv) { const x = dLine(b.c, n.m); if (x < d) { d = x; nn = n } } if (!nn || d > 60) continue; found.set('osm' + (++osmAdd), { rm: b.rm, c: b.c, d, a: b.a }) }
+  for (const b of osmB) { if ([...found.values()].some(f => inRings(b.c, f.rm))) continue; let d = 1e9, nn = null; for (const n of hv) { const x = dLine(b.c, n.m); if (x < d) { d = x; nn = n } } if (!nn || d > 60) continue; found.set('osm' + (++osmAdd), { rm: b.rm, c: b.c, d, a: b.a, osm: 1 }) }
   console.log(`   budynki z OSM (uzupełnienie): ${osmAdd}`);
-  for (const r of RES) { const bs = [...found.values()].filter(b => b.a >= 40 && inRings(b.c, r.rm)); if (bs.length) { r.domy = bs.length; const d = Math.min(...bs.map(b => b.d)); if (d < 40) { r.domPrzyLinii = true; r.domOdl = Math.round(d); const b = bs.find(x => x.d === d); r.domLL = [+(b.c[1] / K.ky).toFixed(6), +(b.c[0] / K.kx).toFixed(6)] } } delete r.rm }
+  for (const r of RES) { const bs = [...found.values()].filter(b => b.a >= 40 && inRings(b.c, r.rm)); if (bs.length) { r.domy = bs.length; const d = Math.min(...bs.map(b => b.d)); if (d < 40) { r.domPrzyLinii = true; r.domOdl = Math.round(d); const b = bs.find(x => x.d === d); r.domLL = [+(b.c[1] / K.ky).toFixed(6), +(b.c[0] / K.kx).toFixed(6)]; if (b.osm) r.domOSM = 1 } } delete r.rm }
   const usedNets = new Set(RES.flatMap(r => r.sieci.map(s => s.id)));
   const out = {
     name: a.name, slug: a.slug, center: [lat, lon], radius: R, bbox: bb, generated: new Date().toISOString(),

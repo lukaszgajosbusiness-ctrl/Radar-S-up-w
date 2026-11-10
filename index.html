@@ -638,7 +638,7 @@ const gTr=L.layerGroup().addTo(map);
 const VOLT=s=>s.v?(+String(s.v).split(';')[0]/1000)+' kV':({NN:'NN',WN:'WN',SN:'SN'}[s.k]||s.k);
 function trWhy(r){const hv=r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0]||r.sieci[0];
   const linia=`linia ${VOLT(hv)}`+(hv.op?` (${hv.op.replace('Polskie Sieci Elektroenergetyczne','PSE')})`:'');
-  if(r.domPrzyLinii)return`<b>Dom ${r.domOdl} m od linii</b>, ${linia}`;
+  if(r.domPrzyLinii)return`<b>Dom ${r.domOdl} m od linii</b>, ${linia}${r.domOSM?' (dom spoza ewidencji GUGiK, pewnie nowy)':''}`;
   if(hv.pas)return`Działka w pasie linii, ${linia} ${hv.odl} m od granicy`;
   return`${linia} nad działką na ${hv.len} m`}
 function trPick(){const cand=RES.filter(r=>r.ok&&!r.las&&r.area<=200000&&(r.domPrzyLinii||r.sieci.some(s=>s.ok&&(s.k==='NN'||s.k==='WN'))))
