@@ -126,9 +126,9 @@ async function runArea(a) {
     for (let i = 0; i < g.length - 1; i++) { const S = dist(g[i], g[i + 1]); if (!S) continue; const ux = (g[i + 1][0] - g[i][0]) / S, uy = (g[i + 1][1] - g[i][1]) / S; const s = Math.max(1, Math.round(S / 15));
       for (let k = 0; k < s; k++) { const x = g[i][0] + (g[i + 1][0] - g[i][0]) * (k + .5) / s, y = g[i][1] + (g[i + 1][1] - g[i][1]) * (k + .5) / s;
         for (const o of [-27, -18, -9, 0, 9, 18, 27]) { const q = [x - uy * o, y + ux * o]; const ll = [q[0] / K.kx, q[1] / K.ky]; if (inBB(ll) && okP.some(o2 => q[0] >= o2.x0 && q[0] <= o2.x1 && q[1] >= o2.y0 && q[1] <= o2.y1 && inRings(q, o2.r.rm))) bpts.push({ q, ll, net: n }) } } } }
-  // małe działki (do 4000 m²): siatka punktów co 7 m w środku, żeby nie przegapić domu stojącego z dala od osi linii
-  for (const o of okP) { if (o.r.area > 4000) continue; const nt = nets.find(n => n.id === (o.r.sieci.find(s => ['NN', 'WN', 'gaz'].includes(s.k)) || o.r.sieci[0]).id); if (!nt) continue;
-    for (let x = o.x0 + 3; x < o.x1; x += 7) for (let y = o.y0 + 3; y < o.y1; y += 7) { const q = [x, y]; if (inRings(q, o.r.rm)) bpts.push({ q, ll: [x / K.kx, y / K.ky], net: nt }) } }
+  // małe działki (do 4000 m²) przy liniach NN/WN: siatka punktów co 9 m w środku, żeby nie przegapić domu stojącego z dala od osi linii
+  for (const o of okP) { if (o.r.area > 4000 || !o.r.sieci.some(x => x.k === 'NN' || x.k === 'WN')) continue; const nt = nets.find(n => n.id === (o.r.sieci.find(s => ['NN', 'WN', 'gaz'].includes(s.k)) || o.r.sieci[0]).id); if (!nt) continue;
+    for (let x = o.x0 + 4; x < o.x1; x += 9) for (let y = o.y0 + 4; y < o.y1; y += 9) { const q = [x, y]; if (inRings(q, o.r.rm)) bpts.push({ q, ll: [x / K.kx, y / K.ky], net: nt }) } }
   console.log(`   budynki: ${bpts.length} punktów`);
   const found = new Map(); last = Date.now();
   await pool(bpts, 6, async p => { for (const b of found.values()) if (inRings(p.q, b.rm)) return;
