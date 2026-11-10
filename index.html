@@ -17,7 +17,7 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--fg);font:14px/1.45 var(--f);display:flex;flex-direction:column}
-header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px max(12px,env(safe-area-inset-left));padding-top:max(8px,env(safe-area-inset-top));background:var(--acc);color:#fff}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px max(12px,env(safe-area-inset-left));padding-top:max(8px,env(safe-area-inset-top));background:#14324a;color:#fff}
 header h1{display:flex;align-items:center;gap:8px;font:700 20px/1 var(--fc);margin:0 8px 0 0;letter-spacing:.01em}header h1 img{width:26px;height:26px;border-radius:6px}
 header input,header select,header button{font:inherit;padding:6px 8px;border-radius:6px;border:0}
 header input{width:160px}
@@ -51,7 +51,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 #card td{padding:5px 4px;border-bottom:1px solid var(--line);vertical-align:top}#card td:first-child{color:var(--mute);width:44%}
 #card input,#card select,#card textarea{font:inherit;width:100%;padding:5px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}
 .calc{background:color-mix(in srgb,#ffb703 14%,var(--panel));border-radius:8px;padding:6px 10px;margin:10px 0}
-.calc b{font:600 15px var(--f)}.why1{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:10px 0;padding:10px 12px;border-left:4px solid var(--nn);background:color-mix(in srgb,var(--nn) 8%,var(--panel));border-radius:0 8px 8px 0}.why1 p{margin:0;font-size:15px}.why1 b{color:var(--nn)}.why1 .nav{background:var(--acc);color:#fff;text-decoration:none;padding:9px 14px;border-radius:8px;font-weight:600;white-space:nowrap}
+.calc b{font:600 15px var(--f)}.why1{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:10px 0;padding:10px 12px;border-left:4px solid var(--nn);background:color-mix(in srgb,var(--nn) 8%,var(--panel));border-radius:0 8px 8px 0}.why1 p{margin:0;font-size:15px}.why1 b{color:var(--nn)}.why1 .nav{background:#14324a;color:#fff;text-decoration:none;padding:9px 14px;border-radius:8px;font-weight:600;white-space:nowrap}
 .btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .note{font-size:12px;color:var(--mute)}
 .leaflet-container{background:#dde3e8}
@@ -62,7 +62,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 #trasaBtn{background:transparent;color:#fff;border:1.5px solid #ffb703;font-weight:600}
 #trasa{position:fixed;z-index:1050;inset:0;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
 #trasa[hidden]{display:none}
-.tr-head{background:var(--acc);color:#fff;padding:max(12px,env(safe-area-inset-top)) 16px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:start}
+.tr-head{background:#14324a;color:#fff;padding:max(12px,env(safe-area-inset-top)) 16px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:start}
 .tr-head h2{margin:0;font:700 26px/1.1 var(--fc);letter-spacing:-.01em}
 .tr-head p{margin:0;color:#c9d7e3;font-size:13.5px;grid-column:1}
 .tr-head .x{grid-row:1/3;grid-column:2;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);font-size:15px;padding:8px 12px}
@@ -81,7 +81,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 .st-b .why b{color:var(--nn)}
 .st-acts{display:flex;flex-wrap:wrap;gap:6px}
 .st-acts a,.st-acts button{font-size:14px;padding:8px 11px;border-radius:8px;text-decoration:none}.st-acts .chip{font-size:13px;padding:6px 9px;border-radius:999px}
-.st-acts a.nav{background:var(--acc);color:#fff;border:0;font-weight:600}
+.st-acts a.nav{background:#14324a;color:#fff;border:0;font-weight:600}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--panel);border-color:var(--fg)}
 .st.done .st-b{opacity:.6}
 .tr-empty{padding:24px 16px;font-size:15px}
@@ -658,7 +658,7 @@ function trShow(){const el=$('#trasa');
   <div class="tr-acts">${stops.length?`<a class="pri" href="${gm}" target="_blank" rel="noopener">Jedź całą trasą w Mapach</a>`:''}<button id="trShare">Wyślij leady z dnia</button><button id="trMe">${ME?'Odśwież od mojej pozycji':'Licz od mojej pozycji'}</button></div>
   ${stops.length?`<ol class="tr-list">${stops.map((p,i)=>{const r=p.r,st=trStat(r),k=(r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0]||{}).k;
     return`<li class="st${st?' done':''}"><div class="pyl ${k} ${st==='zainteresowany'?'yes':st?'done':''}" aria-hidden="true">${i+1}</div><div class="st-b">
-    <h3>Działka ${r.num}, ${r.obr.charAt(0)+r.obr.slice(1).toLowerCase()}</h3><p class="why">${trWhy(r)} · ${r.area<10000?Math.round(r.area)+' m²':(r.area/10000).toFixed(1)+' ha'}</p>
+    <h3>Działka ${r.num}, ${r.obr===r.obr.toUpperCase()?r.obr.toLowerCase().replace(/(^|[\s-])\S/g,m=>m.toUpperCase()):r.obr}</h3><p class="why">${trWhy(r)} · ${r.area<10000?Math.round(r.area)+' m²':(r.area/10000).toFixed(1)+' ha'}</p>
     <div class="st-acts"><a class="nav" href="${navUrl(r)}" target="_blank" rel="noopener">Nawiguj</a><button data-c="${i}">Karta</button>
     ${['byłem','zainteresowany','nikogo'].map(v=>`<button class="chip" data-s="${i}" data-v="${v}" aria-pressed="${st===v}">${v==='byłem'?'Byłem':v==='zainteresowany'?'Zainteresowany':'Nikogo nie było'}</button>`).join('')}</div></div></li>`}).join('')}</ol>`
   :`<p class="tr-empty">W tym obszarze nie ma działek z domem pod linią ani z linią wysokiego napięcia nad działką. Wybierz inny obszar.</p>`}`;
