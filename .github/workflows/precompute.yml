@@ -26,7 +26,7 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 5
       matrix: { slug: '${{ fromJson(needs.list.outputs.slugs) }}' }
     steps:
       - uses: actions/checkout@v4
