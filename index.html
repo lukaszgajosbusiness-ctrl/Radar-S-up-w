@@ -140,11 +140,13 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <li><b>Lista jest ułożona od najlepszych.</b> Punkty rosną za linie NN i WN, dłuższy odcinek sieci, kilka sieci na jednej działce, grunt budowlany i budynek blisko linii.</li>
   <li><b>Kolory sieci:</b> <span class="t NN">NN</span> 220–400 kV, <span class="t WN">WN</span> 110 kV, <span class="t SN">SN</span> 15 kV, <span class="t gaz">gaz</span>, <span class="t woda">woda</span>. Linia przerywana to sieć podziemna.</li>
   <li><b>Odległość od granicy:</b> sieć musi biec w głębi działki: min. 5 m od granicy na gruncie budowlanym, 10 m na pozostałym. Znak ✗ przy sieci oznacza, że ten warunek nie jest spełniony.</li>
+  <li><b>Trasa na dzień</b> (przycisk u góry) wybiera do 12 najmocniejszych działek z domem pod linią lub linią NN/WN nad działką i układa je w kolejności przejazdu. Przy każdej: „Nawiguj” prowadzi pod dom, a statusy Byłem / Zainteresowany / Nikogo nie było zapisują postęp. „Wyślij leady z dnia” wysyła menadżerowi listę zainteresowanych.</li>
+  <li><b>Pas linii:</b> działki z dopiskiem „w pasie” nie mają przewodów nad sobą według mapy, ale leżą blisko linii (do 25 m od 220/400 kV). Sprawdź na miejscu, bo mapa może przesuwać linię o kilka metrów.</li>
   <li><b>Karta działki</b> ma pola do przepisania w kalkulatorze Votum. Typ gruntu i cenę zł/m² (transakcyjną, z RCN) wpisujesz sam po sprawdzeniu w Geoportalu.</li>
   <li><b>W terenie:</b> „◎” na mapie pokazuje, gdzie jesteś, „sortuj: najbliżej mnie” układa działki od najbliższej, a „Nawiguj do działki” otwiera trasę w Mapach Google.</li>
   <li><b>Z kontem:</b> „Rezerwuję na 14 dni” blokuje działkę dla Ciebie, żeby nikt z zespołu nie szedł do tego samego właściciela. Zmieniaj status aż do „umowa”.</li>
  </ol>
- <p class="note">Apka korzysta tylko z danych publicznych (OpenStreetMap, GUGiK) i nie zawiera danych właścicieli. Wynik to wskazówka. Przebieg sieci i słupy zawsze sprawdź w Geoportalu i na miejscu.</p>
+ <p class="note">Apka korzysta tylko z danych publicznych (OpenStreetMap, BDOT10k i ULDK GUGiK) i nie zawiera danych właścicieli. Wynik to wskazówka. Przebieg sieci i słupy zawsze sprawdź w Geoportalu i na miejscu.</p>
 </div>
 <div id="card" hidden></div>
 <script>
