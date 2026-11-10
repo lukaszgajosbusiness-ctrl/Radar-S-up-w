@@ -653,7 +653,7 @@ function trShow(){const el=$('#trasa');
   const {stops,km}=trPick();const zrob=stops.filter(p=>trStat(p.r)).length;
   const gm=stops.length?`https://www.google.com/maps/dir/?api=1${ME?`&origin=${ME[0]},${ME[1]}`:''}&destination=${stops.at(-1).c[0].toFixed(6)},${stops.at(-1).c[1].toFixed(6)}&waypoints=${stops.slice(0,-1).slice(0,9).map(p=>p.c[0].toFixed(6)+','+p.c[1].toFixed(6)).join('|')}&travelmode=driving`:'#';
   el.innerHTML=`<div class="tr-head"><h2>Trasa na dzień${AREA?.name?': '+AREA.name:''}</h2><p>${stops.length} przystanków, ok. ${Math.round(km*1.3)} km jazdy. Odwiedzone: ${zrob} z ${stops.length}.${ME?'':' Start od najmocniejszej działki – włącz lokalizację, żeby liczyć od Ciebie.'}</p><button class="x" id="trX">Zamknij</button></div>
-  <div class="tr-acts">${stops.length?`<a class="pri" href="${gm}" target="_blank" rel="noopener">Jedź całą trasą w Mapach</a>`:''}<button id="trMe">${ME?'Odśwież od mojej pozycji':'Licz od mojej pozycji'}</button></div>
+  <div class="tr-acts">${stops.length?`<a class="pri" href="${gm}" target="_blank" rel="noopener">Jedź całą trasą w Mapach</a>`:''}<button id="trShare">Wyślij leady z dnia</button><button id="trMe">${ME?'Odśwież od mojej pozycji':'Licz od mojej pozycji'}</button></div>
   ${stops.length?`<ol class="tr-list">${stops.map((p,i)=>{const r=p.r,st=trStat(r),k=(r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0]||{}).k;
     return`<li class="st${st?' done':''}"><div class="pyl ${k} ${st==='zainteresowany'?'yes':st?'done':''}" aria-hidden="true">${i+1}</div><div class="st-b">
     <h3>Działka ${r.num}, ${r.obr.charAt(0)+r.obr.slice(1).toLowerCase()}</h3><p class="why">${trWhy(r)} · ${r.area<10000?Math.round(r.area)+' m²':(r.area/10000).toFixed(1)+' ha'}</p>
@@ -661,6 +661,10 @@ function trShow(){const el=$('#trasa');
     ${['byłem','zainteresowany','nikogo'].map(v=>`<button class="chip" data-s="${i}" data-v="${v}" aria-pressed="${st===v}">${v==='byłem'?'Byłem':v==='zainteresowany'?'Zainteresowany':'Nikogo nie było'}</button>`).join('')}</div></div></li>`}).join('')}</ol>`
   :`<p class="tr-empty">W tym obszarze nie ma działek z domem pod linią ani z linią wysokiego napięcia nad działką. Wybierz inny obszar.</p>`}`;
   el.hidden=false;$('#trX').onclick=trClose;$('#trMe').onclick=()=>locate(trShow);
+  $('#trShare').onclick=async()=>{const L=stops.filter(p=>trStat(p.r)==='zainteresowany');if(!L.length){alert('Oznacz najpierw działki jako „Zainteresowany”.');return}
+    const t='Leady z terenu '+new Date().toLocaleDateString('pl')+'\n'+L.map((p,i)=>{const u=store.get('u:'+p.r.id,{});return`${i+1}. Działka ${p.r.num}, obręb ${p.r.obr}, gm. ${p.r.gm} (${p.r.id})\n   ${trWhy(p.r).replace(/<[^>]+>/g,'')}${u.not?'\n   Notatka: '+u.not:''}\n   Mapa: https://www.google.com/maps?q=${p.c[0].toFixed(6)},${p.c[1].toFixed(6)}`}).join('\n');
+    try{if(navigator.share){await navigator.share({text:t});return}}catch(e){}
+    try{await navigator.clipboard.writeText(t);status('Lista leadów skopiowana – wklej ją w wiadomości do menadżera.',0)}catch(e){prompt('Skopiuj listę:',t)}};
   el.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{trClose();openCard(stops[+b.dataset.c].r)});
   el.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>trSet(stops[+b.dataset.s].r,b.dataset.v));
   gTr.clearLayers();if(stops.length){gTr.addLayer(L.polyline((ME?[ME]:[]).concat(stops.map(p=>p.c)),{color:'#14324a',weight:3,dashArray:'6 6'}));
