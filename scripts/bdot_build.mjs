@@ -9,9 +9,9 @@ const DEF = '+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 
 const tr = ([x, y]) => (Math.abs(x) < 190 ? [x, y] : proj4(DEF, 'WGS84', [x, y])).map(v => +v.toFixed(6));
 const CLS = { 'linia elektroenergetyczna najwyższego napięcia': 'NN', 'linia elektroenergetyczna wysokiego napięcia': 'WN', 'linia elektroenergetyczna średniego napięcia': 'SN' };
 const lines = [];
-for (const t of TER) {
+for (const t of TER) { try {
   const url = `https://opendata.geoportal.gov.pl/bdot10k/schemat2021/SHP/${t.slice(0, 2)}/${t}_SHP.zip`;
-  const r = await fetch(url, { headers: { 'User-Agent': 'RadarSlupow/1.0' }, signal: AbortSignal.timeout(280000) });
+  const r = await fetch(url, { headers: { 'User-Agent': 'RadarSlupow/1.0' }, signal: AbortSignal.timeout(900000) });
   console.log(t, r.status, r.headers.get('content-length'));
   if (!r.ok) continue;
   const dir = `/tmp/bdot_${t}`; await fs.mkdir(dir, { recursive: true });
@@ -31,6 +31,8 @@ for (const t of TER) {
     }
     console.log(' ', f, n);
   }
+  } catch (e) { console.log(t, 'BŁĄD', e.message, '– zostawiam poprzednie linie');
+    try { const old = JSON.parse(await fs.readFile(new URL('./bdot.json', import.meta.url), 'utf8')).lines.filter(l => l.teryt === t); lines.push(...old) } catch (e2) {} }
 }
 await fs.writeFile(new URL('./bdot.json', import.meta.url), JSON.stringify({ generated: new Date().toISOString(), src: 'BDOT10k (GUGiK) – dane publiczne', lines }));
 console.log('linie:', lines.length, 'przykład:', JSON.stringify(lines[0]?.g?.[0]));
