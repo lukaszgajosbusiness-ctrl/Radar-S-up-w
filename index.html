@@ -576,7 +576,7 @@ async function raport(){
 
 // ---------- teren: nawigacja i lokalizacja ----------
 function centroid(r){const rg=r.rings[0];let x=0,y=0;rg.forEach(p=>{x+=p[0];y+=p[1]});return[y/rg.length,x/rg.length]}
-function navUrl(r){const[lat,lon]=centroid(r);return`https://www.google.com/maps/dir/?api=1&destination=${lat.toFixed(6)},${lon.toFixed(6)}`}
+function navUrl(r){const[lat,lon]=r.domLL||centroid(r);return`https://www.google.com/maps/dir/?api=1&destination=${lat.toFixed(6)},${lon.toFixed(6)}`}
 let ME=null,meMark=null;
 function dMe(r){if(!ME)return 0;const[lat,lon]=centroid(r);return Math.hypot((lat-ME[0])*110540,(lon-ME[1])*111320*Math.cos(ME[0]*Math.PI/180))}
 function locate(after){if(!navigator.geolocation)return status('Ten telefon nie udostępnia lokalizacji.',0);
@@ -642,7 +642,7 @@ function trWhy(r){const hv=r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPE
 function trPick(){const cand=RES.filter(r=>r.ok&&!r.las&&r.area<=200000&&(r.domPrzyLinii||r.sieci.some(s=>s.ok&&(s.k==='NN'||s.k==='WN'))))
   .sort((a,b)=>(b.domPrzyLinii-a.domPrzyLinii)||b.score-a.score).slice(0,12);
   // kolejność przejazdu: najbliższy sąsiad od mojej pozycji (albo od najmocniejszej działki)
-  const pts=cand.map(r=>({r,c:centroid(r)}));const out=[];let cur=ME||(pts[0]&&pts[0].c);
+  const pts=cand.map(r=>({r,c:r.domLL||centroid(r)}));const out=[];let cur=ME||(pts[0]&&pts[0].c);
   const d=(a,b)=>Math.hypot((a[0]-b[0])*111,(a[1]-b[1])*111*Math.cos(a[0]*Math.PI/180));let km=0;
   while(pts.length){let bi=0;for(let i=1;i<pts.length;i++)if(d(cur,pts[i].c)<d(cur,pts[bi].c))bi=i;const p=pts.splice(bi,1)[0];km+=d(cur,p.c);out.push(p);cur=p.c}
   return{stops:out,km}}
