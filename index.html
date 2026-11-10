@@ -649,7 +649,7 @@ function trPick(){const cand=RES.filter(r=>r.ok&&!r.las&&r.area<=200000&&(r.domP
   while(pts.length){let bi=0;for(let i=1;i<pts.length;i++)if(d(cur,pts[i].c)<d(cur,pts[bi].c))bi=i;const p=pts.splice(bi,1)[0];km+=d(cur,p.c);out.push(p);cur=p.c}
   return{stops:out,km}}
 function trStat(r){return(store.get('u:'+r.id,{}).trasa)||''}
-function trSet(r,v){const u=store.get('u:'+r.id,{});u.trasa=u.trasa===v?'':v;if(u.trasa==='zainteresowany')u.stat=u.stat||'kontakt z właścicielem';store.set('u:'+r.id,u);trShow()}
+function trSet(r,v){const u=store.get('u:'+r.id,{});u.trasa=u.trasa===v?'':v;if(u.trasa==='zainteresowany')u.stat=u.stat||'kontakt z właścicielem';store.set('u:'+r.id,u);if(u.trasa&&typeof USER!=='undefined'&&USER&&API)api('/api/feedback',{parcel_id:r.id,label:`${r.num} ${r.obr}`,verdict:'trasa: '+u.trasa,note:u.not||'',snap:trWhy(r).replace(/<[^>]+>/g,'')}).catch(()=>{});trShow()}
 function trShow(){const el=$('#trasa');
   if(!RES.length){el.innerHTML=`<div class="tr-head"><h2>Trasa na dzień</h2><p>Najpierw wybierz obszar.</p><button class="x" id="trX">Zamknij</button></div><p class="tr-empty">Wybierz „Gotowe obszary” albo wyszukaj miejscowość, a potem otwórz trasę jeszcze raz.</p>`;el.hidden=false;$('#trX').onclick=trClose;return}
   const {stops,km}=trPick();const zrob=stops.filter(p=>trStat(p.r)).length;
