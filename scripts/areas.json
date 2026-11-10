@@ -87,20 +87,20 @@
  },
  {
   "slug": "siemonia",
-  "name": "Siemonia (gm. Siewierz)",
+  "name": "Siemonia (gm. Bobrowniki)",
   "q": [
-   "Siemonia, Siewierz",
-   "Siemonia, śląskie",
+   "Siemonia, Bobrowniki",
+   "Siemonia, będziński",
    "Siemonia"
   ],
   "radius": 2000
  },
  {
   "slug": "ciagowice",
-  "name": "Ciągowice (gm. Siewierz)",
+  "name": "Ciągowice (gm. Łazy)",
   "q": [
-   "Ciągowice, Siewierz",
-   "Ciągowice, śląskie",
+   "Ciągowice, Łazy",
+   "Ciągowice, zawierciański",
    "Ciągowice"
   ],
   "radius": 2000
