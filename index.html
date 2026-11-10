@@ -67,7 +67,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 .tr-head p{margin:0;color:#c9d7e3;font-size:13.5px;grid-column:1}
 .tr-head .x{grid-row:1/3;grid-column:2;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);font-size:15px;padding:8px 12px}
 .tr-acts{display:flex;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
-.tr-acts button,.tr-acts a{font-size:15px;padding:10px 14px;text-decoration:none;border-radius:8px}
+.tr-acts select{font:inherit;font-size:15px;padding:9px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg)}.tr-acts button,.tr-acts a{font-size:15px;padding:10px 14px;text-decoration:none;border-radius:8px}
 .tr-acts .pri{background:#ffb703;color:#14202b;border:0;font-weight:700}
 .tr-list{flex:1;overflow:auto;padding:8px 16px 32px;list-style:none;margin:0}
 .st{position:relative;display:grid;grid-template-columns:44px 1fr;gap:0 12px;padding:0 0 18px}
@@ -642,7 +642,7 @@ function trWhy(r){const hv=r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPE
   if(hv.pas)return`Działka w pasie linii, ${linia} ${hv.odl} m od granicy`;
   return`${linia} nad działką na ${hv.len} m`}
 function trPick(){const cand=RES.filter(r=>r.ok&&!r.las&&r.area<=200000&&(r.domPrzyLinii||r.sieci.some(s=>s.ok&&(s.k==='NN'||s.k==='WN'))))
-  .sort((a,b)=>(b.domPrzyLinii-a.domPrzyLinii)||b.score-a.score).slice(0,12);
+  .sort((a,b)=>(b.domPrzyLinii-a.domPrzyLinii)||b.score-a.score).slice(0,+store.get('trN',12));
   // kolejność przejazdu: najbliższy sąsiad od mojej pozycji (albo od najmocniejszej działki)
   const pts=cand.map(r=>({r,c:r.domLL||centroid(r)}));const out=[];let cur=ME||(pts[0]&&pts[0].c);
   const d=(a,b)=>Math.hypot((a[0]-b[0])*111,(a[1]-b[1])*111*Math.cos(a[0]*Math.PI/180));let km=0;
@@ -653,16 +653,16 @@ function trSet(r,v){const u=store.get('u:'+r.id,{});u.trasa=u.trasa===v?'':v;if(
 function trShow(){const el=$('#trasa');
   if(!RES.length){el.innerHTML=`<div class="tr-head"><h2>Trasa na dzień</h2><p>Najpierw wybierz obszar.</p><button class="x" id="trX">Zamknij</button></div><p class="tr-empty">Wybierz „Gotowe obszary” albo wyszukaj miejscowość, a potem otwórz trasę jeszcze raz.</p>`;el.hidden=false;$('#trX').onclick=trClose;return}
   const {stops,km}=trPick();const zrob=stops.filter(p=>trStat(p.r)).length;
-  const gm=stops.length?`https://www.google.com/maps/dir/?api=1${ME?`&origin=${ME[0]},${ME[1]}`:''}&destination=${stops.at(-1).c[0].toFixed(6)},${stops.at(-1).c[1].toFixed(6)}&waypoints=${stops.slice(0,-1).slice(0,9).map(p=>p.c[0].toFixed(6)+','+p.c[1].toFixed(6)).join('|')}&travelmode=driving`:'#';
+  const gm=stops.length?`https://www.google.com/maps/dir/?api=1${ME?`&origin=${ME[0]},${ME[1]}`:''}&destination=${stops[Math.min(9,stops.length-1)].c[0].toFixed(6)},${stops[Math.min(9,stops.length-1)].c[1].toFixed(6)}&waypoints=${stops.slice(0,Math.min(9,stops.length-1)).map(p=>p.c[0].toFixed(6)+','+p.c[1].toFixed(6)).join('|')}&travelmode=driving`:'#';
   el.innerHTML=`<div class="tr-head"><h2>Trasa na dzień${AREA?.name?': '+AREA.name:''}</h2><p>${stops.length} przystanków, ok. ${Math.round(km*1.3)} km jazdy. Odwiedzone: ${zrob} z ${stops.length}.${ME?'':' Start od najmocniejszej działki – włącz lokalizację, żeby liczyć od Ciebie.'}</p><button class="x" id="trX">Zamknij</button></div>
-  <div class="tr-acts">${stops.length?`<a class="pri" href="${gm}" target="_blank" rel="noopener">Jedź całą trasą w Mapach</a>`:''}<button id="trShare">Wyślij leady z dnia</button><button id="trMe">${ME?'Odśwież od mojej pozycji':'Licz od mojej pozycji'}</button></div>
+  <div class="tr-acts">${stops.length?`<a class="pri" href="${gm}" target="_blank" rel="noopener">${stops.length>10?'Jedź pierwszymi 10 w Mapach':'Jedź całą trasą w Mapach'}</a>`:''}<select id="trN" aria-label="Liczba przystanków">${[8,12,20].map(n=>`<option value="${n}"${+store.get('trN',12)===n?' selected':''}>${n} przystanków</option>`).join('')}</select><button id="trShare">Wyślij leady z dnia</button><button id="trMe">${ME?'Odśwież od mojej pozycji':'Licz od mojej pozycji'}</button></div>
   ${stops.length?`<ol class="tr-list">${stops.map((p,i)=>{const r=p.r,st=trStat(r),k=(r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0]||{}).k;
     return`<li class="st${st?' done':''}"><div class="pyl ${k} ${st==='zainteresowany'?'yes':st?'done':''}" aria-hidden="true">${i+1}</div><div class="st-b">
     <h3>Działka ${r.num}, ${r.obr===r.obr.toUpperCase()?r.obr.toLowerCase().replace(/(^|[\s-])\S/g,m=>m.toUpperCase()):r.obr}</h3><p class="why">${trWhy(r)} · ${r.area<10000?Math.round(r.area)+' m²':(r.area/10000).toFixed(1)+' ha'}</p>
     <div class="st-acts"><a class="nav" href="${navUrl(r)}" target="_blank" rel="noopener">Nawiguj</a><button data-c="${i}">Karta</button>
     ${['byłem','zainteresowany','nikogo'].map(v=>`<button class="chip" data-s="${i}" data-v="${v}" aria-pressed="${st===v}">${v==='byłem'?'Byłem':v==='zainteresowany'?'Zainteresowany':'Nikogo nie było'}</button>`).join('')}</div></div></li>`}).join('')}</ol>`
   :`<p class="tr-empty">W tym obszarze nie ma działek z domem pod linią ani z linią wysokiego napięcia nad działką. Wybierz inny obszar.</p>`}`;
-  el.hidden=false;$('#trX').onclick=trClose;$('#trMe').onclick=()=>locate(trShow);
+  el.hidden=false;$('#trX').onclick=trClose;$('#trMe').onclick=()=>locate(trShow);$('#trN').onchange=e=>{store.set('trN',+e.target.value);trShow()};
   $('#trShare').onclick=async()=>{const L=stops.filter(p=>trStat(p.r)==='zainteresowany');if(!L.length){alert('Oznacz najpierw działki jako „Zainteresowany”.');return}
     const t='Leady z terenu '+new Date().toLocaleDateString('pl')+'\n'+L.map((p,i)=>{const u=store.get('u:'+p.r.id,{});return`${i+1}. Działka ${p.r.num}, obręb ${p.r.obr}, gm. ${p.r.gm} (${p.r.id})\n   ${trWhy(p.r).replace(/<[^>]+>/g,'')}${u.not?'\n   Notatka: '+u.not:''}\n   Mapa: https://www.google.com/maps?q=${p.c[0].toFixed(6)},${p.c[1].toFixed(6)}`}).join('\n');
     try{if(navigator.share){await navigator.share({text:t});return}}catch(e){}
