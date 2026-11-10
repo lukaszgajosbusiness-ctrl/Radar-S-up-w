@@ -93,6 +93,12 @@ async function runArea(a) {
   const pts = [];
   for (const n of nets) { if (n.k === 'nN') continue; const g = n.g;
     for (let i = 0; i < g.length - 1; i++) { const s = Math.max(1, Math.ceil(dist(M(g[i]), M(g[i + 1])) / 15)); for (let k = 0; k < s; k++) { const t = k / s; const p = [g[i][0] + (g[i + 1][0] - g[i][0]) * t, g[i][1] + (g[i + 1][1] - g[i][1]) * t]; if (inBB(p)) pts.push(p) } } }
+  // pas linii: punkty po obu stronach osi linii NN i WN (działki bez przewodów nad sobą, ale w pasie technicznym)
+  const PAS = { NN: 25, WN: 15, SN: 5 }, OFF = { NN: [-24, -12, 12, 24], WN: [-13, 13] };
+  for (const n of nets) { const offs = OFF[n.k]; if (!offs) continue; const g = n.m;
+    for (let i = 0; i < g.length - 1; i++) { const S = dist(g[i], g[i + 1]); if (!S) continue; const ux = (g[i + 1][0] - g[i][0]) / S, uy = (g[i + 1][1] - g[i][1]) / S; const s = Math.max(1, Math.round(S / 20));
+      for (let k = 0; k < s; k++) { const x = g[i][0] + (g[i + 1][0] - g[i][0]) * (k + .5) / s, y = g[i][1] + (g[i + 1][1] - g[i][1]) * (k + .5) / s;
+        for (const o of offs) { const ll = [(x - uy * o) / K.kx, (y + ux * o) / K.ky]; if (inBB(ll)) pts.push(ll) } } } }
   console.log(`   sieci ${nets.length}, punkty ${pts.length}`);
   const P = new Map(); let last = Date.now();
   await pool(pts, 4, async p => { const m = M(p); for (const d of P.values()) if (inRings(m, d.rm)) return; const d = await uldkXY(p[0], p[1]); if (!d || P.has(d.id)) return; d.rings = wktRings(d.wkt); d.rm = d.rings.map(r => r.map(M)); P.set(d.id, d) },
@@ -102,14 +108,16 @@ async function runArea(a) {
     const sieci = [];
     for (const nt of nets) { if (nt.k === 'nN') continue; const g = nt.m; let len = 0, maxd = 0;
       for (let i = 0; i < g.length - 1; i++) { const S = dist(g[i], g[i + 1]); const s = Math.ceil(S); for (let k = 0; k < s; k++) { const q = [g[i][0] + (g[i + 1][0] - g[i][0]) * (k + .5) / s, g[i][1] + (g[i + 1][1] - g[i][1]) * (k + .5) / s]; if (inRings(q, d.rm)) { len += S / s; maxd = Math.max(maxd, dRings(q, d.rm)) } } }
-      if (len >= 1) sieci.push({ id: nt.id, k: nt.k, kind: nt.kind, v: nt.t.voltage || '', op: nt.t.operator || '', bd: nt.bd ? 1 : 0, len: Math.round(len), maxd: +maxd.toFixed(1) }) }
+      if (len >= 1) sieci.push({ id: nt.id, k: nt.k, kind: nt.kind, v: nt.t.voltage || '', op: nt.t.operator || '', bd: nt.bd ? 1 : 0, len: Math.round(len), maxd: +maxd.toFixed(1) })
+      else if (PAS[nt.k]) { let dm = 1e9; for (let i = 0; i < g.length - 1; i++) { const S = dist(g[i], g[i + 1]); const s = Math.max(1, Math.ceil(S / 4)); for (let k = 0; k <= s; k++) { const q = [g[i][0] + (g[i + 1][0] - g[i][0]) * k / s, g[i][1] + (g[i + 1][1] - g[i][1]) * k / s]; dm = Math.min(dm, dRings(q, d.rm)) } }
+        if (dm <= PAS[nt.k]) sieci.push({ id: nt.id, k: nt.k, kind: nt.kind, v: nt.t.voltage || '', op: nt.t.operator || '', bd: nt.bd ? 1 : 0, len: 0, maxd: 0, pas: 1, odl: Math.round(dm) }) } }
     if (!sieci.length) continue;
     let cx = 0, cy = 0; d.rm[0].forEach(p => { cx += p[0]; cy += p[1] }); const cen = [cx / d.rm[0].length, cy / d.rm[0].length];
     RES.push({ id: d.id, num: d.num, obr: d.obr, gm: d.gm, area: Math.round(areaM2(d.rings)), rings: round6(d.rings), rm: d.rm, sieci,
       slupy: poles.some(p => inRings(p, d.rm)), las: forests.some(f => inRing(cen, f)), domy: 0, domPrzyLinii: false, domOdl: null });
   }
   // budynki (baza budynków GUGiK) tylko na działkach spełniających odległość 5 m
-  const ok = RES.filter(r => !r.las && r.sieci.some(s => s.maxd >= 5));
+  const ok = RES.filter(r => !r.las && r.sieci.some(s => s.maxd >= 5 || s.pas));
   const okP = ok.map(r => { const f = r.rm.flat(); return { r, x0: Math.min(...f.map(p => p[0])), x1: Math.max(...f.map(p => p[0])), y0: Math.min(...f.map(p => p[1])), y1: Math.max(...f.map(p => p[1])) } });
   const bpts = [];
   for (const n of nets) { if (!['NN', 'WN', 'gaz'].includes(n.k)) continue; const g = n.m;
