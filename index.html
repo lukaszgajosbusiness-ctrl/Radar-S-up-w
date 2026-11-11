@@ -80,9 +80,10 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 .st-b .why{margin:2px 0 8px;font-size:13.5px}
 .st-b .why b{color:var(--nn)}
 .st-acts{display:flex;flex-wrap:wrap;gap:6px}
-.st-acts a,.st-acts button{font-size:14px;padding:8px 11px;border-radius:8px;text-decoration:none}.st-acts .chip{font-size:13px;padding:6px 9px;border-radius:999px}
+.st-acts a,.st-acts button{font-size:15px;min-height:44px;padding:10px 14px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center}.st-acts .chip{font-size:14px;min-height:40px;padding:8px 12px;border-radius:999px}
 .st-acts a.nav{background:#14324a;color:#fff;border:0;font-weight:600}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--panel);border-color:var(--fg)}
+.chip[data-v="zainteresowany"][aria-pressed="true"]{background:#1f7a3d;border-color:#1f7a3d;color:#fff}.chip[data-v="inna firma"][aria-pressed="true"]{background:#8a5a00;border-color:#8a5a00;color:#fff}.chip[data-v="nikogo"][aria-pressed="true"]{background:#6b7280;border-color:#6b7280;color:#fff}
 .st.done .st-b{opacity:.6}
 .tr-empty{padding:24px 16px;font-size:15px}
 @media (min-width:801px){#trasa{inset:0 0 0 auto;width:480px;border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(0,0,0,.18)}}
