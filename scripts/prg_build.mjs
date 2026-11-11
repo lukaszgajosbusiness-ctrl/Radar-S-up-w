@@ -21,7 +21,7 @@ for (const t of TER) { const start = pts.length; try {
     if (!shown) { console.log('pola:', JSON.stringify(p).slice(0, 800)); shown = true }
     const get = (...ks) => { for (const k of Object.keys(p)) if (ks.some(s => k.toUpperCase() === s)) return (p[k] ?? '').toString().trim(); return '' };
     const nr = get('NUMER', 'NUMERPORZADKOWY', 'NUMER_PORZ', 'NR'); if (!nr) continue;
-    const mc = get('MIEJSCOWOS', 'MIEJSCOWOSC', 'MIEJSC_NAZ', 'MSC'); const ul = get('ULICA', 'NAZWA_ULIC', 'ULICA_NAZW', 'UL');
+    const mc = get('NAZWA_MSC', 'MIEJSCOWOS', 'MIEJSCOWOSC', 'MIEJSC_NAZ', 'MSC'); const ul = get('NAZWA_ULC', 'ULICA', 'NAZWA_ULIC', 'ULICA_NAZW', 'UL');
     let [x0, y0] = g.coordinates; if (Math.abs(x0) > 190) { if (x0 > y0 && x0 > 1e6) [x0, y0] = [y0, x0]; [x0, y0] = proj4(DEF, 'WGS84', [x0, y0]) }
     pts.push([+y0.toFixed(6), +x0.toFixed(6), ul ? `${ul.replace(/^ul\.\s*/i, '')} ${nr}, ${mc}` : `${mc} ${nr}`]);
   }
