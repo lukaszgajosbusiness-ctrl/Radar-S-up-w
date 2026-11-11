@@ -89,6 +89,11 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 @media (min-width:801px){#trasa{inset:0 0 0 auto;width:480px;border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(0,0,0,.18)}}
 @media (prefers-reduced-motion:no-preference){#trasa:not([hidden]){animation:trIn .22s ease-out}@keyframes trIn{from{transform:translateY(16px);opacity:0}}}
 
+#hello{position:fixed;inset:0;z-index:2000;background:rgba(10,25,38,.55);display:flex;align-items:flex-end;justify-content:center}
+#hello .in{background:var(--panel,#fff);color:var(--fg,#111);max-width:440px;width:100%;border-radius:16px 16px 0 0;padding:22px 20px 26px}
+#hello h2{margin:0 0 6px;font-size:22px}#hello ol{padding-left:20px;margin:12px 0 18px;line-height:1.5}#hello li{margin-bottom:8px}
+#hello button{width:100%;min-height:48px;font-size:16px;font-weight:600;background:#14324a;color:#fff;border:0;border-radius:10px}
+@media (min-width:801px){#hello{align-items:center}#hello .in{border-radius:16px}}
 </style>
 </head>
 <body>
@@ -684,6 +689,11 @@ $('#trasaBtn').onclick=trShow;
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();ev=e;b.hidden=false});
 b.onclick=async()=>{if(!ev)return;ev.prompt();await ev.userChoice;ev=null;b.hidden=true};
 addEventListener('appinstalled',()=>{b.hidden=true});})();
+</script>
+<script>
+(()=>{try{if(localStorage.getItem('rs:hello'))return}catch(e){return}
+const d=document.createElement('div');d.id='hello';d.innerHTML=`<div class="in" role="dialog" aria-labelledby="hT"><h2 id="hT">Radar Słupów</h2><p>Znajduje domy pod liniami energetycznymi, do których możesz zapukać ze sprawą o służebność przesyłu.</p><ol><li>Wybierz <b>Gotowe obszary</b> albo wpisz miejscowość i kliknij <b>Szukaj działek</b>.</li><li>Otwórz <b>Trasa na dzień</b>. Dostaniesz listę domów z adresami w kolejności przejazdu.</li><li>Przy każdym domu kliknij <b>Nawiguj</b>, a po rozmowie zaznacz status.</li></ol><button id="hOk">Zaczynam</button></div>`;
+document.body.appendChild(d);document.getElementById('hOk').onclick=()=>{try{localStorage.setItem('rs:hello','1')}catch(e){}d.remove()}})();
 </script>
 </body>
 </html>
