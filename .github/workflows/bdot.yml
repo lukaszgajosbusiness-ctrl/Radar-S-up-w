@@ -14,9 +14,10 @@ jobs:
         with: { node-version: 20 }
       - run: npm i --no-save shapefile@0.6.6 proj4@2.12.1
       - run: node scripts/bdot_build.mjs
+      - run: node scripts/prg_build.mjs
       - name: Zapisz wyniki
         run: |
           git config user.name "radar-bot"
           git config user.email "radar-bot@users.noreply.github.com"
-          git add scripts/bdot.json
+          git add scripts/bdot.json scripts/prg.json
           git diff --cached --quiet || (git commit -m "BDOT10k: odświeżenie linii $(date -u +%F)" && git pull --rebase -q && git push)
