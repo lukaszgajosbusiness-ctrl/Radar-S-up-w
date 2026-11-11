@@ -94,6 +94,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 #hello h2{margin:0 0 6px;font-size:22px}#hello ol{padding-left:20px;margin:12px 0 18px;line-height:1.5}#hello li{margin-bottom:8px}
 #hello button{width:100%;min-height:48px;font-size:16px;font-weight:600;background:#14324a;color:#fff;border:0;border-radius:10px}
 @media (min-width:801px){#hello{align-items:center}#hello .in{border-radius:16px}}
+.cpy{font-size:13px;padding:4px 10px;margin-left:4px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -604,7 +605,7 @@ $('#fNear').onchange=()=>{if($('#fNear').checked&&!ME)locate(render);else render
 $('#moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('short');setTimeout(()=>map.invalidateSize(),50)};
 
 // ---------- najbliższy adres (OpenStreetMap / Nominatim, 1 zapytanie na kartę, z pamięcią) ----------
-async function fillAddr(r){const el=$('#addr');if(!el)return;if(r.adr){el.textContent='📍 Adres domu (rejestr adresów GUGiK, najbliższy punkt): '+r.adr;return}const k='adr:'+r.id;let a=store.get(k,null);
+async function fillAddr(r){const el=$('#addr');if(!el)return;if(r.adr){el.innerHTML='📍 Adres domu (rejestr adresów GUGiK, najbliższy punkt): <b></b> <button type="button" class="cpy">Kopiuj adres</button>';el.querySelector('b').textContent=r.adr;el.querySelector('.cpy').onclick=e=>{navigator.clipboard?.writeText(r.adr).then(()=>{e.target.textContent='Skopiowano'}).catch(()=>{})};return}const k='adr:'+r.id;let a=store.get(k,null);
   if(!a){try{const[lat,lon]=centroid(r);const j=await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=${lat}&lon=${lon}`,{headers:{'Accept-Language':'pl'}})).json();
     const ad=j.address||{};a=[[ad.road,ad.house_number].filter(Boolean).join(' '),ad.village||ad.town||ad.city||ad.hamlet].filter(Boolean).join(', ')||'brak adresu w OSM';store.set(k,a)}catch(e){a=null}}
   if($('#addr')===el)el.textContent=a?'📍 Najbliższy adres (OSM, orientacyjnie): '+a:'📍 Adres niedostępny – użyj nawigacji do działki.'}
