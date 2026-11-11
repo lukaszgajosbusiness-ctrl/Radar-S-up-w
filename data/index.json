@@ -1,5 +1,17 @@
 [
  {
+  "slug": "bedzin-centrum",
+  "name": "Będzin – Hutnicza / Mickiewicza",
+  "center": [
+   50.3475,
+   19.108
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T19:05:55.297Z",
+  "parcels": 471,
+  "domy": 28
+ },
+ {
   "slug": "bobrowniki",
   "name": "Bobrowniki (gm. Bobrowniki)",
   "center": [
@@ -7,7 +19,7 @@
    18.9911874
   ],
   "radius": 2000,
-  "generated": "2026-11-11T16:37:09.355Z",
+  "generated": "2026-11-11T18:12:58.698Z",
   "parcels": 1074,
   "domy": 2
  },
@@ -55,9 +67,81 @@
    19.3640011
   ],
   "radius": 2000,
-  "generated": "2026-11-11T09:12:12.750Z",
+  "generated": "2026-11-11T18:21:54.917Z",
   "parcels": 425,
   "domy": 31
+ },
+ {
+  "slug": "czeladz-piaski",
+  "name": "Czeladź – Chmielna / Wojkowicka",
+  "center": [
+   50.3283,
+   19.0749
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T19:31:45.767Z",
+  "parcels": 824,
+  "domy": 93
+ },
+ {
+  "slug": "czeladz-nowopogonska",
+  "name": "Czeladź – Nowopogońska / Wiejska",
+  "center": [
+   50.308,
+   19.0967
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T19:08:50.217Z",
+  "parcels": 479,
+  "domy": 92
+ },
+ {
+  "slug": "czeladz-niwa",
+  "name": "Czeladź – Staszica / Niwa",
+  "center": [
+   50.318,
+   19.0603
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T19:20:48.239Z",
+  "parcels": 447,
+  "domy": 27
+ },
+ {
+  "slug": "dg-mydlice",
+  "name": "Dąbrowa Górnicza – Mireckiego / Ludowa",
+  "center": [
+   50.3187,
+   19.1694
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T18:43:12.427Z",
+  "parcels": 301,
+  "domy": 23
+ },
+ {
+  "slug": "dg-podlesie",
+  "name": "Dąbrowa Górnicza – Podlesie / M. Szulc",
+  "center": [
+   50.338,
+   19.216
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T18:34:38.686Z",
+  "parcels": 295,
+  "domy": 79
+ },
+ {
+  "slug": "dg-strzemieszyce-sezamkowa",
+  "name": "Dąbrowa Górnicza – Sezamkowa",
+  "center": [
+   50.2981,
+   19.2552
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T18:36:20.841Z",
+  "parcels": 411,
+  "domy": 47
  },
  {
   "slug": "dobieszowice",
@@ -67,7 +151,7 @@
    19.004458
   ],
   "radius": 1500,
-  "generated": "2026-11-11T17:38:03.340Z",
+  "generated": "2026-11-11T18:29:50.608Z",
   "parcels": 726,
   "domy": 2
  },
@@ -247,7 +331,7 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-11T08:16:09.440Z",
+  "generated": "2026-11-11T18:13:42.771Z",
   "parcels": 974,
   "domy": 17
  },
@@ -276,6 +360,18 @@
   "domy": 3
  },
  {
+  "slug": "radzionkow",
+  "name": "Radzionków – Kużaja / Gwarków",
+  "center": [
+   50.3929,
+   18.8981
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T19:17:59.290Z",
+  "parcels": 274,
+  "domy": 23
+ },
+ {
   "slug": "repty-slaskie",
   "name": "Repty Śląskie (Tarnowskie Góry)",
   "center": [
@@ -295,7 +391,7 @@
    19.0402541
   ],
   "radius": 1500,
-  "generated": "2026-11-11T17:38:35.492Z",
+  "generated": "2026-11-11T18:41:11.083Z",
   "parcels": 463,
   "domy": 2
  },
@@ -466,6 +562,30 @@
   "generated": "2026-11-11T16:27:06.700Z",
   "parcels": 1064,
   "domy": 20
+ },
+ {
+  "slug": "zawiercie-kromolow",
+  "name": "Zawiercie – Smuga / Kromołowska",
+  "center": [
+   50.4808,
+   19.4707
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T19:35:42.248Z",
+  "parcels": 520,
+  "domy": 39
+ },
+ {
+  "slug": "zawiercie-surowa",
+  "name": "Zawiercie – Surowa / Paderewskiego",
+  "center": [
+   50.4774,
+   19.4477
+  ],
+  "radius": 1200,
+  "generated": "2026-11-11T19:34:10.260Z",
+  "parcels": 213,
+  "domy": 16
  },
  {
   "slug": "zendek",
