@@ -252,5 +252,93 @@
    "Dobieszowice, śląskie"
   ],
   "radius": 1500
+ },
+ {
+  "slug": "stare-tarnowice",
+  "name": "Stare Tarnowice (Tarnowskie Góry)",
+  "q": [
+   "Stare Tarnowice, Tarnowskie Góry",
+   "Stare Tarnowice, tarnogórski",
+   "Stare Tarnowice, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "opatowice-tg",
+  "name": "Opatowice (Tarnowskie Góry)",
+  "q": [
+   "Opatowice, Tarnowskie Góry",
+   "Opatowice, tarnogórski",
+   "Opatowice, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "repty-slaskie",
+  "name": "Repty Śląskie (Tarnowskie Góry)",
+  "q": [
+   "Repty Śląskie, Tarnowskie Góry",
+   "Repty Śląskie, tarnogórski",
+   "Repty Śląskie, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "pniowiec",
+  "name": "Pniowiec (Tarnowskie Góry)",
+  "q": [
+   "Pniowiec, Tarnowskie Góry",
+   "Pniowiec, tarnogórski",
+   "Pniowiec, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "bobrowniki-slaskie",
+  "name": "Bobrowniki Śląskie (Tarnowskie Góry)",
+  "q": [
+   "Bobrowniki Śląskie, Tarnowskie Góry",
+   "Bobrowniki Śląskie, tarnogórski",
+   "Bobrowniki Śląskie, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "strzybnica",
+  "name": "Strzybnica (Tarnowskie Góry)",
+  "q": [
+   "Strzybnica, Tarnowskie Góry",
+   "Strzybnica, tarnogórski",
+   "Strzybnica, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "lasowice-tg",
+  "name": "Lasowice (Tarnowskie Góry)",
+  "q": [
+   "Lasowice, Tarnowskie Góry",
+   "Lasowice, tarnogórski",
+   "Lasowice, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
+ },
+ {
+  "slug": "sowice-tg",
+  "name": "Sowice (Tarnowskie Góry)",
+  "q": [
+   "Sowice, Tarnowskie Góry",
+   "Sowice, tarnogórski",
+   "Sowice, śląskie"
+  ],
+  "radius": 1500,
+  "bdot": "2414"
  }
 ]
