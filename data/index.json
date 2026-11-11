@@ -12,6 +12,18 @@
   "domy": 2
  },
  {
+  "slug": "bobrowniki-slaskie",
+  "name": "Bobrowniki Śląskie (Tarnowskie Góry)",
+  "center": [
+   50.4237235,
+   18.8641745
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:31:41.504Z",
+  "parcels": 117,
+  "domy": 19
+ },
+ {
   "slug": "boguchwalowice",
   "name": "Boguchwałowice (gm. Mierzęcice)",
   "center": [
@@ -108,6 +120,18 @@
   "domy": 104
  },
  {
+  "slug": "lasowice-tg",
+  "name": "Lasowice (Tarnowskie Góry)",
+  "center": [
+   50.4749538,
+   18.8786772
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:35:09.630Z",
+  "parcels": 16,
+  "domy": 0
+ },
+ {
   "slug": "mierzecice",
   "name": "Mierzęcice",
   "center": [
@@ -168,6 +192,18 @@
   "domy": 3
  },
  {
+  "slug": "opatowice-tg",
+  "name": "Opatowice (Tarnowskie Góry)",
+  "center": [
+   50.4587442,
+   18.8180512
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:34:37.343Z",
+  "parcels": 251,
+  "domy": 7
+ },
+ {
   "slug": "ozarowice",
   "name": "Ożarowice (gm. Ożarowice)",
   "center": [
@@ -177,6 +213,18 @@
   "radius": 1500,
   "generated": "2026-11-11T09:03:31.761Z",
   "parcels": 353,
+  "domy": 0
+ },
+ {
+  "slug": "pniowiec",
+  "name": "Pniowiec (Tarnowskie Góry)",
+  "center": [
+   50.5047786,
+   18.8237717
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:25:35.500Z",
+  "parcels": 123,
   "domy": 0
  },
  {
@@ -214,6 +262,18 @@
   "generated": "2026-11-11T09:09:11.848Z",
   "parcels": 412,
   "domy": 1
+ },
+ {
+  "slug": "repty-slaskie",
+  "name": "Repty Śląskie (Tarnowskie Góry)",
+  "center": [
+   50.4189112,
+   18.82589
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:25:18.796Z",
+  "parcels": 76,
+  "domy": 0
  },
  {
   "slug": "rogoznik",
@@ -274,6 +334,42 @@
   "generated": "2026-11-10T23:43:10.384Z",
   "parcels": 1070,
   "domy": 9
+ },
+ {
+  "slug": "sowice-tg",
+  "name": "Sowice (Tarnowskie Góry)",
+  "center": [
+   50.4595933,
+   18.8610368
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:43:50.961Z",
+  "parcels": 190,
+  "domy": 24
+ },
+ {
+  "slug": "stare-tarnowice",
+  "name": "Stare Tarnowice (Tarnowskie Góry)",
+  "center": [
+   50.4394349,
+   18.8122638
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:31:38.253Z",
+  "parcels": 62,
+  "domy": 5
+ },
+ {
+  "slug": "strzybnica",
+  "name": "Strzybnica (Tarnowskie Góry)",
+  "center": [
+   50.4802684,
+   18.800375
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T11:31:30.718Z",
+  "parcels": 222,
+  "domy": 3
  },
  {
   "slug": "strzyzowice",
