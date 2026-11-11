@@ -113,7 +113,7 @@
    "Ożarowice, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "pyrzowice",
@@ -123,7 +123,7 @@
    "Pyrzowice, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "tapkowice",
@@ -133,7 +133,7 @@
    "Tąpkowice, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "zendek",
@@ -143,7 +143,7 @@
    "Zendek, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "niezdara",
@@ -262,7 +262,7 @@
    "Stare Tarnowice, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "opatowice-tg",
@@ -273,7 +273,7 @@
    "Opatowice, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "repty-slaskie",
@@ -284,7 +284,7 @@
    "Repty Śląskie, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "pniowiec",
@@ -295,7 +295,7 @@
    "Pniowiec, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "bobrowniki-slaskie",
@@ -306,7 +306,7 @@
    "Bobrowniki Śląskie, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "strzybnica",
@@ -317,7 +317,7 @@
    "Strzybnica, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "lasowice-tg",
@@ -328,7 +328,7 @@
    "Lasowice, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  },
  {
   "slug": "sowice-tg",
@@ -339,6 +339,6 @@
    "Sowice, śląskie"
   ],
   "radius": 1500,
-  "bdot": "2414"
+  "bdot": "2413"
  }
 ]
