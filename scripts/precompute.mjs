@@ -175,7 +175,8 @@ try { index = JSON.parse(await fs.readFile('data/index.json', 'utf8')) } catch (
 for (const a of AREAS) {
   if (ONLY && a.slug !== ONLY) continue;
   try { const s = await runArea(a); index = index.filter(x => x.slug !== s.slug).concat(s) }
-  catch (e) { console.log(`!! ${a.name}: ${e.message}`) }
+  catch (e) { console.log(`!! ${a.name}: ${e.message}`);
+    try { const f = `data/${a.slug}.json`, o = JSON.parse(await fs.readFile(f, 'utf8')); let k = 0; for (const r of o.parcels || []) if (r.domLL && !r.adr) { const ad = adrNear(r.domLL); if (ad) { r.adr = ad; k++ } } if (k) { await fs.writeFile(f, JSON.stringify(o)); console.log(`   dopisane adresy do poprzednich danych: ${k}`) } } catch (e2) {} }
   await fs.mkdir('data', { recursive: true });
   await fs.writeFile('data/index.json', JSON.stringify(index.sort((x, y) => x.name.localeCompare(y.name, 'pl')), null, 1));
 }
