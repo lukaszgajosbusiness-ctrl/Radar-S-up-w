@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: 'Tylko jeden obszar (slug z scripts/areas.json), puste = wszystkie'
+        description: 'Obszary po przecinku (slugi z scripts/areas.json), puste = wszystkie'
         required: false
 permissions:
   contents: write
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - id: s
         run: |
-          if [ -n "${{ github.event.inputs.only }}" ]; then echo 'slugs=["${{ github.event.inputs.only }}"]' >> $GITHUB_OUTPUT
+          if [ -n "${{ github.event.inputs.only }}" ]; then echo "slugs=$(node -e "console.log(JSON.stringify(process.argv[1].split(',').map(x=>x.trim()).filter(Boolean)))" '${{ github.event.inputs.only }}')" >> $GITHUB_OUTPUT
           else echo "slugs=$(node -e "console.log(JSON.stringify(require('./scripts/areas.json').map(a=>a.slug)))")" >> $GITHUB_OUTPUT; fi
   run:
     needs: list
