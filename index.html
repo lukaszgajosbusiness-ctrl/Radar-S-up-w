@@ -301,8 +301,11 @@ function score(r){
   const good=r.sieci.filter(s=>s.ok);
   r.ok=good.length>0&&!(r.las&&grunt==='?')&&grunt!=='ZL';
   const typy=new Set(good.map(s=>s.k));
-  let sc=good.reduce((a,s)=>a+TYPES[s.k].w*(s.k==='SN'&&!s.v&&!s.bd&&!s.reczne?.6:1)*(s.pas?.5:Math.min(s.len,400)/100),0); // SN bez podanego napięcia w OSM to często nN – niższa waga
-  sc*=bud?1.8:1; if(typy.size>1)sc*=1+.35*(typy.size-1); if(r.domPrzyLinii)sc=sc*1.5+6; if(!r.ok)sc*=.2;
+  const byK={};good.forEach(s=>{const v=TYPES[s.k].w*(s.k==='SN'&&!s.v&&!s.bd&&!s.reczne?.6:1)*(s.pas?50:s.len);byK[s.k]=(byK[s.k]||0)+v});
+  // równoległe odcinki tej samej klasy liczą się razem, max 400 m na klasę (inaczej działki przy stacjach zawyżały ocenę)
+  let sc=Object.entries(byK).reduce((a,[k,v])=>a+Math.min(v,TYPES[k].w*400)/100,0);
+  r.stacja=r.sieci.filter(s=>(s.k==='NN'||s.k==='WN')&&s.len>=1).length>=4; // SN bez podanego napięcia w OSM to często nN – niższa waga
+  sc*=bud?1.8:1; if(typy.size>1)sc*=1+.35*(typy.size-1); if(r.domPrzyLinii)sc=sc*1.5+6; if(r.stacja)sc*=.3; if(!r.ok)sc*=.2;
   r.score=Math.round(sc*10)/10;r.bud=bud;r.prog=prog;
 }
 function render(){
@@ -317,7 +320,7 @@ function render(){
     if(i<20){const c=poly.getBounds().getCenter();gPin.addLayer(L.marker(c,{icon:L.divIcon({className:'',html:`<div style="background:#ffb703;color:#14202b;border:2px solid #14324a;border-radius:12px;font:700 12px system-ui;padding:1px 6px;white-space:nowrap">${i+1}</div>`,iconSize:null})}).on('click',()=>openCard(r)))}
     const el=document.createElement('div');el.className='row';el.innerHTML=`<div class="rk">${i+1}</div><div class="nm">${r.num} <span class="note">${r.obr} · ${(r.area/10000).toFixed(2)} ha</span></div><div class="sc">${r.score}</div>
     <div class="tags">${r.sieci.map(s=>`<span class="t ${s.k}" title="${TYPES[s.k].n}">${s.k}${s.v?' '+(+String(s.v).split(';')[0]/1000)+'kV':''} ${s.pas?'w pasie, '+s.odl+' m od granicy':s.len+' m'}${s.ok?'':' ✗'}</span>`).join('')}
-    ${r.domPrzyLinii?`<span class="t dom">budynek ${r.domOdl!=null?r.domOdl+' m ':''}od linii</span>`:r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${RESV[r.id]?(RESV[r.id].mine?'<span class="t dom">moja</span>':`<span class="t x">zajęta: ${RESV[r.id].holder}</span>`):''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:r.mpzp?`<span class="t f" title="z planu miejscowego">MPZP ${r.mpzp}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
+    ${r.stacja?'<span class="t x">kilka linii WN/NN – może teren stacji lub elektrowni</span>':''}${r.domPrzyLinii?`<span class="t dom">budynek ${r.domOdl!=null?r.domOdl+' m ':''}od linii</span>`:r.domy?`<span class="t f">budynki: ${r.domy}</span>`:''}${RESV[r.id]?(RESV[r.id].mine?'<span class="t dom">moja</span>':`<span class="t x">zajęta: ${RESV[r.id].holder}</span>`):''}${r.slupy?'<span class="t f">słup</span>':''}${r.las?'<span class="t x">las?</span>':''}${r.u.grunt&&r.u.grunt!=='?'?`<span class="t f">${r.u.grunt}</span>`:r.mpzp?`<span class="t f" title="z planu miejscowego">MPZP ${r.mpzp}</span>`:''}${r.u.stat?`<span class="t f">${r.u.stat}</span>`:''}</div>`;
     el.onclick=()=>{map.fitBounds(poly.getBounds(),{maxZoom:18});openCard(r)};frag.appendChild(el);
   });
   $('#list').innerHTML='';$('#list').appendChild(frag);
@@ -641,7 +644,7 @@ function trWhy(r){const hv=r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPE
   if(r.domPrzyLinii)return`<b>Dom ${r.domOdl} m od linii</b>, ${linia}${r.domOSM?' (dom spoza ewidencji GUGiK, pewnie nowy)':''}`;
   if(hv.pas)return`Działka w pasie linii, ${linia} ${hv.odl} m od granicy`;
   return`${linia} nad działką na ${hv.len} m`}
-function trPick(){const cand=RES.filter(r=>r.ok&&!r.las&&r.area<=200000&&(r.domPrzyLinii||r.sieci.some(s=>s.ok&&(s.k==='NN'||s.k==='WN'))))
+function trPick(){const cand=RES.filter(r=>r.ok&&!r.las&&!r.stacja&&r.area<=200000&&(r.domPrzyLinii||r.sieci.some(s=>s.ok&&(s.k==='NN'||s.k==='WN'))))
   .sort((a,b)=>(b.domPrzyLinii-a.domPrzyLinii)||b.score-a.score).slice(0,+store.get('trN',12));
   // kolejność przejazdu: najbliższy sąsiad od mojej pozycji (albo od najmocniejszej działki)
   const pts=cand.map(r=>({r,c:r.domLL||centroid(r)}));const out=[];let cur=ME||(pts[0]&&pts[0].c);
