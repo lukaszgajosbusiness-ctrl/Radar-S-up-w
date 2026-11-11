@@ -19,7 +19,7 @@
    18.8641745
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:31:41.504Z",
+  "generated": "2026-11-11T13:16:52.510Z",
   "parcels": 117,
   "domy": 19
  },
@@ -127,8 +127,8 @@
    18.8786772
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:35:09.630Z",
-  "parcels": 16,
+  "generated": "2026-11-11T13:24:40.314Z",
+  "parcels": 18,
   "domy": 0
  },
  {
@@ -199,9 +199,9 @@
    18.8180512
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:34:37.343Z",
-  "parcels": 251,
-  "domy": 7
+  "generated": "2026-11-11T13:19:08.014Z",
+  "parcels": 267,
+  "domy": 8
  },
  {
   "slug": "ozarowice",
@@ -211,8 +211,8 @@
    19.042814
   ],
   "radius": 1500,
-  "generated": "2026-11-11T09:03:31.761Z",
-  "parcels": 353,
+  "generated": "2026-11-11T13:22:46.514Z",
+  "parcels": 362,
   "domy": 0
  },
  {
@@ -223,8 +223,8 @@
    18.8237717
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:25:35.500Z",
-  "parcels": 123,
+  "generated": "2026-11-11T13:13:26.110Z",
+  "parcels": 125,
   "domy": 0
  },
  {
@@ -259,9 +259,9 @@
    19.056492
   ],
   "radius": 1500,
-  "generated": "2026-11-11T09:09:11.848Z",
-  "parcels": 412,
-  "domy": 1
+  "generated": "2026-11-11T13:25:04.492Z",
+  "parcels": 421,
+  "domy": 3
  },
  {
   "slug": "repty-slaskie",
@@ -271,8 +271,8 @@
    18.82589
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:25:18.796Z",
-  "parcels": 76,
+  "generated": "2026-11-11T13:13:27.720Z",
+  "parcels": 90,
   "domy": 0
  },
  {
@@ -343,9 +343,9 @@
    18.8610368
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:43:50.961Z",
-  "parcels": 190,
-  "domy": 24
+  "generated": "2026-11-11T13:26:06.712Z",
+  "parcels": 209,
+  "domy": 31
  },
  {
   "slug": "stare-tarnowice",
@@ -355,9 +355,9 @@
    18.8122638
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:31:38.253Z",
-  "parcels": 62,
-  "domy": 5
+  "generated": "2026-11-11T13:17:25.075Z",
+  "parcels": 64,
+  "domy": 6
  },
  {
   "slug": "strzybnica",
@@ -367,9 +367,9 @@
    18.800375
   ],
   "radius": 1500,
-  "generated": "2026-11-11T11:31:30.718Z",
-  "parcels": 222,
-  "domy": 3
+  "generated": "2026-11-11T13:16:41.441Z",
+  "parcels": 252,
+  "domy": 7
  },
  {
   "slug": "strzyzowice",
@@ -391,8 +391,8 @@
    19.0077822
   ],
   "radius": 1500,
-  "generated": "2026-11-11T09:04:52.105Z",
-  "parcels": 305,
+  "generated": "2026-11-11T13:20:04.997Z",
+  "parcels": 315,
   "domy": 0
  },
  {
@@ -463,7 +463,7 @@
    19.0900381
   ],
   "radius": 1500,
-  "generated": "2026-11-11T09:05:51.744Z",
+  "generated": "2026-11-11T13:20:54.698Z",
   "parcels": 197,
   "domy": 0
  },
