@@ -350,5 +350,101 @@
    "Podwarpie, śląskie"
   ],
   "radius": 1500
+ },
+ {
+  "slug": "dg-podlesie",
+  "name": "Dąbrowa Górnicza – Podlesie / M. Szulc",
+  "q": "Dąbrowa Górnicza",
+  "lat": 50.338,
+  "lon": 19.216,
+  "radius": 1200
+ },
+ {
+  "slug": "dg-strzemieszyce-sezamkowa",
+  "name": "Dąbrowa Górnicza – Sezamkowa",
+  "q": "Dąbrowa Górnicza",
+  "lat": 50.2981,
+  "lon": 19.2552,
+  "radius": 1200
+ },
+ {
+  "slug": "dg-mydlice",
+  "name": "Dąbrowa Górnicza – Mireckiego / Ludowa",
+  "q": "Dąbrowa Górnicza",
+  "lat": 50.3187,
+  "lon": 19.1694,
+  "radius": 1200
+ },
+ {
+  "slug": "bedzin-ksawera",
+  "name": "Będzin – Ksawera / Odrodzenia",
+  "q": "Będzin",
+  "lat": 50.351,
+  "lon": 19.137,
+  "radius": 1200
+ },
+ {
+  "slug": "bedzin-grodziec",
+  "name": "Będzin – Grodziec / Zagórnego",
+  "q": "Będzin",
+  "lat": 50.3514,
+  "lon": 19.0733,
+  "radius": 1200
+ },
+ {
+  "slug": "bedzin-centrum",
+  "name": "Będzin – Hutnicza / Mickiewicza",
+  "q": "Będzin",
+  "lat": 50.3475,
+  "lon": 19.108,
+  "radius": 1200
+ },
+ {
+  "slug": "czeladz-nowopogonska",
+  "name": "Czeladź – Nowopogońska / Wiejska",
+  "q": "Czeladź",
+  "lat": 50.308,
+  "lon": 19.0967,
+  "radius": 1200
+ },
+ {
+  "slug": "czeladz-piaski",
+  "name": "Czeladź – Chmielna / Wojkowicka",
+  "q": "Czeladź",
+  "lat": 50.3283,
+  "lon": 19.0749,
+  "radius": 1200
+ },
+ {
+  "slug": "czeladz-niwa",
+  "name": "Czeladź – Staszica / Niwa",
+  "q": "Czeladź",
+  "lat": 50.318,
+  "lon": 19.0603,
+  "radius": 1200
+ },
+ {
+  "slug": "radzionkow",
+  "name": "Radzionków – Kużaja / Gwarków",
+  "q": "Radzionków",
+  "lat": 50.3929,
+  "lon": 18.8981,
+  "radius": 1200
+ },
+ {
+  "slug": "zawiercie-surowa",
+  "name": "Zawiercie – Surowa / Paderewskiego",
+  "q": "Zawiercie",
+  "lat": 50.4774,
+  "lon": 19.4477,
+  "radius": 1200
+ },
+ {
+  "slug": "zawiercie-kromolow",
+  "name": "Zawiercie – Smuga / Kromołowska",
+  "q": "Zawiercie",
+  "lat": 50.4808,
+  "lon": 19.4707,
+  "radius": 1200
  }
 ]
