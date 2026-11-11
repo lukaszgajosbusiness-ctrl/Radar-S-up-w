@@ -340,5 +340,15 @@
   ],
   "radius": 1500,
   "bdot": "2413"
+ },
+ {
+  "slug": "podwarpie",
+  "name": "Podwarpie (gm. Siewierz)",
+  "q": [
+   "Podwarpie, Siewierz",
+   "Podwarpie, będziński",
+   "Podwarpie, śląskie"
+  ],
+  "radius": 1500
  }
 ]
