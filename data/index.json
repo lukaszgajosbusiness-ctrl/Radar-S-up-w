@@ -228,6 +228,18 @@
   "domy": 0
  },
  {
+  "slug": "podwarpie",
+  "name": "Podwarpie (gm. Siewierz)",
+  "center": [
+   50.4278582,
+   19.215799
+  ],
+  "radius": 1500,
+  "generated": "2026-11-11T13:37:43.822Z",
+  "parcels": 545,
+  "domy": 19
+ },
+ {
   "slug": "przeczyce",
   "name": "Przeczyce (gm. Mierzęcice)",
   "center": [
