@@ -599,7 +599,7 @@ $('#fNear').onchange=()=>{if($('#fNear').checked&&!ME)locate(render);else render
 $('#moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('short');setTimeout(()=>map.invalidateSize(),50)};
 
 // ---------- najbliższy adres (OpenStreetMap / Nominatim, 1 zapytanie na kartę, z pamięcią) ----------
-async function fillAddr(r){const el=$('#addr');if(!el)return;const k='adr:'+r.id;let a=store.get(k,null);
+async function fillAddr(r){const el=$('#addr');if(!el)return;if(r.adr){el.textContent='📍 Adres domu (rejestr adresów GUGiK, najbliższy punkt): '+r.adr;return}const k='adr:'+r.id;let a=store.get(k,null);
   if(!a){try{const[lat,lon]=centroid(r);const j=await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&addressdetails=1&lat=${lat}&lon=${lon}`,{headers:{'Accept-Language':'pl'}})).json();
     const ad=j.address||{};a=[[ad.road,ad.house_number].filter(Boolean).join(' '),ad.village||ad.town||ad.city||ad.hamlet].filter(Boolean).join(', ')||'brak adresu w OSM';store.set(k,a)}catch(e){a=null}}
   if($('#addr')===el)el.textContent=a?'📍 Najbliższy adres (OSM, orientacyjnie): '+a:'📍 Adres niedostępny – użyj nawigacji do działki.'}
@@ -663,13 +663,13 @@ function trShow(){const el=$('#trasa');
   <div class="tr-acts">${stops.length?`<a class="pri" href="${gm}" target="_blank" rel="noopener">${stops.length>10?'Jedź pierwszymi 10 w Mapach':'Jedź całą trasą w Mapach'}</a>`:''}<select id="trN" aria-label="Liczba przystanków">${[8,12,20].map(n=>`<option value="${n}"${+store.get('trN',12)===n?' selected':''}>${n} przystanków</option>`).join('')}</select><button id="trShare">Wyślij leady z dnia</button><button id="trMe">${ME?'Odśwież od mojej pozycji':'Licz od mojej pozycji'}</button></div>
   ${stops.length?`<ol class="tr-list">${stops.map((p,i)=>{const r=p.r,st=trStat(r),k=(r.sieci.filter(s=>s.ok).sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0]||{}).k;
     return`<li class="st${st?' done':''}"><div class="pyl ${k} ${st==='zainteresowany'?'yes':st?'done':''}" aria-hidden="true">${i+1}</div><div class="st-b">
-    <h3>Działka ${r.num}, ${r.obr===r.obr.toUpperCase()?r.obr.toLowerCase().replace(/(^|[\s-])\S/g,m=>m.toUpperCase()):r.obr}</h3><p class="why">${trWhy(r)} · ${r.area<10000?Math.round(r.area)+' m²':(r.area/10000).toFixed(1).replace('.',',')+' ha'}</p>
+    <h3>Działka ${r.num}, ${r.obr===r.obr.toUpperCase()?r.obr.toLowerCase().replace(/(^|[\s-])\S/g,m=>m.toUpperCase()):r.obr}</h3><p class="why">${r.adr?`<b>${r.adr}</b><br>`:''}${trWhy(r)} · ${r.area<10000?Math.round(r.area)+' m²':(r.area/10000).toFixed(1).replace('.',',')+' ha'}</p>
     <div class="st-acts"><a class="nav" href="${navUrl(r)}" target="_blank" rel="noopener">Nawiguj</a><button data-c="${i}">Karta</button>
     ${['byłem','zainteresowany','nikogo','inna firma'].map(v=>`<button class="chip" data-s="${i}" data-v="${v}" aria-pressed="${st===v}">${v==='byłem'?'Byłem':v==='zainteresowany'?'Zainteresowany':v==='nikogo'?'Nikogo nie było':'Sprawa w innej firmie'}</button>`).join('')}</div></div></li>`}).join('')}</ol>`
   :`<p class="tr-empty">W tym obszarze nie ma działek z domem pod linią ani z linią wysokiego napięcia nad działką. Wybierz inny obszar.</p>`}`;
   el.hidden=false;$('#trX').onclick=trClose;$('#trMe').onclick=()=>locate(trShow);$('#trN').onchange=e=>{store.set('trN',+e.target.value);trShow()};
   $('#trShare').onclick=async()=>{const L=stops.filter(p=>trStat(p.r)==='zainteresowany');if(!L.length){alert('Oznacz najpierw działki jako „Zainteresowany”.');return}
-    const t='Leady z terenu '+new Date().toLocaleDateString('pl')+'\n'+L.map((p,i)=>{const u=store.get('u:'+p.r.id,{});return`${i+1}. Działka ${p.r.num}, obręb ${p.r.obr}, gm. ${p.r.gm} (${p.r.id})\n   ${trWhy(p.r).replace(/<[^>]+>/g,'')}${u.not?'\n   Notatka: '+u.not:''}\n   Mapa: https://www.google.com/maps?q=${p.c[0].toFixed(6)},${p.c[1].toFixed(6)}`}).join('\n');
+    const t='Leady z terenu '+new Date().toLocaleDateString('pl')+'\n'+L.map((p,i)=>{const u=store.get('u:'+p.r.id,{});return`${i+1}. Działka ${p.r.num}, obręb ${p.r.obr}, gm. ${p.r.gm} (${p.r.id})${p.r.adr?'\n   Adres: '+p.r.adr:''}\n   ${trWhy(p.r).replace(/<[^>]+>/g,'')}${u.not?'\n   Notatka: '+u.not:''}\n   Mapa: https://www.google.com/maps?q=${p.c[0].toFixed(6)},${p.c[1].toFixed(6)}`}).join('\n');
     try{if(navigator.share){await navigator.share({text:t});return}}catch(e){}
     try{await navigator.clipboard.writeText(t);status('Lista leadów skopiowana – wklej ją w wiadomości do menadżera.',0)}catch(e){prompt('Skopiuj listę:',t)}};
   el.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{trClose();openCard(stops[+b.dataset.c].r)});

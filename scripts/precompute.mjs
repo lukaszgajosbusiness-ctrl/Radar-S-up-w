@@ -6,6 +6,8 @@ import { mergeBdot } from './bdot_merge.mjs';
 
 const AREAS = JSON.parse(await fs.readFile(new URL('./areas.json', import.meta.url), 'utf8'));
 const ONLY = process.env.ONLY_AREA || '';
+let PRG = new Map(); try { for (const q of JSON.parse(await fs.readFile(new URL('./prg.json', import.meta.url), 'utf8')).pts) { const k = Math.floor(q[0] * 200) + ':' + Math.floor(q[1] * 200); (PRG.get(k) || PRG.set(k, []).get(k)).push(q) } } catch (e) { console.log('PRG: brak scripts/prg.json – bez adresów') }
+const adrNear = ([la, lo]) => { let best = null, bd = 60; const a = Math.floor(la * 200), b = Math.floor(lo * 200); for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (const q of PRG.get((a + i) + ':' + (b + j)) || []) { const d = Math.hypot((q[0] - la) * 111320, (q[1] - lo) * 111320 * Math.cos(la * Math.PI / 180)); if (d < bd) { bd = d; best = q } } return best ? best[2] : null };
 let BDOT = []; try { BDOT = JSON.parse(await fs.readFile(new URL('./bdot.json', import.meta.url), 'utf8')).lines } catch (e) { console.log('BDOT10k: brak scripts/bdot.json – tylko OSM') }
 const UA = 'RadarSlupow/1.0 (github.com/lukaszgajosbusiness-ctrl/Radar-S-up-w)';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -147,7 +149,7 @@ async function runArea(a) {
   const hv = nets.filter(n => ['NN', 'WN', 'gaz'].includes(n.k)); let osmAdd = 0;
   for (const b of osmB) { if ([...found.values()].some(f => inRings(b.c, f.rm))) continue; let d = 1e9, nn = null; for (const n of hv) { const x = dLine(b.c, n.m); if (x < d) { d = x; nn = n } } if (!nn || d > 60) continue; found.set('osm' + (++osmAdd), { rm: b.rm, c: b.c, d, a: b.a, osm: 1 }) }
   console.log(`   budynki z OSM (uzupełnienie): ${osmAdd}`);
-  for (const r of RES) { const bs = [...found.values()].filter(b => b.a >= 40 && inRings(b.c, r.rm)); if (bs.length) { r.domy = bs.length; const d = Math.min(...bs.map(b => b.d)); if (d < 40) { r.domPrzyLinii = true; r.domOdl = Math.round(d); const b = bs.find(x => x.d === d); r.domLL = [+(b.c[1] / K.ky).toFixed(6), +(b.c[0] / K.kx).toFixed(6)]; if (b.osm) r.domOSM = 1 } } delete r.rm }
+  for (const r of RES) { const bs = [...found.values()].filter(b => b.a >= 40 && inRings(b.c, r.rm)); if (bs.length) { r.domy = bs.length; const d = Math.min(...bs.map(b => b.d)); if (d < 40) { r.domPrzyLinii = true; r.domOdl = Math.round(d); const b = bs.find(x => x.d === d); r.domLL = [+(b.c[1] / K.ky).toFixed(6), +(b.c[0] / K.kx).toFixed(6)]; if (b.osm) r.domOSM = 1; const ad = adrNear(r.domLL); if (ad) r.adr = ad } } delete r.rm }
   const usedNets = new Set(RES.flatMap(r => r.sieci.map(s => s.id)));
   const out = {
     name: a.name, slug: a.slug, center: [lat, lon], radius: R, bbox: bb, generated: new Date().toISOString(),
