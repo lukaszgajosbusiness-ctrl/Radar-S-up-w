@@ -6,7 +6,7 @@
 <title>Radar Słupów</title>
 <meta name="theme-color" content="#14324a">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap">
-<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Radar"><link rel="icon" href="icon.svg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
@@ -96,6 +96,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <input id="q" value="Tuliszów, Siewierz" aria-label="Miejscowość lub gmina">
   <select id="rad" aria-label="Promień"><option value="800">0,8 km</option><option value="1500" selected>1,5 km</option><option value="2500">2,5 km</option><option value="4000">4 km</option></select>
   <button class="pri" id="go">Szukaj działek</button>
+  <button id="instBtn" hidden title="Dodaj Radar na ekran telefonu">Zainstaluj</button>
   <button id="trasaBtn" title="Najmocniejsze działki z domem pod linią, ułożone w kolejności przejazdu">Trasa na dzień</button>
   <button id="goView" class="extra" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
   <select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
@@ -676,6 +677,12 @@ function trShow(){const el=$('#trasa');
     stops.forEach((p,i)=>gTr.addLayer(L.marker(p.c,{icon:L.divIcon({className:'',html:`<div class="pyl ${trStat(p.r)?'done':''}" style="width:26px;height:26px;font-size:13px;box-shadow:0 0 0 2px #fff">${i+1}</div>`,iconSize:[26,26]})}).on('click',()=>openCard(p.r))))}}
 function trClose(){$('#trasa').hidden=true}
 $('#trasaBtn').onclick=trShow;
+</script>
+<script>
+(()=>{let ev;const b=document.getElementById('instBtn');
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();ev=e;b.hidden=false});
+b.onclick=async()=>{if(!ev)return;ev.prompt();await ev.userChoice;ev=null;b.hidden=true};
+addEventListener('appinstalled',()=>{b.hidden=true});})();
 </script>
 </body>
 </html>
