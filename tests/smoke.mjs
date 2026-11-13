@@ -17,13 +17,14 @@ const o = await pg.evaluate(async () => {
   await loadArea('tuliszow');
   const r = RES.find(x => x.num === '113' && x.obr === 'Tuliszów');
   if (r) openCard(r);
-  return { n: RES.length, ok: RES.filter(x => x.ok).length, r113: r ? { dom: r.domPrzyLinii, ok: r.ok } : null, fb: !!document.querySelector('#fbS'), small: typeof MIN_DOM !== 'undefined', trasa: (trShow(), document.querySelectorAll('#trasa .st').length) };
+  return { n: RES.length, ok: RES.filter(x => x.ok).length, r113: r ? { dom: r.domPrzyLinii, ok: r.ok } : null, fb: !!document.querySelector('#fbS'), small: typeof MIN_DOM !== 'undefined', trasa: (trShow(), document.querySelectorAll('#trasa .st').length), nowyDzien: (() => { const st = trPick().stops; const a = st[0].r, b = st[1].r; store.set('u:' + a.id, { trasa: 'zainteresowany', trDay: '2000-01-01' }); store.set('u:' + b.id, { trasa: 'nikogo', trDay: '2000-01-01' }); const n = trPick().stops; return { bezA: !n.some(p => p.r.id === a.id), bNaPoczatku: n[0].r.id === b.id || !ME && n.some(p => p.r.id === b.id), bCzysty: trStat(b) === '' } })() };
 });
 console.log(JSON.stringify(o), errs);
 const fail = []; if (errs.length) fail.push('błędy JS: ' + errs.join('; '));
 if (!(o.n > 500)) fail.push('za mało działek w Tuliszowie: ' + o.n);
 if (!o.r113) fail.push('brak działki 113 (Tuliszów) w danych'); else if (!o.r113.dom) fail.push('działka 113 nie ma flagi „dom przy linii”');
 if (!o.fb) fail.push('brak bloku uwag z terenu w karcie');
+if (!o.nowyDzien.bezA || !o.nowyDzien.bNaPoczatku || !o.nowyDzien.bCzysty) fail.push('trasa: nowy dzień ' + JSON.stringify(o.nowyDzien));
 if (!(o.trasa >= 5)) fail.push('trasa na dzień ma za mało przystanków: ' + o.trasa);
 await b.close(); srv.close();
 if (fail.length) { console.error('NIEPOWODZENIE:\n- ' + fail.join('\n- ')); process.exit(1) }
