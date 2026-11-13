@@ -95,6 +95,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 #hello button{width:100%;min-height:48px;font-size:16px;font-weight:600;background:#14324a;color:#fff;border:0;border-radius:10px}
 @media (min-width:801px){#hello{align-items:center}#hello .in{border-radius:16px}}
 .cpy{font-size:13px;padding:4px 10px;margin-left:4px;border-radius:999px}
+.btnlike span{display:inline-block;padding:6px 12px;border:1px solid var(--line,#ccc);border-radius:8px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -156,6 +157,8 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <li><b>W terenie:</b> „◎” na mapie pokazuje, gdzie jesteś, „sortuj: najbliżej mnie” układa działki od najbliższej, a „Nawiguj do działki” otwiera trasę w Mapach Google.</li>
   <li><b>Z kontem:</b> „Rezerwuję na 14 dni” blokuje działkę dla Ciebie, żeby nikt z zespołu nie szedł do tego samego właściciela. Zmieniaj status aż do „umowa”.</li>
  </ol>
+ <p><b>Kopia statusów.</b> Statusy i notatki są zapisane na tym telefonie. Zrób kopię przed zmianą telefonu albo czyszczeniem przeglądarki.</p>
+ <p><button type="button" id="bkSave">Zapisz kopię</button> <label class="btnlike"><input type="file" id="bkLoad" accept="application/json" hidden><span>Wczytaj kopię</span></label></p>
  <p class="note">Apka korzysta tylko z danych publicznych (OpenStreetMap, BDOT10k i ULDK GUGiK) i nie zawiera danych właścicieli. Wynik to wskazówka. Przebieg sieci i słupy zawsze sprawdź w Geoportalu i na miejscu.</p>
 </div>
 <div id="card" hidden></div>
@@ -713,6 +716,13 @@ addEventListener('appinstalled',()=>{b.hidden=true});})();
 (()=>{try{if(localStorage.getItem('rs:hello'))return}catch(e){return}
 const d=document.createElement('div');d.id='hello';d.innerHTML=`<div class="in" role="dialog" aria-labelledby="hT"><h2 id="hT">Radar Słupów</h2><p>Znajduje domy pod liniami energetycznymi, do których możesz zapukać ze sprawą o służebność przesyłu.</p><ol><li>Wybierz <b>Gotowe obszary</b> albo wpisz miejscowość i kliknij <b>Szukaj działek</b>.</li><li>Otwórz <b>Trasa na dzień</b>. Dostaniesz listę domów z adresami w kolejności przejazdu.</li><li>Przy każdym domu kliknij <b>Nawiguj</b>, a po rozmowie zaznacz status.</li></ol><button id="hOk">Zaczynam</button></div>`;
 document.body.appendChild(d);document.getElementById('hOk').onclick=()=>{try{localStorage.setItem('rs:hello','1')}catch(e){}d.remove()}})();
+</script>
+<script>
+(()=>{const S=document.getElementById('bkSave'),Ld=document.getElementById('bkLoad');if(!S)return;
+S.onclick=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('rs:u:'))o[k]=localStorage.getItem(k)}}catch(e){}
+ const n=Object.keys(o).length;if(!n){alert('Nie ma jeszcze żadnych statusów do zapisania.');return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({radar:1,data:new Date().toISOString(),u:o})],{type:'application/json'}));a.download='radar-kopia-'+new Date().toISOString().slice(0,10)+'.json';a.click()};
+Ld.onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j.radar||!j.u)throw 0;let n=0;for(const[k,v]of Object.entries(j.u))if(k.startsWith('rs:u:')){localStorage.setItem(k,v);n++}alert('Wczytano statusy: '+n+'. Odświeżam apkę.');location.reload()}catch(err){alert('To nie jest plik kopii z Radaru.')}}})();
 </script>
 </body>
 </html>
