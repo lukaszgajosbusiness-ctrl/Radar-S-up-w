@@ -136,6 +136,7 @@ async function runArea(a) {
   const found = new Map(); last = Date.now();
   // pamięć budynków z poprzednich przebiegów: znalezione budynki i punkty, w których budynku nie było
   const cfile = `data/cache/${a.slug}-bud.json`; let neg = new Set(), cb = [];
+  let osmC = []; try { osmC = JSON.parse(await fs.readFile(cfile, 'utf8')).osm || [] } catch (e) {}
   if (!process.env.FULL && new Date().getUTCDay() !== 0) { try { const c = JSON.parse(await fs.readFile(cfile, 'utf8')); neg = new Set(c.neg); cb = c.bud || [] } catch (e) {} }
   const key = q => Math.round(q[0] / 4) + ',' + Math.round(q[1] / 4);
   for (const b of cb) { const rm = b.rings.map(r => r.map(M)); let cx = 0, cy = 0; rm[0].forEach(q => { cx += q[0]; cy += q[1] }); const c = [cx / rm[0].length, cy / rm[0].length]; let ar = 0; for (let i = 0; i < rm[0].length - 1; i++) ar += rm[0][i][0] * rm[0][i + 1][1] - rm[0][i + 1][0] * rm[0][i][1]; let d = 1e9; for (const n of nets) if (['NN', 'WN', 'gaz'].includes(n.k)) d = Math.min(d, dLine(c, n.m)); found.set(b.id, { rm, c, d, a: Math.abs(ar) / 2, rings: b.rings }) }
@@ -146,6 +147,8 @@ async function runArea(a) {
     k => { if (Date.now() - last > 30000) { last = Date.now(); console.log(`   budynki ${k}/${bpts.length}, znalezione ${found.size}`) } });
   try { await fs.mkdir('data/cache', { recursive: true }); await fs.writeFile(cfile, JSON.stringify({ neg: [...neg], bud: [...found.entries()].filter(([k, b]) => b.rings).map(([id, b]) => ({ id, rings: b.rings })) })) } catch (e) {}
   // budynki z OSM jako uzupełnienie (nowe domy, których nie ma jeszcze w bazie GUGiK)
+  if (osmC.length && osmB.length < osmC.length * 0.6) { console.log(`   OSM dało ${osmB.length} budynków, w pamięci ${osmC.length} – biorę z pamięci`); osmB.length = 0; osmB.push(...osmC) }
+  try { const c = JSON.parse(await fs.readFile(cfile, 'utf8')); c.osm = osmB.map(b => ({ rm: b.rm, c: b.c, a: b.a })); await fs.writeFile(cfile, JSON.stringify(c)) } catch (e) {}
   const hv = nets.filter(n => ['NN', 'WN', 'gaz'].includes(n.k)); let osmAdd = 0;
   for (const b of osmB) { if ([...found.values()].some(f => inRings(b.c, f.rm))) continue; let d = 1e9, nn = null; for (const n of hv) { const x = dLine(b.c, n.m); if (x < d) { d = x; nn = n } } if (!nn || d > 60) continue; found.set('osm' + (++osmAdd), { rm: b.rm, c: b.c, d, a: b.a, osm: 1 }) }
   console.log(`   budynki z OSM (uzupełnienie): ${osmAdd}`);
