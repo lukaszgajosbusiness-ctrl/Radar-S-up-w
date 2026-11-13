@@ -53,7 +53,7 @@ const kind = t => (t.power === 'cable' || t.location === 'underground' || (t.man
 
 async function overpass(bb) {
   const b = `(${bb.s},${bb.w},${bb.n},${bb.e})`;
-  const q = `[out:json][timeout:180];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:15)["landuse"="forest"];way(around.n:45)["building"];way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
+  const q = `[out:json][timeout:180];(way["power"~"^(line|minor_line|cable)$"]${b};way["man_made"="pipeline"]${b};)->.n;(.n;way(around.n:15)["landuse"="forest"];way["building"]${b};way(around.n:15)["natural"="wood"];node(around.n:3)["power"~"^(tower|pole)$"];);out tags geom;`;
   const H = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter', 'https://maps.mail.ru/osm/tools/overpass/api/interpreter', 'https://overpass.private.coffee/api/interpreter'];
   for (let round = 0; round < 3; round++) { if (round) { console.log(`   Overpass: runda ${round + 1} za 90 s`); await sleep(90000) }
     for (const host of H) {
