@@ -350,7 +350,7 @@ function openCard(r){
   const u=store.get('u:'+r.id,{});const good=r.sieci.filter(s=>s.ok);const main=(good[0]?good:r.sieci).slice().sort((a,b)=>(!!a.pas-!!b.pas)||TYPES[b.k].w-TYPES[a.k].w||b.len-a.len)[0]||{k:null,kind:'? (wpisz niżej)',len:0};const TN=k=>k?TYPES[k].n:'brak danych – wpisz niżej';
   const geo=`https://mapy.geoportal.gov.pl/imap/Imgp_2.html?identifyParcel=${encodeURIComponent(r.id)}`;
   const c=$('#card');c.hidden=false;
-  c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><h2>Działka ${r.num}</h2><div id="addr" class="note">📍 szukam najbliższego adresu…</div><div class="note">${r.obr}, gm. ${r.gm} · ${r.area.toLocaleString('pl')} m² · <span style="font-family:var(--mono)">${r.id}</span></div></div><button id="x" aria-label="Zamknij">✕</button></div>
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><h2>Działka ${r.num}</h2><div id="addr" class="note">📍 szukam najbliższego adresu…</div>${(()=>{const u=store.get('u:'+r.id,{});return u.trasa?`<div class="note"><b>Wizyta ${u.trDay?new Date(u.trDay).toLocaleDateString('pl'):''}:</b> ${u.trasa==='inna firma'?'sprawa w innej firmie':u.trasa==='nikogo'?'nikogo nie było':u.trasa}${u.not?' · '+esc(u.not):''}</div>`:''})()}<div class="note">${r.obr}, gm. ${r.gm} · ${r.area.toLocaleString('pl')} m² · <span style="font-family:var(--mono)">${r.id}</span></div></div><button id="x" aria-label="Zamknij">✕</button></div>
   ${r.sieci.length?`<div class="why1"><p>${trWhy(r)}</p><a class="nav" href="${navUrl(r)}" target="_blank" rel="noopener">Nawiguj</a></div>`:''}
   <div class="calc"><div class="note">Do przepisania w kalkulatorze Votum (główna sieć):</div>
   <table><tr><td>Kategoria</td><td><b>${main.kind}</b></td></tr>
