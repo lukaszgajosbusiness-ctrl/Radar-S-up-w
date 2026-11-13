@@ -446,5 +446,69 @@
   "lat": 50.4808,
   "lon": 19.4707,
   "radius": 1200
+ },
+ {
+  "slug": "jaworzno-tuwima",
+  "name": "Jaworzno – Tuwima / Olszewskiego",
+  "q": "Jaworzno",
+  "lat": 50.1978,
+  "lon": 19.2703,
+  "radius": 1200
+ },
+ {
+  "slug": "jaworzno-szelonka",
+  "name": "Jaworzno – Szelonka / Fabryczna",
+  "q": "Jaworzno",
+  "lat": 50.1925,
+  "lon": 19.2565,
+  "radius": 1200
+ },
+ {
+  "slug": "poraj",
+  "name": "Poraj – Słoneczna / Kosmiczna",
+  "q": "Poraj",
+  "lat": 50.6702,
+  "lon": 19.2233,
+  "radius": 1200
+ },
+ {
+  "slug": "kuznica-stara",
+  "name": "Kuźnica Stara – Brzegowa / Nad Zalewem",
+  "q": "Kuźnica Stara",
+  "lat": 50.6446,
+  "lon": 19.2276,
+  "radius": 1200
+ },
+ {
+  "slug": "pinczyce",
+  "name": "Pińczyce – Grabowa / Leśna",
+  "q": "Pińczyce",
+  "lat": 50.5478,
+  "lon": 19.2169,
+  "radius": 1200
+ },
+ {
+  "slug": "myszkow-pulaskiego",
+  "name": "Myszków – Pułaskiego / Krasickiego",
+  "q": "Myszków",
+  "lat": 50.5692,
+  "lon": 19.318,
+  "radius": 1200
+ },
+ {
+  "slug": "sosnowiec-juliuszowska",
+  "name": "Sosnowiec – Wileńska / Juliuszowska",
+  "q": "Sosnowiec",
+  "lat": 50.2797,
+  "lon": 19.2443,
+  "radius": 1200
+ },
+ {
+  "slug": "sosnowiec-slawkowska",
+  "name": "Sosnowiec – Sławkowska / Porębska",
+  "q": "Sosnowiec",
+  "lat": 50.2815,
+  "lon": 19.2258,
+  "radius": 1200
  }
 ]
