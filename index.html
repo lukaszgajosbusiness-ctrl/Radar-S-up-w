@@ -96,6 +96,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 @media (min-width:801px){#hello{align-items:center}#hello .in{border-radius:16px}}
 .cpy{font-size:13px;padding:4px 10px;margin-left:4px;border-radius:999px}
 .btnlike span{display:inline-block;padding:6px 12px;border:1px solid var(--line,#ccc);border-radius:8px;cursor:pointer}
+.qn{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px}.qn .chip{font-size:13px;min-height:34px;padding:6px 10px;opacity:.85}.qn .note{width:100%}
 </style>
 </head>
 <body>
@@ -165,6 +166,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 <script>
 'use strict';
 const $=s=>document.querySelector(s);
+const esc=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const store={get(k,d){try{const v=localStorage.getItem('rs:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('rs:'+k,JSON.stringify(v));return true}catch(e){return false}}};
 
 // ---------- mapa ----------
@@ -688,7 +690,7 @@ function trShow(){const el=$('#trasa');
     return`<li class="st${st?' done':''}"><div class="pyl ${k} ${st==='zainteresowany'?'yes':st?'done':''}" aria-hidden="true">${i+1}</div><div class="st-b">
     <h3>Działka ${r.num}, ${r.obr===r.obr.toUpperCase()?r.obr.toLowerCase().replace(/(^|[\s-])\S/g,m=>m.toUpperCase()):r.obr}</h3><p class="why">${trOld(r)==='nikogo'?'<b style="color:#8a5a00">Wróć – ostatnio nikogo nie było</b><br>':''}${r.adr?`<b>${r.adr}</b><br>`:'<i>Brak numeru w rejestrze – jedź „Nawiguj” do budynku</i><br>'}${trWhy(r)} · ${r.area<10000?Math.round(r.area)+' m²':(r.area/10000).toFixed(1).replace('.',',')+' ha'}</p>
     <div class="st-acts"><a class="nav" href="${navUrl(r)}" target="_blank" rel="noopener">Nawiguj</a><button data-c="${i}">Karta</button>
-    ${['byłem','zainteresowany','nikogo','inna firma'].map(v=>`<button class="chip" data-s="${i}" data-v="${v}" aria-pressed="${st===v}">${v==='byłem'?'Byłem':v==='zainteresowany'?'Zainteresowany':v==='nikogo'?'Nikogo nie było':'Sprawa w innej firmie'}</button>`).join('')}</div></div></li>`}).join('')}</ol>`
+    ${['byłem','zainteresowany','nikogo','inna firma'].map(v=>`<button class="chip" data-s="${i}" data-v="${v}" aria-pressed="${st===v}">${v==='byłem'?'Byłem':v==='zainteresowany'?'Zainteresowany':v==='nikogo'?'Nikogo nie było':'Sprawa w innej firmie'}</button>`).join('')}${st?`<div class="qn">${['Wróć po 17','Oddzwoni','Właściciel mieszka gdzie indziej','Prosi o ulotkę'].map(t=>`<button type="button" class="chip" data-n="${i}" data-t="${t}">+ ${t}</button>`).join('')}${store.get('u:'+r.id,{}).not?`<div class="note">📝 ${esc(store.get('u:'+r.id,{}).not)}</div>`:''}</div>`:''}</div></div></li>`}).join('')}</ol>`
   :`<p class="tr-empty">W tym obszarze nie ma działek z domem pod linią ani z linią wysokiego napięcia nad działką. Wybierz inny obszar.</p>`}`;
   el.hidden=false;$('#trX').onclick=trClose;if($('#trNear'))$('#trNear').onclick=trNear;$('#trMe').onclick=()=>locate(trShow);$('#trN').onchange=e=>{store.set('trN',+e.target.value);trShow()};
   $('#trCsv').onclick=()=>{const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const rows=[['Data','Status','Adres','Działka','Obręb','Gmina','Linia','Notatka','Mapa']];
@@ -701,6 +703,7 @@ function trShow(){const el=$('#trasa');
     try{await navigator.clipboard.writeText(t);status('Lista leadów skopiowana – wklej ją w wiadomości do menadżera.',0)}catch(e){prompt('Skopiuj listę:',t)}};
   el.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{trClose();openCard(stops[+b.dataset.c].r)});
   el.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>trSet(stops[+b.dataset.s].r,b.dataset.v));
+  el.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{const r=stops[+b.dataset.n].r,u=store.get('u:'+r.id,{});const t=b.dataset.t;if(!(u.not||'').includes(t)){u.not=(u.not?u.not+'; ':'')+t;store.set('u:'+r.id,u)}trShow()});
   gTr.clearLayers();if(stops.length){gTr.addLayer(L.polyline((ME?[ME]:[]).concat(stops.map(p=>p.c)),{color:'#14324a',weight:3,dashArray:'6 6'}));
     stops.forEach((p,i)=>gTr.addLayer(L.marker(p.c,{icon:L.divIcon({className:'',html:`<div class="pyl ${trStat(p.r)?'done':''}" style="width:26px;height:26px;font-size:13px;box-shadow:0 0 0 2px #fff">${i+1}</div>`,iconSize:[26,26]})}).on('click',()=>openCard(p.r))))}}
 function trClose(){$('#trasa').hidden=true}
