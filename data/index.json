@@ -84,6 +84,18 @@
   "domy": 6
  },
  {
+  "slug": "bytom-mickiewicza",
+  "name": "Bytom – Mickiewicza / Północna",
+  "center": [
+   50.3621,
+   18.9308
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T18:33:33.797Z",
+  "parcels": 151,
+  "domy": 8
+ },
+ {
   "slug": "ciagowice",
   "name": "Ciągowice (gm. Łazy)",
   "center": [
@@ -168,6 +180,18 @@
   "domy": 47
  },
  {
+  "slug": "dg-tysiaclecia",
+  "name": "Dąbrowa Górnicza – Tysiąclecia / Podlesie",
+  "center": [
+   50.3259,
+   19.2271
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T18:27:22.800Z",
+  "parcels": 228,
+  "domy": 34
+ },
+ {
   "slug": "dobieszowice",
   "name": "Dobieszowice (gm. Bobrowniki)",
   "center": [
@@ -214,6 +238,18 @@
   "generated": "2026-11-13T09:56:53.800Z",
   "parcels": 759,
   "domy": 17
+ },
+ {
+  "slug": "jastrzab",
+  "name": "Jastrząb – 19 Stycznia / Stawowa",
+  "center": [
+   50.6659,
+   19.1929
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T18:21:28.436Z",
+  "parcels": 295,
+  "domy": 7
  },
  {
   "slug": "jaworzno-szelonka",
@@ -288,6 +324,18 @@
   "domy": 2
  },
  {
+  "slug": "myslow-nowa-kuznica",
+  "name": "Mysłów / Nowa Kuźnica",
+  "center": [
+   50.599,
+   19.222
+  ],
+  "radius": 2600,
+  "generated": "2026-11-13T18:38:28.964Z",
+  "parcels": 825,
+  "domy": 19
+ },
+ {
   "slug": "myszkowice",
   "name": "Myszkowice (gm. Bobrowniki)",
   "center": [
@@ -298,6 +346,18 @@
   "generated": "2026-11-13T09:46:41.449Z",
   "parcels": 342,
   "domy": 0
+ },
+ {
+  "slug": "myszkow-kolejowa",
+  "name": "Myszków – Kolejowa / Partyzantów",
+  "center": [
+   50.567,
+   19.3513
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T18:33:52.502Z",
+  "parcels": 609,
+  "domy": 16
  },
  {
   "slug": "myszkow-pulaskiego",
@@ -612,6 +672,18 @@
   "domy": 0
  },
  {
+  "slug": "tg-nakielska",
+  "name": "Tarnowskie Góry – Nakielska",
+  "center": [
+   50.4423,
+   18.8706
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T18:21:07.772Z",
+  "parcels": 123,
+  "domy": 39
+ },
+ {
   "slug": "tapkowice",
   "name": "Tąpkowice (gm. Ożarowice)",
   "center": [
@@ -682,6 +754,30 @@
   "generated": "2026-11-13T08:44:05.899Z",
   "parcels": 1064,
   "domy": 20
+ },
+ {
+  "slug": "zawiercie-losnicka",
+  "name": "Zawiercie – Łośnicka / Strumień",
+  "center": [
+   50.4972,
+   19.4414
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T18:24:46.365Z",
+  "parcels": 243,
+  "domy": 19
+ },
+ {
+  "slug": "zawiercie-rolnicza",
+  "name": "Zawiercie – Rolnicza / Mrzygłodzka",
+  "center": [
+   50.4951,
+   19.409
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T18:22:04.779Z",
+  "parcels": 317,
+  "domy": 6
  },
  {
   "slug": "zawiercie-kromolow",
