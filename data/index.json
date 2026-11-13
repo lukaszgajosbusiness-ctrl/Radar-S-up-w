@@ -216,6 +216,42 @@
   "domy": 17
  },
  {
+  "slug": "jaworzno-szelonka",
+  "name": "Jaworzno – Szelonka / Fabryczna",
+  "center": [
+   50.1925,
+   19.2565
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T17:01:35.858Z",
+  "parcels": 297,
+  "domy": 40
+ },
+ {
+  "slug": "jaworzno-tuwima",
+  "name": "Jaworzno – Tuwima / Olszewskiego",
+  "center": [
+   50.1978,
+   19.2703
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T16:56:28.749Z",
+  "parcels": 309,
+  "domy": 43
+ },
+ {
+  "slug": "kuznica-stara",
+  "name": "Kuźnica Stara – Brzegowa / Nad Zalewem",
+  "center": [
+   50.6446,
+   19.2276
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T17:03:52.415Z",
+  "parcels": 308,
+  "domy": 25
+ },
+ {
   "slug": "kuznica-warezynska",
   "name": "Kuźnica Warężyńska (Dąbrowa Górnicza)",
   "center": [
@@ -262,6 +298,18 @@
   "generated": "2026-11-13T09:46:41.449Z",
   "parcels": 342,
   "domy": 0
+ },
+ {
+  "slug": "myszkow-pulaskiego",
+  "name": "Myszków – Pułaskiego / Krasickiego",
+  "center": [
+   50.5692,
+   19.318
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T17:03:08.668Z",
+  "parcels": 397,
+  "domy": 23
  },
  {
   "slug": "najdziszow",
@@ -324,6 +372,18 @@
   "domy": 1
  },
  {
+  "slug": "pinczyce",
+  "name": "Pińczyce – Grabowa / Leśna",
+  "center": [
+   50.5478,
+   19.2169
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T16:55:02.805Z",
+  "parcels": 191,
+  "domy": 19
+ },
+ {
   "slug": "pniowiec",
   "name": "Pniowiec (Tarnowskie Góry)",
   "center": [
@@ -346,6 +406,18 @@
   "generated": "2026-11-13T10:36:45.552Z",
   "parcels": 545,
   "domy": 19
+ },
+ {
+  "slug": "poraj",
+  "name": "Poraj – Słoneczna / Kosmiczna",
+  "center": [
+   50.6702,
+   19.2233
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T16:54:28.882Z",
+  "parcels": 199,
+  "domy": 1
  },
  {
   "slug": "przeczyce",
@@ -466,6 +538,30 @@
   "generated": "2026-11-13T08:34:45.541Z",
   "parcels": 1070,
   "domy": 9
+ },
+ {
+  "slug": "sosnowiec-slawkowska",
+  "name": "Sosnowiec – Sławkowska / Porębska",
+  "center": [
+   50.2815,
+   19.2258
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T17:06:00.551Z",
+  "parcels": 759,
+  "domy": 25
+ },
+ {
+  "slug": "sosnowiec-juliuszowska",
+  "name": "Sosnowiec – Wileńska / Juliuszowska",
+  "center": [
+   50.2797,
+   19.2443
+  ],
+  "radius": 1200,
+  "generated": "2026-11-13T17:03:04.665Z",
+  "parcels": 439,
+  "domy": 33
  },
  {
   "slug": "sowice-tg",
