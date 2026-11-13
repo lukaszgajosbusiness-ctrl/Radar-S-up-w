@@ -148,7 +148,8 @@ async function runArea(a) {
   try { await fs.mkdir('data/cache', { recursive: true }); await fs.writeFile(cfile, JSON.stringify({ neg: [...neg], bud: [...found.entries()].filter(([k, b]) => b.rings).map(([id, b]) => ({ id, rings: b.rings })) })) } catch (e) {}
   // budynki z OSM jako uzupełnienie (nowe domy, których nie ma jeszcze w bazie GUGiK)
   if (osmC.length && osmB.length < osmC.length * 0.6) { console.log(`   OSM dało ${osmB.length} budynków, w pamięci ${osmC.length} – biorę z pamięci`); osmB.length = 0; osmB.push(...osmC) }
-  try { const c = JSON.parse(await fs.readFile(cfile, 'utf8')); c.osm = osmB.map(b => ({ rm: b.rm, c: b.c, a: b.a })); await fs.writeFile(cfile, JSON.stringify(c)) } catch (e) {}
+  console.log(`   budynki OSM w zasięgu: ${osmB.length}`);
+  if (osmB.length >= osmC.length) try { const c = JSON.parse(await fs.readFile(cfile, 'utf8')); c.osm = osmB.map(b => ({ rm: b.rm, c: b.c, a: b.a })); await fs.writeFile(cfile, JSON.stringify(c)) } catch (e) {}
   const hv = nets.filter(n => ['NN', 'WN', 'gaz'].includes(n.k)); let osmAdd = 0;
   for (const b of osmB) { if ([...found.values()].some(f => inRings(b.c, f.rm))) continue; let d = 1e9, nn = null; for (const n of hv) { const x = dLine(b.c, n.m); if (x < d) { d = x; nn = n } } if (!nn || d > 60) continue; found.set('osm' + (++osmAdd), { rm: b.rm, c: b.c, d, a: b.a, osm: 1 }) }
   console.log(`   budynki z OSM (uzupełnienie): ${osmAdd}`);
