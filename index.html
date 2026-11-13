@@ -485,7 +485,7 @@ async function loadArea(slug){
     setTimeout(()=>$('#bar i').style.width='0',800);
   }catch(e){status('Nie udało się wczytać obszaru: '+e.message,0)}
 }
-$('#gotowe').onchange=e=>{store.set('area',e.target.value);loadArea(e.target.value)};loadIndex().then(()=>{const a=store.get('area','');if(a&&!location.search.includes('dz=')&&[...$('#gotowe').options].some(o=>o.value===a)){$('#gotowe').value=a;loadArea(a)}});
+$('#gotowe').onchange=e=>{store.set('area',e.target.value);loadArea(e.target.value)};loadIndex().then(()=>{const a=store.get('area','');if(a&&!location.search.includes('dz=')&&[...$('#gotowe').options].some(o=>o.value===a)){$('#gotowe').value=a;loadArea(a).then(()=>{if(location.search.includes('trasa=1'))trShow()})}});
 
 
 // ---------- tryb demo: przykładowy lead ----------
