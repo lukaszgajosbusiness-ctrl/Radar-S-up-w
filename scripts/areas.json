@@ -473,7 +473,7 @@
  },
  {
   "slug": "kuznica-stara",
-  "name": "Kuźnica Stara – Brzegowa / Nad Zalewem",
+  "name": "Kuźnica Stara – Brzegowa / Nad Zalewem (gm. Poraj)",
   "q": "Kuźnica Stara",
   "lat": 50.6446,
   "lon": 19.2276,
@@ -481,7 +481,7 @@
  },
  {
   "slug": "pinczyce",
-  "name": "Pińczyce – Grabowa / Leśna",
+  "name": "Pińczyce – Grabowa / Leśna (gm. Koziegłowy)",
   "q": "Pińczyce",
   "lat": 50.5478,
   "lon": 19.2169,
@@ -537,7 +537,7 @@
  },
  {
   "slug": "jastrzab",
-  "name": "Jastrząb – 19 Stycznia / Stawowa",
+  "name": "Jastrząb – 19 Stycznia / Stawowa (gm. Poraj)",
   "q": "Jastrząb",
   "lat": 50.6659,
   "lon": 19.1929,
@@ -569,7 +569,7 @@
  },
  {
   "slug": "myslow-nowa-kuznica",
-  "name": "Mysłów / Nowa Kuźnica",
+  "name": "Mysłów / Nowa Kuźnica (gm. Koziegłowy)",
   "q": "Mysłów / Nowa Kuźnica",
   "lat": 50.599,
   "lon": 19.222,
