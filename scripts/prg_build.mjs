@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import proj4 from 'proj4';
 import * as shapefile from 'shapefile';
-const TER = ['2401', '2465', '2416', '2413', '2410', '2475', '2468', '2462'];
+const TER = ['2401', '2465', '2416', '2413', '2409', '2475', '2468', '2471', '2462'];
 const DEF = '+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs';
 let old = []; try { old = JSON.parse(await fs.readFile(new URL('./prg.json', import.meta.url), 'utf8')).pts } catch (e) {}
 const pts = []; let shown = false;
