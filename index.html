@@ -327,7 +327,7 @@ function render(){
   rows.forEach((r,i)=>{
     const best=r.sieci.slice().sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0];
     const poly=L.polygon(r.rings.map(rg=>rg.map(([x,y])=>[y,x])),{color:r.ok&&best?col(best.k):'#888',weight:1.5,fillOpacity:r.ok?.18:.05}).on('click',()=>openCard(r));
-    poly.bindTooltip(`${r.num} (${r.obr}) · ${r.score} pkt`);gPar.addLayer(poly);r.poly=poly;
+    poly.bindTooltip(`${r.num} (${r.obr}) · ${r.score} pkt`);gPar.addLayer(poly);r.poly=poly;{const st=trStat(r);if(st){const c=r.domLL||centroid(r);const SC={'zainteresowany':'#1f7a3d','inna firma':'#8a5a00','nikogo':'#6b7280','byłem':'#14324a'};gPin.addLayer(L.circleMarker(c,{radius:8,color:'#fff',weight:2,fillColor:SC[st]||'#14324a',fillOpacity:1}).bindTooltip(`${r.adr||r.num}: ${st==='inna firma'?'sprawa w innej firmie':st==='nikogo'?'nikogo nie było':st}`).on('click',()=>openCard(r)))}}
     if(i<20){const c=poly.getBounds().getCenter();gPin.addLayer(L.marker(c,{icon:L.divIcon({className:'',html:`<div style="background:#ffb703;color:#14202b;border:2px solid #14324a;border-radius:12px;font:700 12px system-ui;padding:1px 6px;white-space:nowrap">${i+1}</div>`,iconSize:null})}).on('click',()=>openCard(r)))}
     const el=document.createElement('div');el.className='row';el.innerHTML=`<div class="rk">${i+1}</div><div class="nm">${r.num} <span class="note">${r.obr} · ${(r.area/10000).toFixed(2).replace(".",",")} ha</span>${r.adr?`<div class="note">📍 ${r.adr}</div>`:''}</div><div class="sc">${r.score}</div>
     <div class="tags">${r.sieci.map(s=>`<span class="t ${s.k}" title="${TYPES[s.k].n}">${s.k}${s.v?' '+(+String(s.v).split(';')[0]/1000)+'kV':''} ${s.pas?'w pasie, '+s.odl+' m od granicy':s.len+' m'}${s.ok?'':' ✗'}</span>`).join('')}
@@ -670,7 +670,7 @@ function trPick(){const cand=RES.concat(EXTRA).filter(r=>r.ok&&!r.las&&!r.stacja
   while(pts.length){let bi=0;for(let i=1;i<pts.length;i++)if(d(cur,pts[i].c)<d(cur,pts[bi].c))bi=i;const p=pts.splice(bi,1)[0];km+=d(cur,p.c);out.push(p);cur=p.c}
   return{stops:out,km}}
 function trStat(r){return(store.get('u:'+r.id,{}).trasa)||''}
-function trSet(r,v){const u=store.get('u:'+r.id,{});u.trasa=u.trasa===v?'':v;if(u.trasa==='zainteresowany')u.stat=u.stat||'kontakt z właścicielem';store.set('u:'+r.id,u);if(u.trasa&&typeof USER!=='undefined'&&USER&&API)api('/api/feedback',{parcel_id:r.id,label:`${r.num} ${r.obr}`,verdict:'trasa: '+u.trasa,note:u.not||'',snap:trWhy(r).replace(/<[^>]+>/g,'')}).catch(()=>{});trShow()}
+function trSet(r,v){const u=store.get('u:'+r.id,{});u.trasa=u.trasa===v?'':v;if(u.trasa==='zainteresowany')u.stat=u.stat||'kontakt z właścicielem';store.set('u:'+r.id,u);if(u.trasa&&typeof USER!=='undefined'&&USER&&API)api('/api/feedback',{parcel_id:r.id,label:`${r.num} ${r.obr}`,verdict:'trasa: '+u.trasa,note:u.not||'',snap:trWhy(r).replace(/<[^>]+>/g,'')}).catch(()=>{});trShow();try{render()}catch(e){}}
 function trShow(){const el=$('#trasa');
   if(!RES.length){el.innerHTML=`<div class="tr-head"><h2>Trasa na dzień</h2><p>Najpierw wybierz obszar.</p><button class="x" id="trX">Zamknij</button></div><p class="tr-empty">Wybierz „Gotowe obszary” albo wyszukaj miejscowość, a potem otwórz trasę jeszcze raz.</p>`;el.hidden=false;$('#trX').onclick=trClose;return}
   const {stops,km}=trPick();const zrob=stops.filter(p=>trStat(p.r)).length;const cnt=v=>stops.filter(p=>trStat(p.r)===v).length;const wyn=zrob?` Zainteresowani: ${cnt('zainteresowany')}, nikogo: ${cnt('nikogo')}, inna firma: ${cnt('inna firma')}.`:'';
