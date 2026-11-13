@@ -510,5 +510,69 @@
   "lat": 50.2815,
   "lon": 19.2258,
   "radius": 1200
+ },
+ {
+  "slug": "tg-nakielska",
+  "name": "Tarnowskie Góry – Nakielska",
+  "q": "Tarnowskie Góry",
+  "lat": 50.4423,
+  "lon": 18.8706,
+  "radius": 1200
+ },
+ {
+  "slug": "dg-tysiaclecia",
+  "name": "Dąbrowa Górnicza – Tysiąclecia / Podlesie",
+  "q": "Dąbrowa Górnicza",
+  "lat": 50.3259,
+  "lon": 19.2271,
+  "radius": 1200
+ },
+ {
+  "slug": "zawiercie-losnicka",
+  "name": "Zawiercie – Łośnicka / Strumień",
+  "q": "Zawiercie",
+  "lat": 50.4972,
+  "lon": 19.4414,
+  "radius": 1200
+ },
+ {
+  "slug": "jastrzab",
+  "name": "Jastrząb – 19 Stycznia / Stawowa",
+  "q": "Jastrząb",
+  "lat": 50.6659,
+  "lon": 19.1929,
+  "radius": 1200
+ },
+ {
+  "slug": "zawiercie-rolnicza",
+  "name": "Zawiercie – Rolnicza / Mrzygłodzka",
+  "q": "Zawiercie",
+  "lat": 50.4951,
+  "lon": 19.409,
+  "radius": 1200
+ },
+ {
+  "slug": "myszkow-kolejowa",
+  "name": "Myszków – Kolejowa / Partyzantów",
+  "q": "Myszków",
+  "lat": 50.567,
+  "lon": 19.3513,
+  "radius": 1200
+ },
+ {
+  "slug": "bytom-mickiewicza",
+  "name": "Bytom – Mickiewicza / Północna",
+  "q": "Bytom",
+  "lat": 50.3621,
+  "lon": 18.9308,
+  "radius": 1200
+ },
+ {
+  "slug": "myslow-nowa-kuznica",
+  "name": "Mysłów / Nowa Kuźnica",
+  "q": "Mysłów / Nowa Kuźnica",
+  "lat": 50.599,
+  "lon": 19.222,
+  "radius": 2600
  }
 ]
