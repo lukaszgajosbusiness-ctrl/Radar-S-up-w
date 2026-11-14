@@ -574,5 +574,53 @@
   "lat": 50.599,
   "lon": 19.222,
   "radius": 2600
+ },
+ {
+  "slug": "srocko",
+  "name": "Srocko – Częstochowska / Mstowska (gm. Mstów)",
+  "q": "Srocko",
+  "lat": 50.7977,
+  "lon": 19.2512,
+  "radius": 1500
+ },
+ {
+  "slug": "turow",
+  "name": "Turów – Szkolna / Nowa (gm. Olsztyn)",
+  "q": "Turów",
+  "lat": 50.7677,
+  "lon": 19.3309,
+  "radius": 1500
+ },
+ {
+  "slug": "olsztyn-paprociowa",
+  "name": "Olsztyn – Paprociowa / Wrzosowa (gm. Olsztyn)",
+  "q": "Olsztyn",
+  "lat": 50.7567,
+  "lon": 19.2191,
+  "radius": 1500
+ },
+ {
+  "slug": "bargly",
+  "name": "Bargły – Śląska (gm. Poczesna)",
+  "q": "Bargły",
+  "lat": 50.704,
+  "lon": 19.1346,
+  "radius": 1500
+ },
+ {
+  "slug": "nowa-wies-poczesna",
+  "name": "Nowa Wieś – Młyńska / Słoneczna (gm. Poczesna)",
+  "q": "Nowa Wieś",
+  "lat": 50.7312,
+  "lon": 19.17,
+  "radius": 1500
+ },
+ {
+  "slug": "koniecpol",
+  "name": "Koniecpol – Ogrodowa / Szkolna (gm. Koniecpol)",
+  "q": "Koniecpol",
+  "lat": 50.779,
+  "lon": 19.6915,
+  "radius": 1500
  }
 ]
