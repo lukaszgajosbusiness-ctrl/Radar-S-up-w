@@ -19,9 +19,9 @@
    19.108
   ],
   "radius": 1200,
-  "generated": "2026-11-13T11:09:08.140Z",
+  "generated": "2026-11-14T11:28:29.133Z",
   "parcels": 471,
-  "domy": 28
+  "domy": 46
  },
  {
   "slug": "bedzin-ksawera",
@@ -31,9 +31,9 @@
    19.137
   ],
   "radius": 1200,
-  "generated": "2026-11-13T11:21:03.204Z",
+  "generated": "2026-11-14T11:19:53.349Z",
   "parcels": 1124,
-  "domy": 127
+  "domy": 219
  },
  {
   "slug": "bobrowniki",
@@ -43,9 +43,9 @@
    18.9911874
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:55:50.788Z",
+  "generated": "2026-11-14T08:32:33.012Z",
   "parcels": 1074,
-  "domy": 2
+  "domy": 5
  },
  {
   "slug": "bobrowniki-slaskie",
@@ -55,7 +55,7 @@
    18.8641745
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:05:36.837Z",
+  "generated": "2026-11-14T09:43:20.138Z",
   "parcels": 117,
   "domy": 25
  },
@@ -67,9 +67,9 @@
    19.17427
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:40:25.369Z",
+  "generated": "2026-11-14T08:06:37.011Z",
   "parcels": 555,
-  "domy": 14
+  "domy": 12
  },
  {
   "slug": "brudzowice",
@@ -79,7 +79,7 @@
    19.1803848
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:37:08.148Z",
+  "generated": "2026-11-14T09:11:16.533Z",
   "parcels": 252,
   "domy": 6
  },
@@ -91,9 +91,9 @@
    18.9308
   ],
   "radius": 1200,
-  "generated": "2026-11-13T18:33:33.797Z",
+  "generated": "2026-11-14T12:08:17.761Z",
   "parcels": 151,
-  "domy": 8
+  "domy": 12
  },
  {
   "slug": "ciagowice",
@@ -103,7 +103,7 @@
    19.3640011
   ],
   "radius": 2000,
-  "generated": "2026-11-11T18:21:54.917Z",
+  "generated": "2026-11-14T09:18:14.396Z",
   "parcels": 425,
   "domy": 31
  },
@@ -115,9 +115,9 @@
    19.0749
   ],
   "radius": 1200,
-  "generated": "2026-11-13T11:07:16.143Z",
+  "generated": "2026-11-14T11:04:40.201Z",
   "parcels": 824,
-  "domy": 60
+  "domy": 93
  },
  {
   "slug": "czeladz-nowopogonska",
@@ -127,9 +127,9 @@
    19.0967
   ],
   "radius": 1200,
-  "generated": "2026-11-13T10:44:35.280Z",
+  "generated": "2026-11-14T10:49:42.276Z",
   "parcels": 479,
-  "domy": 71
+  "domy": 91
  },
  {
   "slug": "czeladz-niwa",
@@ -139,9 +139,9 @@
    19.0603
   ],
   "radius": 1200,
-  "generated": "2026-11-13T11:03:57.338Z",
+  "generated": "2026-11-14T11:11:04.582Z",
   "parcels": 447,
-  "domy": 27
+  "domy": 35
  },
  {
   "slug": "dg-mydlice",
@@ -151,7 +151,7 @@
    19.1694
   ],
   "radius": 1200,
-  "generated": "2026-11-13T10:21:14.990Z",
+  "generated": "2026-11-14T10:20:48.870Z",
   "parcels": 301,
   "domy": 23
  },
@@ -163,7 +163,7 @@
    19.216
   ],
   "radius": 1200,
-  "generated": "2026-11-13T10:17:46.293Z",
+  "generated": "2026-11-14T10:16:44.331Z",
   "parcels": 295,
   "domy": 79
  },
@@ -175,7 +175,7 @@
    19.2552
   ],
   "radius": 1200,
-  "generated": "2026-11-13T10:23:16.075Z",
+  "generated": "2026-11-14T10:06:10.196Z",
   "parcels": 412,
   "domy": 47
  },
@@ -187,9 +187,9 @@
    19.2271
   ],
   "radius": 1200,
-  "generated": "2026-11-13T18:27:22.800Z",
+  "generated": "2026-11-14T12:03:22.841Z",
   "parcels": 228,
-  "domy": 34
+  "domy": 46
  },
  {
   "slug": "dobieszowice",
@@ -199,9 +199,9 @@
    19.004458
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:59:36.633Z",
+  "generated": "2026-11-14T10:31:25.091Z",
   "parcels": 726,
-  "domy": 2
+  "domy": 10
  },
  {
   "slug": "dziewki",
@@ -211,9 +211,9 @@
    19.2170484
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:42:13.377Z",
+  "generated": "2026-11-14T09:15:02.995Z",
   "parcels": 471,
-  "domy": 4
+  "domy": 5
  },
  {
   "slug": "gora-siewierska",
@@ -223,7 +223,7 @@
    19.0827779
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:52:10.647Z",
+  "generated": "2026-11-14T08:44:04.044Z",
   "parcels": 1054,
   "domy": 0
  },
@@ -235,21 +235,21 @@
    19.1088924
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:56:53.800Z",
+  "generated": "2026-11-14T09:52:11.625Z",
   "parcels": 759,
-  "domy": 17
+  "domy": 26
  },
  {
   "slug": "jastrzab",
-  "name": "Jastrząb – 19 Stycznia / Stawowa",
+  "name": "Jastrząb – 19 Stycznia / Stawowa (gm. Poraj)",
   "center": [
    50.6659,
    19.1929
   ],
   "radius": 1200,
-  "generated": "2026-11-13T18:21:28.436Z",
+  "generated": "2026-11-14T11:55:25.800Z",
   "parcels": 295,
-  "domy": 7
+  "domy": 17
  },
  {
   "slug": "jaworzno-szelonka",
@@ -259,7 +259,7 @@
    19.2565
   ],
   "radius": 1200,
-  "generated": "2026-11-13T17:01:35.858Z",
+  "generated": "2026-11-14T11:44:44.932Z",
   "parcels": 297,
   "domy": 40
  },
@@ -271,9 +271,9 @@
    19.2703
   ],
   "radius": 1200,
-  "generated": "2026-11-13T16:56:28.749Z",
+  "generated": "2026-11-14T11:32:55.376Z",
   "parcels": 309,
-  "domy": 43
+  "domy": 65
  },
  {
   "slug": "kuznica-stara",
@@ -283,7 +283,7 @@
    19.2276
   ],
   "radius": 1200,
-  "generated": "2026-11-13T17:03:52.415Z",
+  "generated": "2026-11-14T11:36:05.374Z",
   "parcels": 308,
   "domy": 25
  },
@@ -295,9 +295,9 @@
    19.191968
   ],
   "radius": 2000,
-  "generated": "2026-11-13T09:02:25.870Z",
+  "generated": "2026-11-14T08:48:48.693Z",
   "parcels": 746,
-  "domy": 104
+  "domy": 103
  },
  {
   "slug": "lasowice-tg",
@@ -307,7 +307,7 @@
    18.8786772
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:11:25.347Z",
+  "generated": "2026-11-14T09:54:50.016Z",
   "parcels": 18,
   "domy": 0
  },
@@ -319,21 +319,21 @@
    19.12405
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:11:11.268Z",
+  "generated": "2026-11-14T07:48:38.502Z",
   "parcels": 613,
-  "domy": 2
+  "domy": 0
  },
  {
   "slug": "myslow-nowa-kuznica",
-  "name": "Mysłów / Nowa Kuźnica",
+  "name": "Mysłów / Nowa Kuźnica (gm. Koziegłowy)",
   "center": [
    50.599,
    19.222
   ],
   "radius": 2600,
-  "generated": "2026-11-13T18:38:28.964Z",
+  "generated": "2026-11-14T12:14:44.326Z",
   "parcels": 825,
-  "domy": 19
+  "domy": 17
  },
  {
   "slug": "myszkowice",
@@ -343,7 +343,7 @@
    19.0619883
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:46:41.449Z",
+  "generated": "2026-11-14T09:20:05.640Z",
   "parcels": 342,
   "domy": 0
  },
@@ -355,9 +355,9 @@
    19.3513
   ],
   "radius": 1200,
-  "generated": "2026-11-13T18:33:52.502Z",
+  "generated": "2026-11-14T12:03:53.945Z",
   "parcels": 609,
-  "domy": 16
+  "domy": 29
  },
  {
   "slug": "myszkow-pulaskiego",
@@ -367,9 +367,9 @@
    19.318
   ],
   "radius": 1200,
-  "generated": "2026-11-13T17:03:08.668Z",
+  "generated": "2026-11-14T11:50:07.186Z",
   "parcels": 397,
-  "domy": 23
+  "domy": 32
  },
  {
   "slug": "najdziszow",
@@ -379,7 +379,7 @@
    19.1017839
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:23:39.175Z",
+  "generated": "2026-11-14T09:04:14.667Z",
   "parcels": 489,
   "domy": 0
  },
@@ -391,7 +391,7 @@
    18.98989
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:15:14.960Z",
+  "generated": "2026-11-14T08:51:27.877Z",
   "parcels": 182,
   "domy": 0
  },
@@ -403,7 +403,7 @@
    19.0888969
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:46:32.874Z",
+  "generated": "2026-11-14T09:10:56.545Z",
   "parcels": 353,
   "domy": 6
  },
@@ -415,9 +415,9 @@
    18.8180512
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:03:21.348Z",
+  "generated": "2026-11-14T09:40:13.705Z",
   "parcels": 267,
-  "domy": 7
+  "domy": 8
  },
  {
   "slug": "ozarowice",
@@ -427,9 +427,9 @@
    19.042814
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:07:33.466Z",
+  "generated": "2026-11-14T08:55:22.687Z",
   "parcels": 362,
-  "domy": 1
+  "domy": 0
  },
  {
   "slug": "pinczyce",
@@ -439,7 +439,7 @@
    19.2169
   ],
   "radius": 1200,
-  "generated": "2026-11-13T16:55:02.805Z",
+  "generated": "2026-11-14T11:34:36.204Z",
   "parcels": 191,
   "domy": 19
  },
@@ -451,7 +451,7 @@
    18.8237717
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:01:32.657Z",
+  "generated": "2026-11-14T09:33:32.813Z",
   "parcels": 125,
   "domy": 0
  },
@@ -463,7 +463,7 @@
    19.215799
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:36:45.552Z",
+  "generated": "2026-11-14T10:27:34.263Z",
   "parcels": 545,
   "domy": 19
  },
@@ -475,7 +475,7 @@
    19.2233
   ],
   "radius": 1200,
-  "generated": "2026-11-13T16:54:28.882Z",
+  "generated": "2026-11-14T11:33:19.585Z",
   "parcels": 199,
   "domy": 1
  },
@@ -487,9 +487,9 @@
    19.17286
   ],
   "radius": 2000,
-  "generated": "2026-11-11T18:13:42.771Z",
+  "generated": "2026-11-14T07:57:40.019Z",
   "parcels": 974,
-  "domy": 17
+  "domy": 16
  },
  {
   "slug": "psary",
@@ -499,9 +499,9 @@
    19.1110804
   ],
   "radius": 2000,
-  "generated": "2026-11-13T09:19:54.633Z",
+  "generated": "2026-11-14T08:25:52.507Z",
   "parcels": 933,
-  "domy": 5
+  "domy": 6
  },
  {
   "slug": "pyrzowice",
@@ -511,9 +511,9 @@
    19.056492
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:12:53.989Z",
+  "generated": "2026-11-14T08:58:17.310Z",
   "parcels": 421,
-  "domy": 1
+  "domy": 3
  },
  {
   "slug": "radzionkow",
@@ -523,9 +523,9 @@
    18.8981
   ],
   "radius": 1200,
-  "generated": "2026-11-13T10:56:02.362Z",
+  "generated": "2026-11-14T11:15:29.294Z",
   "parcels": 274,
-  "domy": 24
+  "domy": 40
  },
  {
   "slug": "repty-slaskie",
@@ -535,7 +535,7 @@
    18.82589
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:00:33.438Z",
+  "generated": "2026-11-14T09:32:32.242Z",
   "parcels": 90,
   "domy": 0
  },
@@ -547,9 +547,9 @@
    19.0402541
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:13:36.997Z",
+  "generated": "2026-11-14T09:26:12.346Z",
   "parcels": 463,
-  "domy": 2
+  "domy": 7
  },
  {
   "slug": "sarnow",
@@ -559,9 +559,9 @@
    19.1486685
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:05:15.064Z",
+  "generated": "2026-11-14T09:38:21.489Z",
   "parcels": 465,
-  "domy": 15
+  "domy": 23
  },
  {
   "slug": "saczow",
@@ -571,8 +571,8 @@
    19.0360868
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:29:14.581Z",
-  "parcels": 763,
+  "generated": "2026-11-14T07:58:32.267Z",
+  "parcels": 823,
   "domy": 0
  },
  {
@@ -583,9 +583,9 @@
    19.0547555
   ],
   "radius": 2000,
-  "generated": "2026-11-13T09:37:25.459Z",
+  "generated": "2026-11-14T08:42:53.289Z",
   "parcels": 1001,
-  "domy": 12
+  "domy": 25
  },
  {
   "slug": "siewierz",
@@ -595,7 +595,7 @@
    19.2318901
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:34:45.541Z",
+  "generated": "2026-11-14T08:16:00.244Z",
   "parcels": 1070,
   "domy": 9
  },
@@ -607,9 +607,9 @@
    19.2258
   ],
   "radius": 1200,
-  "generated": "2026-11-13T17:06:00.551Z",
-  "parcels": 759,
-  "domy": 25
+  "generated": "2026-11-14T11:51:29.470Z",
+  "parcels": 760,
+  "domy": 48
  },
  {
   "slug": "sosnowiec-juliuszowska",
@@ -619,7 +619,7 @@
    19.2443
   ],
   "radius": 1200,
-  "generated": "2026-11-13T17:03:04.665Z",
+  "generated": "2026-11-14T11:48:50.374Z",
   "parcels": 439,
   "domy": 33
  },
@@ -631,7 +631,7 @@
    18.8610368
   ],
   "radius": 1500,
-  "generated": "2026-11-12T11:11:04.676Z",
+  "generated": "2026-11-14T10:11:53.458Z",
   "parcels": 209,
   "domy": 31
  },
@@ -643,9 +643,9 @@
    18.8122638
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:04:46.140Z",
+  "generated": "2026-11-14T09:31:52.096Z",
   "parcels": 64,
-  "domy": 5
+  "domy": 6
  },
  {
   "slug": "strzybnica",
@@ -655,9 +655,9 @@
    18.800375
   ],
   "radius": 1500,
-  "generated": "2026-11-13T10:05:30.012Z",
+  "generated": "2026-11-14T09:43:57.596Z",
   "parcels": 252,
-  "domy": 6
+  "domy": 7
  },
  {
   "slug": "strzyzowice",
@@ -667,7 +667,7 @@
    19.0826879
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:38:24.857Z",
+  "generated": "2026-11-14T09:06:50.615Z",
   "parcels": 741,
   "domy": 0
  },
@@ -679,9 +679,9 @@
    18.8706
   ],
   "radius": 1200,
-  "generated": "2026-11-13T18:21:07.772Z",
+  "generated": "2026-11-14T11:45:26.933Z",
   "parcels": 123,
-  "domy": 39
+  "domy": 40
  },
  {
   "slug": "tapkowice",
@@ -691,7 +691,7 @@
    19.0077822
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:27:44.931Z",
+  "generated": "2026-11-14T08:49:41.002Z",
   "parcels": 315,
   "domy": 0
  },
@@ -703,7 +703,7 @@
    19.1411342
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:45:38.596Z",
+  "generated": "2026-11-14T09:05:38.487Z",
   "parcels": 546,
   "domy": 0
  },
@@ -715,9 +715,9 @@
    19.2503189
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:43:49.218Z",
+  "generated": "2026-11-14T08:10:50.808Z",
   "parcels": 784,
-  "domy": 6
+  "domy": 10
  },
  {
   "slug": "tuliszow",
@@ -727,7 +727,7 @@
    19.1946
   ],
   "radius": 2500,
-  "generated": "2026-11-13T20:12:33.175Z",
+  "generated": "2026-11-14T08:13:29.186Z",
   "parcels": 1329,
   "domy": 23
  },
@@ -739,9 +739,9 @@
    19.1795899
   ],
   "radius": 2000,
-  "generated": "2026-11-13T09:41:42.035Z",
+  "generated": "2026-11-14T09:03:28.328Z",
   "parcels": 1102,
-  "domy": 3
+  "domy": 9
  },
  {
   "slug": "wojkowice-koscielne",
@@ -751,7 +751,7 @@
    19.204206
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:44:05.899Z",
+  "generated": "2026-11-14T08:15:31.094Z",
   "parcels": 1064,
   "domy": 20
  },
@@ -763,9 +763,9 @@
    19.4414
   ],
   "radius": 1200,
-  "generated": "2026-11-13T18:24:46.365Z",
+  "generated": "2026-11-14T12:00:40.241Z",
   "parcels": 243,
-  "domy": 19
+  "domy": 32
  },
  {
   "slug": "zawiercie-rolnicza",
@@ -775,9 +775,9 @@
    19.409
   ],
   "radius": 1200,
-  "generated": "2026-11-13T18:22:04.779Z",
+  "generated": "2026-11-14T11:58:38.464Z",
   "parcels": 317,
-  "domy": 6
+  "domy": 9
  },
  {
   "slug": "zawiercie-kromolow",
@@ -787,7 +787,7 @@
    19.4707
   ],
   "radius": 1200,
-  "generated": "2026-11-13T11:21:18.754Z",
+  "generated": "2026-11-14T11:27:23.168Z",
   "parcels": 520,
   "domy": 39
  },
@@ -799,9 +799,9 @@
    19.4477
   ],
   "radius": 1200,
-  "generated": "2026-11-13T11:18:02.990Z",
+  "generated": "2026-11-14T11:29:22.090Z",
   "parcels": 214,
-  "domy": 26
+  "domy": 25
  },
  {
   "slug": "zendek",
@@ -811,7 +811,7 @@
    19.0900381
   ],
   "radius": 1500,
-  "generated": "2026-11-13T09:14:23.934Z",
+  "generated": "2026-11-14T08:50:31.548Z",
   "parcels": 197,
   "domy": 0
  },
@@ -823,7 +823,7 @@
    19.2560112
   ],
   "radius": 2000,
-  "generated": "2026-11-13T08:42:48.516Z",
+  "generated": "2026-11-14T08:08:45.282Z",
   "parcels": 523,
   "domy": 0
  }
