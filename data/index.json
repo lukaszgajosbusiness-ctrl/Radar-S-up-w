@@ -9,7 +9,8 @@
   "radius": 1200,
   "generated": "2026-11-13T10:42:24.103Z",
   "parcels": 803,
-  "domy": 58
+  "domy": 58,
+  "gm": "Będzin"
  },
  {
   "slug": "bedzin-centrum",
@@ -21,7 +22,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:28:29.133Z",
   "parcels": 471,
-  "domy": 46
+  "domy": 46,
+  "gm": "Będzin"
  },
  {
   "slug": "bedzin-ksawera",
@@ -33,7 +35,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:19:53.349Z",
   "parcels": 1124,
-  "domy": 219
+  "domy": 219,
+  "gm": "Będzin"
  },
  {
   "slug": "bobrowniki",
@@ -45,7 +48,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:32:33.012Z",
   "parcels": 1074,
-  "domy": 5
+  "domy": 5,
+  "gm": "Bobrowniki"
  },
  {
   "slug": "bobrowniki-slaskie",
@@ -57,7 +61,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:43:20.138Z",
   "parcels": 117,
-  "domy": 25
+  "domy": 25,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "boguchwalowice",
@@ -69,7 +74,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:06:37.011Z",
   "parcels": 555,
-  "domy": 12
+  "domy": 12,
+  "gm": "Mierzęcice"
  },
  {
   "slug": "brudzowice",
@@ -81,7 +87,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:11:16.533Z",
   "parcels": 252,
-  "domy": 6
+  "domy": 6,
+  "gm": "Siewierz"
  },
  {
   "slug": "bytom-mickiewicza",
@@ -93,7 +100,8 @@
   "radius": 1200,
   "generated": "2026-11-14T12:08:17.761Z",
   "parcels": 151,
-  "domy": 12
+  "domy": 12,
+  "gm": "Bytom"
  },
  {
   "slug": "ciagowice",
@@ -105,7 +113,8 @@
   "radius": 2000,
   "generated": "2026-11-14T09:18:14.396Z",
   "parcels": 425,
-  "domy": 31
+  "domy": 31,
+  "gm": "Łazy"
  },
  {
   "slug": "czeladz-piaski",
@@ -117,7 +126,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:04:40.201Z",
   "parcels": 824,
-  "domy": 93
+  "domy": 93,
+  "gm": "Czeladź"
  },
  {
   "slug": "czeladz-nowopogonska",
@@ -129,7 +139,8 @@
   "radius": 1200,
   "generated": "2026-11-14T10:49:42.276Z",
   "parcels": 479,
-  "domy": 91
+  "domy": 91,
+  "gm": "Czeladź"
  },
  {
   "slug": "czeladz-niwa",
@@ -141,7 +152,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:11:04.582Z",
   "parcels": 447,
-  "domy": 35
+  "domy": 35,
+  "gm": "Czeladź"
  },
  {
   "slug": "dg-mydlice",
@@ -153,7 +165,8 @@
   "radius": 1200,
   "generated": "2026-11-14T10:20:48.870Z",
   "parcels": 301,
-  "domy": 23
+  "domy": 23,
+  "gm": "Dąbrowa Górnicza"
  },
  {
   "slug": "dg-podlesie",
@@ -165,7 +178,8 @@
   "radius": 1200,
   "generated": "2026-11-14T10:16:44.331Z",
   "parcels": 295,
-  "domy": 79
+  "domy": 79,
+  "gm": "Dąbrowa Górnicza"
  },
  {
   "slug": "dg-strzemieszyce-sezamkowa",
@@ -177,7 +191,8 @@
   "radius": 1200,
   "generated": "2026-11-14T10:06:10.196Z",
   "parcels": 412,
-  "domy": 47
+  "domy": 47,
+  "gm": "Dąbrowa Górnicza"
  },
  {
   "slug": "dg-tysiaclecia",
@@ -189,7 +204,8 @@
   "radius": 1200,
   "generated": "2026-11-14T12:03:22.841Z",
   "parcels": 228,
-  "domy": 46
+  "domy": 46,
+  "gm": "Dąbrowa Górnicza"
  },
  {
   "slug": "dobieszowice",
@@ -201,7 +217,8 @@
   "radius": 1500,
   "generated": "2026-11-14T10:31:25.091Z",
   "parcels": 726,
-  "domy": 10
+  "domy": 10,
+  "gm": "Bobrowniki"
  },
  {
   "slug": "dziewki",
@@ -213,7 +230,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:15:02.995Z",
   "parcels": 471,
-  "domy": 5
+  "domy": 5,
+  "gm": "Siewierz"
  },
  {
   "slug": "gora-siewierska",
@@ -225,7 +243,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:44:04.044Z",
   "parcels": 1054,
-  "domy": 0
+  "domy": 0,
+  "gm": "Psary"
  },
  {
   "slug": "grodkow",
@@ -237,7 +256,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:52:11.625Z",
   "parcels": 759,
-  "domy": 26
+  "domy": 26,
+  "gm": "Psary"
  },
  {
   "slug": "jastrzab",
@@ -249,7 +269,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:55:25.800Z",
   "parcels": 295,
-  "domy": 17
+  "domy": 17,
+  "gm": "Poraj"
  },
  {
   "slug": "jaworzno-szelonka",
@@ -261,7 +282,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:44:44.932Z",
   "parcels": 297,
-  "domy": 40
+  "domy": 40,
+  "gm": "Jaworzno"
  },
  {
   "slug": "jaworzno-tuwima",
@@ -273,7 +295,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:32:55.376Z",
   "parcels": 309,
-  "domy": 65
+  "domy": 65,
+  "gm": "Jaworzno"
  },
  {
   "slug": "kuznica-stara",
@@ -285,7 +308,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:36:05.374Z",
   "parcels": 308,
-  "domy": 25
+  "domy": 25,
+  "gm": "Poraj"
  },
  {
   "slug": "kuznica-warezynska",
@@ -297,7 +321,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:48:48.693Z",
   "parcels": 746,
-  "domy": 103
+  "domy": 103,
+  "gm": "Dąbrowa Górnicza"
  },
  {
   "slug": "lasowice-tg",
@@ -309,7 +334,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:54:50.016Z",
   "parcels": 18,
-  "domy": 0
+  "domy": 0,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "mierzecice",
@@ -321,7 +347,8 @@
   "radius": 2000,
   "generated": "2026-11-14T07:48:38.502Z",
   "parcels": 613,
-  "domy": 0
+  "domy": 0,
+  "gm": "Mierzęcice"
  },
  {
   "slug": "myslow-nowa-kuznica",
@@ -333,7 +360,8 @@
   "radius": 2600,
   "generated": "2026-11-14T12:14:44.326Z",
   "parcels": 825,
-  "domy": 17
+  "domy": 17,
+  "gm": "Koziegłowy"
  },
  {
   "slug": "myszkowice",
@@ -345,7 +373,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:20:05.640Z",
   "parcels": 342,
-  "domy": 0
+  "domy": 0,
+  "gm": "Bobrowniki"
  },
  {
   "slug": "myszkow-kolejowa",
@@ -357,7 +386,8 @@
   "radius": 1200,
   "generated": "2026-11-14T12:03:53.945Z",
   "parcels": 609,
-  "domy": 29
+  "domy": 29,
+  "gm": "Myszków"
  },
  {
   "slug": "myszkow-pulaskiego",
@@ -369,7 +399,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:50:07.186Z",
   "parcels": 397,
-  "domy": 32
+  "domy": 32,
+  "gm": "Myszków"
  },
  {
   "slug": "najdziszow",
@@ -381,7 +412,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:04:14.667Z",
   "parcels": 489,
-  "domy": 0
+  "domy": 0,
+  "gm": "Mierzęcice"
  },
  {
   "slug": "niezdara",
@@ -393,7 +425,8 @@
   "radius": 1500,
   "generated": "2026-11-14T08:51:27.877Z",
   "parcels": 182,
-  "domy": 0
+  "domy": 0,
+  "gm": "Ożarowice"
  },
  {
   "slug": "nowa-wies-mierzecice",
@@ -405,7 +438,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:10:56.545Z",
   "parcels": 353,
-  "domy": 6
+  "domy": 6,
+  "gm": "Mierzęcice"
  },
  {
   "slug": "opatowice-tg",
@@ -417,7 +451,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:40:13.705Z",
   "parcels": 267,
-  "domy": 8
+  "domy": 8,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "ozarowice",
@@ -429,7 +464,8 @@
   "radius": 1500,
   "generated": "2026-11-14T08:55:22.687Z",
   "parcels": 362,
-  "domy": 0
+  "domy": 0,
+  "gm": "Ożarowice"
  },
  {
   "slug": "pinczyce",
@@ -441,7 +477,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:34:36.204Z",
   "parcels": 191,
-  "domy": 19
+  "domy": 19,
+  "gm": "Koziegłowy"
  },
  {
   "slug": "pniowiec",
@@ -453,7 +490,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:33:32.813Z",
   "parcels": 125,
-  "domy": 0
+  "domy": 0,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "podwarpie",
@@ -465,7 +503,8 @@
   "radius": 1500,
   "generated": "2026-11-14T10:27:34.263Z",
   "parcels": 545,
-  "domy": 19
+  "domy": 19,
+  "gm": "Siewierz"
  },
  {
   "slug": "poraj",
@@ -477,7 +516,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:33:19.585Z",
   "parcels": 199,
-  "domy": 1
+  "domy": 1,
+  "gm": "Poraj"
  },
  {
   "slug": "przeczyce",
@@ -489,7 +529,8 @@
   "radius": 2000,
   "generated": "2026-11-14T07:57:40.019Z",
   "parcels": 974,
-  "domy": 16
+  "domy": 16,
+  "gm": "Mierzęcice"
  },
  {
   "slug": "psary",
@@ -501,7 +542,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:25:52.507Z",
   "parcels": 933,
-  "domy": 6
+  "domy": 6,
+  "gm": "Psary"
  },
  {
   "slug": "pyrzowice",
@@ -513,7 +555,8 @@
   "radius": 1500,
   "generated": "2026-11-14T08:58:17.310Z",
   "parcels": 421,
-  "domy": 3
+  "domy": 3,
+  "gm": "Ożarowice"
  },
  {
   "slug": "radzionkow",
@@ -525,7 +568,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:15:29.294Z",
   "parcels": 274,
-  "domy": 40
+  "domy": 40,
+  "gm": "Radzionków"
  },
  {
   "slug": "repty-slaskie",
@@ -537,7 +581,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:32:32.242Z",
   "parcels": 90,
-  "domy": 0
+  "domy": 0,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "rogoznik",
@@ -549,7 +594,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:26:12.346Z",
   "parcels": 463,
-  "domy": 7
+  "domy": 7,
+  "gm": "Bobrowniki"
  },
  {
   "slug": "sarnow",
@@ -561,7 +607,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:38:21.489Z",
   "parcels": 465,
-  "domy": 23
+  "domy": 23,
+  "gm": "Psary"
  },
  {
   "slug": "saczow",
@@ -573,7 +620,8 @@
   "radius": 2000,
   "generated": "2026-11-14T07:58:32.267Z",
   "parcels": 823,
-  "domy": 0
+  "domy": 0,
+  "gm": "Bobrowniki"
  },
  {
   "slug": "siemonia",
@@ -585,7 +633,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:42:53.289Z",
   "parcels": 1001,
-  "domy": 25
+  "domy": 25,
+  "gm": "Bobrowniki"
  },
  {
   "slug": "siewierz",
@@ -597,7 +646,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:16:00.244Z",
   "parcels": 1070,
-  "domy": 9
+  "domy": 9,
+  "gm": "Siewierz"
  },
  {
   "slug": "sosnowiec-slawkowska",
@@ -609,7 +659,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:51:29.470Z",
   "parcels": 760,
-  "domy": 48
+  "domy": 48,
+  "gm": "Sosnowiec"
  },
  {
   "slug": "sosnowiec-juliuszowska",
@@ -621,7 +672,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:48:50.374Z",
   "parcels": 439,
-  "domy": 33
+  "domy": 33,
+  "gm": "Sosnowiec"
  },
  {
   "slug": "sowice-tg",
@@ -633,7 +685,8 @@
   "radius": 1500,
   "generated": "2026-11-14T10:11:53.458Z",
   "parcels": 209,
-  "domy": 31
+  "domy": 31,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "stare-tarnowice",
@@ -645,7 +698,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:31:52.096Z",
   "parcels": 64,
-  "domy": 6
+  "domy": 6,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "strzybnica",
@@ -657,7 +711,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:43:57.596Z",
   "parcels": 252,
-  "domy": 7
+  "domy": 7,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "strzyzowice",
@@ -669,7 +724,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:06:50.615Z",
   "parcels": 741,
-  "domy": 0
+  "domy": 0,
+  "gm": "Psary"
  },
  {
   "slug": "tg-nakielska",
@@ -681,7 +737,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:45:26.933Z",
   "parcels": 123,
-  "domy": 40
+  "domy": 40,
+  "gm": "Tarnowskie Góry"
  },
  {
   "slug": "tapkowice",
@@ -693,7 +750,8 @@
   "radius": 1500,
   "generated": "2026-11-14T08:49:41.002Z",
   "parcels": 315,
-  "domy": 0
+  "domy": 0,
+  "gm": "Ożarowice"
  },
  {
   "slug": "toporowice",
@@ -705,7 +763,8 @@
   "radius": 1500,
   "generated": "2026-11-14T09:05:38.487Z",
   "parcels": 546,
-  "domy": 0
+  "domy": 0,
+  "gm": "Mierzęcice"
  },
  {
   "slug": "trzebieslawice",
@@ -717,7 +776,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:10:50.808Z",
   "parcels": 784,
-  "domy": 10
+  "domy": 10,
+  "gm": "Dąbrowa Górnicza"
  },
  {
   "slug": "tuliszow",
@@ -729,7 +789,8 @@
   "radius": 2500,
   "generated": "2026-11-14T08:13:29.186Z",
   "parcels": 1329,
-  "domy": 23
+  "domy": 23,
+  "gm": "Siewierz"
  },
  {
   "slug": "warezyn",
@@ -741,7 +802,8 @@
   "radius": 2000,
   "generated": "2026-11-14T09:03:28.328Z",
   "parcels": 1102,
-  "domy": 9
+  "domy": 9,
+  "gm": "Siewierz"
  },
  {
   "slug": "wojkowice-koscielne",
@@ -753,7 +815,8 @@
   "radius": 2000,
   "generated": "2026-11-14T08:15:31.094Z",
   "parcels": 1064,
-  "domy": 20
+  "domy": 20,
+  "gm": "Siewierz"
  },
  {
   "slug": "zawiercie-losnicka",
@@ -765,7 +828,8 @@
   "radius": 1200,
   "generated": "2026-11-14T12:00:40.241Z",
   "parcels": 243,
-  "domy": 32
+  "domy": 32,
+  "gm": "Zawiercie"
  },
  {
   "slug": "zawiercie-rolnicza",
@@ -777,7 +841,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:58:38.464Z",
   "parcels": 317,
-  "domy": 9
+  "domy": 9,
+  "gm": "Zawiercie"
  },
  {
   "slug": "zawiercie-kromolow",
@@ -789,7 +854,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:27:23.168Z",
   "parcels": 520,
-  "domy": 39
+  "domy": 39,
+  "gm": "Zawiercie"
  },
  {
   "slug": "zawiercie-surowa",
@@ -801,7 +867,8 @@
   "radius": 1200,
   "generated": "2026-11-14T11:29:22.090Z",
   "parcels": 214,
-  "domy": 25
+  "domy": 25,
+  "gm": "Zawiercie"
  },
  {
   "slug": "zendek",
@@ -813,7 +880,8 @@
   "radius": 1500,
   "generated": "2026-11-14T08:50:31.548Z",
   "parcels": 197,
-  "domy": 0
+  "domy": 0,
+  "gm": "Ożarowice"
  },
  {
   "slug": "zelislawice",
@@ -825,6 +893,7 @@
   "radius": 2000,
   "generated": "2026-11-14T08:08:45.282Z",
   "parcels": 523,
-  "domy": 0
+  "domy": 0,
+  "gm": "Siewierz"
  }
 ]
