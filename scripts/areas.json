@@ -1102,5 +1102,613 @@
   "lat": 50.064,
   "lon": 18.5966,
   "radius": 1500
+ },
+ {
+  "slug": "siemianowice-slaskie-2",
+  "name": "Siemianowice Śląskie",
+  "q": "Siemianowice Śląskie",
+  "lat": 50.3271,
+  "lon": 19.0037,
+  "radius": 1500
+ },
+ {
+  "slug": "tychy-4",
+  "name": "Tychy",
+  "q": "Tychy",
+  "lat": 50.106,
+  "lon": 18.9601,
+  "radius": 1500
+ },
+ {
+  "slug": "wisla",
+  "name": "Wisła",
+  "q": "Wisła",
+  "lat": 49.6812,
+  "lon": 18.8464,
+  "radius": 1500
+ },
+ {
+  "slug": "ustron-3",
+  "name": "Ustroń",
+  "q": "Ustroń",
+  "lat": 49.7272,
+  "lon": 18.7934,
+  "radius": 1500
+ },
+ {
+  "slug": "orzesze",
+  "name": "Orzesze",
+  "q": "Orzesze",
+  "lat": 50.1553,
+  "lon": 18.7665,
+  "radius": 1500
+ },
+ {
+  "slug": "rybnik-5",
+  "name": "Rybnik",
+  "q": "Rybnik",
+  "lat": 50.0917,
+  "lon": 18.594,
+  "radius": 1500
+ },
+ {
+  "slug": "gilowice",
+  "name": "Gilowice",
+  "q": "Gilowice",
+  "lat": 49.9935,
+  "lon": 19.0885,
+  "radius": 1500
+ },
+ {
+  "slug": "wodzislaw-slaski",
+  "name": "Wodzisław Śląski",
+  "q": "Wodzisław Śląski",
+  "lat": 50.0269,
+  "lon": 18.4548,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa-6",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.7811,
+  "lon": 19.0862,
+  "radius": 1500
+ },
+ {
+  "slug": "katowice-4",
+  "name": "Katowice",
+  "q": "Katowice",
+  "lat": 50.1978,
+  "lon": 18.9832,
+  "radius": 1500
+ },
+ {
+  "slug": "rybnik-6",
+  "name": "Rybnik",
+  "q": "Rybnik",
+  "lat": 50.1368,
+  "lon": 18.5967,
+  "radius": 1500
+ },
+ {
+  "slug": "zory",
+  "name": "Żory",
+  "q": "Żory",
+  "lat": 50.0608,
+  "lon": 18.6667,
+  "radius": 1500
+ },
+ {
+  "slug": "kobiernice",
+  "name": "Kobiernice",
+  "q": "Kobiernice",
+  "lat": 49.8523,
+  "lon": 19.2034,
+  "radius": 1500
+ },
+ {
+  "slug": "pszczyna-3",
+  "name": "Pszczyna",
+  "q": "Pszczyna",
+  "lat": 49.9954,
+  "lon": 18.9445,
+  "radius": 1500
+ },
+ {
+  "slug": "zywiec",
+  "name": "Żywiec",
+  "q": "Żywiec",
+  "lat": 49.6942,
+  "lon": 19.2051,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa-7",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.7946,
+  "lon": 19.1572,
+  "radius": 1500
+ },
+ {
+  "slug": "swietochlowice",
+  "name": "Świętochłowice",
+  "q": "Świętochłowice",
+  "lat": 50.2825,
+  "lon": 18.9154,
+  "radius": 1500
+ },
+ {
+  "slug": "zabrze",
+  "name": "Zabrze",
+  "q": "Zabrze",
+  "lat": 50.2992,
+  "lon": 18.8216,
+  "radius": 1500
+ },
+ {
+  "slug": "zory-2",
+  "name": "Żory",
+  "q": "Żory",
+  "lat": 50.0246,
+  "lon": 18.6935,
+  "radius": 1500
+ },
+ {
+  "slug": "wisla-2",
+  "name": "Wisła",
+  "q": "Wisła",
+  "lat": 49.6462,
+  "lon": 18.8665,
+  "radius": 1500
+ },
+ {
+  "slug": "konczyce-male",
+  "name": "Kończyce Małe",
+  "q": "Kończyce Małe",
+  "lat": 49.8534,
+  "lon": 18.6242,
+  "radius": 1500
+ },
+ {
+  "slug": "mikolow",
+  "name": "Mikołów",
+  "q": "Mikołów",
+  "lat": 50.1718,
+  "lon": 18.8672,
+  "radius": 1500
+ },
+ {
+  "slug": "mikolow-2",
+  "name": "Mikołów",
+  "q": "Mikołów",
+  "lat": 50.2158,
+  "lon": 18.8262,
+  "radius": 1500
+ },
+ {
+  "slug": "bytom",
+  "name": "Bytom",
+  "q": "Bytom",
+  "lat": 50.3163,
+  "lon": 18.9311,
+  "radius": 1500
+ },
+ {
+  "slug": "jastrzebie-zdroj-4",
+  "name": "Jastrzębie-Zdrój",
+  "q": "Jastrzębie-Zdrój",
+  "lat": 49.9341,
+  "lon": 18.5847,
+  "radius": 1500
+ },
+ {
+  "slug": "jastrzebie-zdroj-5",
+  "name": "Jastrzębie-Zdrój",
+  "q": "Jastrzębie-Zdrój",
+  "lat": 49.963,
+  "lon": 18.5777,
+  "radius": 1500
+ },
+ {
+  "slug": "katowice-5",
+  "name": "Katowice",
+  "q": "Katowice",
+  "lat": 50.2439,
+  "lon": 19.0226,
+  "radius": 1500
+ },
+ {
+  "slug": "kaczyce",
+  "name": "Kaczyce",
+  "q": "Kaczyce",
+  "lat": 49.8323,
+  "lon": 18.593,
+  "radius": 1500
+ },
+ {
+  "slug": "ornontowice",
+  "name": "Ornontowice",
+  "q": "Ornontowice",
+  "lat": 50.1874,
+  "lon": 18.7549,
+  "radius": 1500
+ },
+ {
+  "slug": "mszana",
+  "name": "Mszana",
+  "q": "Mszana",
+  "lat": 49.9666,
+  "lon": 18.5273,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-8",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.8104,
+  "lon": 19.0592,
+  "radius": 1500
+ },
+ {
+  "slug": "dabrowa-gornicza",
+  "name": "Dąbrowa Górnicza",
+  "q": "Dąbrowa Górnicza",
+  "lat": 50.3489,
+  "lon": 19.4387,
+  "radius": 1500
+ },
+ {
+  "slug": "gliwice-2",
+  "name": "Gliwice",
+  "q": "Gliwice",
+  "lat": 50.3159,
+  "lon": 18.6928,
+  "radius": 1500
+ },
+ {
+  "slug": "jastrzebie-zdroj-6",
+  "name": "Jastrzębie-Zdrój",
+  "q": "Jastrzębie-Zdrój",
+  "lat": 50.0003,
+  "lon": 18.6475,
+  "radius": 1500
+ },
+ {
+  "slug": "katowice-6",
+  "name": "Katowice",
+  "q": "Katowice",
+  "lat": 50.2612,
+  "lon": 19.05,
+  "radius": 1500
+ },
+ {
+  "slug": "myslowice-2",
+  "name": "Mysłowice",
+  "q": "Mysłowice",
+  "lat": 50.2561,
+  "lon": 19.1374,
+  "radius": 1500
+ },
+ {
+  "slug": "sosnowiec",
+  "name": "Sosnowiec",
+  "q": "Sosnowiec",
+  "lat": 50.2919,
+  "lon": 19.1564,
+  "radius": 1500
+ },
+ {
+  "slug": "zabrze-2",
+  "name": "Zabrze",
+  "q": "Zabrze",
+  "lat": 50.3592,
+  "lon": 18.7698,
+  "radius": 1500
+ },
+ {
+  "slug": "zabrze-3",
+  "name": "Zabrze",
+  "q": "Zabrze",
+  "lat": 50.2596,
+  "lon": 18.7641,
+  "radius": 1500
+ },
+ {
+  "slug": "sarnow-2",
+  "name": "Sarnów",
+  "q": "Sarnów",
+  "lat": 50.3761,
+  "lon": 19.1508,
+  "radius": 1500
+ },
+ {
+  "slug": "kalna",
+  "name": "Kalna",
+  "q": "Kalna",
+  "lat": 49.7088,
+  "lon": 19.1107,
+  "radius": 1500
+ },
+ {
+  "slug": "bakow",
+  "name": "Bąków",
+  "q": "Bąków",
+  "lat": 49.8978,
+  "lon": 18.7283,
+  "radius": 1500
+ },
+ {
+  "slug": "klobuck",
+  "name": "Kłobuck",
+  "q": "Kłobuck",
+  "lat": 50.8927,
+  "lon": 18.927,
+  "radius": 1500
+ },
+ {
+  "slug": "orzesze-2",
+  "name": "Orzesze",
+  "q": "Orzesze",
+  "lat": 50.1256,
+  "lon": 18.8063,
+  "radius": 1500
+ },
+ {
+  "slug": "laka",
+  "name": "Łąka",
+  "q": "Łąka",
+  "lat": 49.9513,
+  "lon": 18.925,
+  "radius": 1500
+ },
+ {
+  "slug": "pielgrzymowice",
+  "name": "Pielgrzymowice",
+  "q": "Pielgrzymowice",
+  "lat": 49.9094,
+  "lon": 18.6593,
+  "radius": 1500
+ },
+ {
+  "slug": "ledziny",
+  "name": "Lędziny",
+  "q": "Lędziny",
+  "lat": 50.1329,
+  "lon": 19.0979,
+  "radius": 1500
+ },
+ {
+  "slug": "zywiec-2",
+  "name": "Żywiec",
+  "q": "Żywiec",
+  "lat": 49.6761,
+  "lon": 19.2454,
+  "radius": 1500
+ },
+ {
+  "slug": "bytom-2",
+  "name": "Bytom",
+  "q": "Bytom",
+  "lat": 50.4017,
+  "lon": 18.8579,
+  "radius": 1500
+ },
+ {
+  "slug": "chorzow-3",
+  "name": "Chorzów",
+  "q": "Chorzów",
+  "lat": 50.3235,
+  "lon": 18.9721,
+  "radius": 1500
+ },
+ {
+  "slug": "dabrowa-gornicza-2",
+  "name": "Dąbrowa Górnicza",
+  "q": "Dąbrowa Górnicza",
+  "lat": 50.377,
+  "lon": 19.2344,
+  "radius": 1500
+ },
+ {
+  "slug": "gliwice-3",
+  "name": "Gliwice",
+  "q": "Gliwice",
+  "lat": 50.2875,
+  "lon": 18.633,
+  "radius": 1500
+ },
+ {
+  "slug": "czechowice-dziedzice-2",
+  "name": "Czechowice-Dziedzice",
+  "q": "Czechowice-Dziedzice",
+  "lat": 49.8722,
+  "lon": 19.0324,
+  "radius": 1500
+ },
+ {
+  "slug": "janowice",
+  "name": "Janowice",
+  "q": "Janowice",
+  "lat": 49.8911,
+  "lon": 19.0825,
+  "radius": 1500
+ },
+ {
+  "slug": "skoczow-2",
+  "name": "Skoczów",
+  "q": "Skoczów",
+  "lat": 49.8121,
+  "lon": 18.8003,
+  "radius": 1500
+ },
+ {
+  "slug": "ochaby-wielkie",
+  "name": "Ochaby Wielkie",
+  "q": "Ochaby Wielkie",
+  "lat": 49.8543,
+  "lon": 18.7653,
+  "radius": 1500
+ },
+ {
+  "slug": "brzeziny-nowe",
+  "name": "Brzeziny Nowe",
+  "q": "Brzeziny Nowe",
+  "lat": 50.7421,
+  "lon": 19.0946,
+  "radius": 1500
+ },
+ {
+  "slug": "skrajnica",
+  "name": "Skrajnica",
+  "q": "Skrajnica",
+  "lat": 50.7415,
+  "lon": 19.2419,
+  "radius": 1500
+ },
+ {
+  "slug": "osiny",
+  "name": "Osiny",
+  "q": "Osiny",
+  "lat": 50.6905,
+  "lon": 19.1872,
+  "radius": 1500
+ },
+ {
+  "slug": "pyskowice-2",
+  "name": "Pyskowice",
+  "q": "Pyskowice",
+  "lat": 50.4029,
+  "lon": 18.6345,
+  "radius": 1500
+ },
+ {
+  "slug": "chudow",
+  "name": "Chudów",
+  "q": "Chudów",
+  "lat": 50.2147,
+  "lon": 18.7786,
+  "radius": 1500
+ },
+ {
+  "slug": "pogrzebien",
+  "name": "Pogrzebień",
+  "q": "Pogrzebień",
+  "lat": 50.0702,
+  "lon": 18.3019,
+  "radius": 1500
+ },
+ {
+  "slug": "przegedza",
+  "name": "Przegędza",
+  "q": "Przegędza",
+  "lat": 50.1175,
+  "lon": 18.6361,
+  "radius": 1500
+ },
+ {
+  "slug": "jankowice-2",
+  "name": "Jankowice",
+  "q": "Jankowice",
+  "lat": 50.0498,
+  "lon": 18.548,
+  "radius": 1500
+ },
+ {
+  "slug": "radlin-2",
+  "name": "Radlin",
+  "q": "Radlin",
+  "lat": 50.0425,
+  "lon": 18.4316,
+  "radius": 1500
+ },
+ {
+  "slug": "ciagowice-2",
+  "name": "Ciągowice",
+  "q": "Ciągowice",
+  "lat": 50.4459,
+  "lon": 19.3661,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-9",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.8326,
+  "lon": 19.02,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa-8",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.8718,
+  "lon": 19.1806,
+  "radius": 1500
+ },
+ {
+  "slug": "dabrowa-gornicza-3",
+  "name": "Dąbrowa Górnicza",
+  "q": "Dąbrowa Górnicza",
+  "lat": 50.3653,
+  "lon": 19.2713,
+  "radius": 1500
+ },
+ {
+  "slug": "jaworzno",
+  "name": "Jaworzno",
+  "q": "Jaworzno",
+  "lat": 50.181,
+  "lon": 19.2342,
+  "radius": 1500
+ },
+ {
+  "slug": "jaworzno-2",
+  "name": "Jaworzno",
+  "q": "Jaworzno",
+  "lat": 50.1967,
+  "lon": 19.3113,
+  "radius": 1500
+ },
+ {
+  "slug": "katowice-7",
+  "name": "Katowice",
+  "q": "Katowice",
+  "lat": 50.229,
+  "lon": 18.9422,
+  "radius": 1500
+ },
+ {
+  "slug": "ruda-slaska-5",
+  "name": "Ruda Śląska",
+  "q": "Ruda Śląska",
+  "lat": 50.2578,
+  "lon": 18.8519,
+  "radius": 1500
+ },
+ {
+  "slug": "rybnik-7",
+  "name": "Rybnik",
+  "q": "Rybnik",
+  "lat": 50.1031,
+  "lon": 18.5651,
+  "radius": 1500
+ },
+ {
+  "slug": "tychy-5",
+  "name": "Tychy",
+  "q": "Tychy",
+  "lat": 50.1305,
+  "lon": 19.0492,
+  "radius": 1500
+ },
+ {
+  "slug": "zory-3",
+  "name": "Żory",
+  "q": "Żory",
+  "lat": 50.0437,
+  "lon": 18.7167,
+  "radius": 1500
  }
 ]
