@@ -13,6 +13,11 @@ await pg.route('**/*', r => { const u = r.request().url();
   if (u.includes('leaflet') && u.endsWith('.css')) return r.fulfill({ contentType: 'text/css', body: '' });
   return u.startsWith(base) ? r.continue() : r.abort() });
 await pg.goto(base + '/index.html'); await pg.waitForTimeout(800);
+const f0 = await pg.evaluate(() => document.querySelectorAll('#gotowe option').length);
+await pg.fill('#gFilt', 'zawiercie'); await pg.waitForTimeout(200);
+const f1 = await pg.evaluate(() => document.querySelectorAll('#gotowe option').length);
+if (!(f1 > 1 && f1 < f0)) { console.log('FILTR OBSZARÓW NIE DZIAŁA', f0, f1); process.exit(1) }
+await pg.fill('#gFilt', '');
 const o = await pg.evaluate(async () => {
   await loadArea('tuliszow');
   const r = RES.find(x => x.num === '113' && x.obr === 'Tuliszów');

@@ -108,7 +108,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <button id="instBtn" hidden title="Dodaj Radar na ekran telefonu">Zainstaluj</button>
   <button id="trasaBtn" title="Najmocniejsze działki z domem pod linią, ułożone w kolejności przejazdu">Trasa na dzień</button>
   <button id="goView" class="extra" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
-  <select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
+  <input id="gFilt" type="search" placeholder="Szukaj gminy / miejscowości…" aria-label="Szukaj obszaru" hidden style="margin-bottom:6px"><select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
   <button id="offBtn" class="extra" hidden title="Pobierz wszystkie gotowe obszary do pamięci telefonu (kilka MB, najlepiej na Wi-Fi)">Offline</button>
   <button id="demoBtn" class="extra" hidden>Przykładowy lead</button>
   <button id="nrBtn" class="extra">Po numerze</button>
@@ -475,7 +475,13 @@ async function enrichMpzp(list){
 // ---------- gotowe obszary (przeliczone nocą przez GitHub Actions) ----------
 async function loadIndex(){
   try{const r=await fetch('data/index.json',{cache:'no-cache'});if(!r.ok)return;const idx=await r.json();if(!idx.length)return;
-    const s=$('#gotowe');const gm=a=>a.gm||(a.name.match(/\(gm\. ([^)]+)\)/)||a.name.match(/\(([^)]+)\)/)||a.name.match(/^([^–]+?) –/)||[,a.name])[1].trim();const G={};idx.forEach(a=>(G[gm(a)]=G[gm(a)]||[]).push(a));s.innerHTML='<option value="">Gotowe obszary…</option>'+Object.keys(G).sort((x,y)=>x.localeCompare(y,'pl')).map(g=>`<optgroup label="gm. ${g} · ${G[g].reduce((t,a)=>t+(a.domy||0),0)} domów">${G[g].sort((x,y)=>(y.domy||0)-(x.domy||0)).map(a=>`<option value="${a.slug}">${a.name.replace(/ \(.*\)/,'')} · ${a.domy?a.domy+' z domem · ':''}${a.parcels} dz.</option>`).join('')}</optgroup>`).join('');s.hidden=false;$('#offBtn').hidden=false;$('#offBtn').onclick=async()=>{let i=0,bad=0;for(const a of idx){status(`Pobieram do pamięci telefonu: ${a.name} (${++i}/${idx.length})…`,i/idx.length);try{const r=await fetch('data/'+a.slug+'.json');if(!r.ok)throw 0;await r.arrayBuffer()}catch(e){bad++}}status(bad?`Pobrano ${idx.length-bad} z ${idx.length} obszarów (${bad} się nie udało, spróbuj z lepszym zasięgiem).`:`Pobrano wszystkie ${idx.length} obszarów. Działają bez zasięgu.`,1);setTimeout(()=>$('#bar i').style.width='0',800)}}catch(e){}
+    const s=$('#gotowe');const gm=a=>a.gm||(a.name.match(/\(gm\. ([^)]+)\)/)||a.name.match(/\(([^)]+)\)/)||a.name.match(/^([^–]+?) –/)||[,a.name])[1].trim();
+    const norm=t=>(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ł/g,'l');
+    const fill=()=>{const q=norm($('#gFilt').value.trim());const sel=idx.filter(a=>!q||norm(a.name+' '+gm(a)).includes(q));const G={};sel.forEach(a=>(G[gm(a)]=G[gm(a)]||[]).push(a));
+      s.innerHTML=`<option value="">${q?sel.length+' z '+idx.length+' obszarów':'Gotowe obszary ('+idx.length+')'}…</option>`+Object.keys(G).sort((x,y)=>x.localeCompare(y,'pl')).map(g=>`<optgroup label="gm. ${g} · ${G[g].reduce((t,a)=>t+(a.domy||0),0)} domów">${G[g].sort((x,y)=>(y.domy||0)-(x.domy||0)).map(a=>`<option value="${a.slug}">${a.name.replace(/ \(.*\)/,'')} · ${a.domy?a.domy+' z domem · ':''}${a.parcels} dz.</option>`).join('')}</optgroup>`).join('');return sel};
+    fill();$('#gFilt').hidden=idx.length<20;$('#gFilt').oninput=fill;
+    s.hidden=false;$('#offBtn').hidden=false;$('#offBtn').onclick=async()=>{const list=fill();const todo=$('#gFilt').value.trim()?list:idx;if(todo.length>40&&!confirm(`Pobrać ${todo.length} obszarów do pamięci telefonu? To dużo danych – lepiej wpisać gminę w polu „Szukaj” i pobrać tylko ją.`))return;let i=0,bad=0;for(const a of todo){status(`Pobieram do pamięci telefonu: ${a.name} (${++i}/${todo.length})…`,i/todo.length);try{const r=await fetch('data/'+a.slug+'.json');if(!r.ok)throw 0;await r.arrayBuffer()}catch(e){bad++}}status(bad?`Pobrano ${todo.length-bad} z ${todo.length} obszarów (${bad} się nie udało, spróbuj z lepszym zasięgiem).`:`Pobrano ${todo.length} obszarów. Działają bez zasięgu.`,1);setTimeout(()=>$('#bar i').style.width='0',800)}
+  }catch(e){}
 }
 async function loadArea(slug){
   if(!slug)return;store.set('area',slug);$('#card').hidden=true;status('Wczytuję gotowy obszar…',.3);
