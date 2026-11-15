@@ -622,5 +622,485 @@
   "lat": 50.779,
   "lon": 19.6915,
   "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.7938,
+  "lon": 19.0755,
+  "radius": 1500
+ },
+ {
+  "slug": "pietrzykowice",
+  "name": "Pietrzykowice",
+  "q": "Pietrzykowice",
+  "lat": 49.6968,
+  "lon": 19.1779,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-2",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.8498,
+  "lon": 19.0567,
+  "radius": 1500
+ },
+ {
+  "slug": "radlin",
+  "name": "Radlin",
+  "q": "Radlin",
+  "lat": 50.0467,
+  "lon": 18.4905,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-3",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.7978,
+  "lon": 19.038,
+  "radius": 1500
+ },
+ {
+  "slug": "jastrzebie-zdroj",
+  "name": "Jastrzębie-Zdrój",
+  "q": "Jastrzębie-Zdrój",
+  "lat": 49.9463,
+  "lon": 18.5618,
+  "radius": 1500
+ },
+ {
+  "slug": "tresna",
+  "name": "Tresna",
+  "q": "Tresna",
+  "lat": 49.7343,
+  "lon": 19.1992,
+  "radius": 1500
+ },
+ {
+  "slug": "ruda-slaska",
+  "name": "Ruda Śląska",
+  "q": "Ruda Śląska",
+  "lat": 50.3244,
+  "lon": 18.8524,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-4",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.8234,
+  "lon": 19.0755,
+  "radius": 1500
+ },
+ {
+  "slug": "pszczyna",
+  "name": "Pszczyna",
+  "q": "Pszczyna",
+  "lat": 49.983,
+  "lon": 18.961,
+  "radius": 1500
+ },
+ {
+  "slug": "wilkowice",
+  "name": "Wilkowice",
+  "q": "Wilkowice",
+  "lat": 49.7669,
+  "lon": 19.0793,
+  "radius": 1500
+ },
+ {
+  "slug": "rydultowy",
+  "name": "Rydułtowy",
+  "q": "Rydułtowy",
+  "lat": 50.0657,
+  "lon": 18.4305,
+  "radius": 1500
+ },
+ {
+  "slug": "czechowice-dziedzice",
+  "name": "Czechowice-Dziedzice",
+  "q": "Czechowice-Dziedzice",
+  "lat": 49.9211,
+  "lon": 18.9992,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.8266,
+  "lon": 19.1493,
+  "radius": 1500
+ },
+ {
+  "slug": "tychy",
+  "name": "Tychy",
+  "q": "Tychy",
+  "lat": 50.125,
+  "lon": 18.9689,
+  "radius": 1500
+ },
+ {
+  "slug": "siemianowice-slaskie",
+  "name": "Siemianowice Śląskie",
+  "q": "Siemianowice Śląskie",
+  "lat": 50.3036,
+  "lon": 19.0121,
+  "radius": 1500
+ },
+ {
+  "slug": "myslowice",
+  "name": "Mysłowice",
+  "q": "Mysłowice",
+  "lat": 50.2001,
+  "lon": 19.1045,
+  "radius": 1500
+ },
+ {
+  "slug": "ustron",
+  "name": "Ustroń",
+  "q": "Ustroń",
+  "lat": 49.7592,
+  "lon": 18.8139,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-5",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.8484,
+  "lon": 19.0874,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-6",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.8131,
+  "lon": 19.0073,
+  "radius": 1500
+ },
+ {
+  "slug": "gliwice",
+  "name": "Gliwice",
+  "q": "Gliwice",
+  "lat": 50.2867,
+  "lon": 18.6966,
+  "radius": 1500
+ },
+ {
+  "slug": "katowice",
+  "name": "Katowice",
+  "q": "Katowice",
+  "lat": 50.2752,
+  "lon": 19.0634,
+  "radius": 1500
+ },
+ {
+  "slug": "ruda-slaska-2",
+  "name": "Ruda Śląska",
+  "q": "Ruda Śląska",
+  "lat": 50.2337,
+  "lon": 18.8672,
+  "radius": 1500
+ },
+ {
+  "slug": "laziska-gorne",
+  "name": "Łaziska Górne",
+  "q": "Łaziska Górne",
+  "lat": 50.1322,
+  "lon": 18.8464,
+  "radius": 1500
+ },
+ {
+  "slug": "katowice-2",
+  "name": "Katowice",
+  "q": "Katowice",
+  "lat": 50.2291,
+  "lon": 18.9946,
+  "radius": 1500
+ },
+ {
+  "slug": "ustron-2",
+  "name": "Ustroń",
+  "q": "Ustroń",
+  "lat": 49.7004,
+  "lon": 18.8222,
+  "radius": 1500
+ },
+ {
+  "slug": "rybnik",
+  "name": "Rybnik",
+  "q": "Rybnik",
+  "lat": 50.0741,
+  "lon": 18.5519,
+  "radius": 1500
+ },
+ {
+  "slug": "jankowice",
+  "name": "Jankowice",
+  "q": "Jankowice",
+  "lat": 50.0448,
+  "lon": 18.5756,
+  "radius": 1500
+ },
+ {
+  "slug": "tarnowskie-gory",
+  "name": "Tarnowskie Góry",
+  "q": "Tarnowskie Góry",
+  "lat": 50.4195,
+  "lon": 18.8803,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa-2",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.7697,
+  "lon": 19.1396,
+  "radius": 1500
+ },
+ {
+  "slug": "jastrzebie-zdroj-2",
+  "name": "Jastrzębie-Zdrój",
+  "q": "Jastrzębie-Zdrój",
+  "lat": 49.9622,
+  "lon": 18.6063,
+  "radius": 1500
+ },
+ {
+  "slug": "katowice-3",
+  "name": "Katowice",
+  "q": "Katowice",
+  "lat": 50.2621,
+  "lon": 18.9783,
+  "radius": 1500
+ },
+ {
+  "slug": "ruda-slaska-3",
+  "name": "Ruda Śląska",
+  "q": "Ruda Śląska",
+  "lat": 50.2498,
+  "lon": 18.8305,
+  "radius": 1500
+ },
+ {
+  "slug": "rybnik-2",
+  "name": "Rybnik",
+  "q": "Rybnik",
+  "lat": 50.1247,
+  "lon": 18.543,
+  "radius": 1500
+ },
+ {
+  "slug": "raciborz",
+  "name": "Racibórz",
+  "q": "Racibórz",
+  "lat": 50.0839,
+  "lon": 18.1796,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa-3",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.8155,
+  "lon": 19.0819,
+  "radius": 1500
+ },
+ {
+  "slug": "imielin",
+  "name": "Imielin",
+  "q": "Imielin",
+  "lat": 50.1285,
+  "lon": 19.2134,
+  "radius": 1500
+ },
+ {
+  "slug": "miedzybrodzie-zywieckie",
+  "name": "Międzybrodzie Żywieckie",
+  "q": "Międzybrodzie Żywieckie",
+  "lat": 49.776,
+  "lon": 19.2191,
+  "radius": 1500
+ },
+ {
+  "slug": "przybedza",
+  "name": "Przybędza",
+  "q": "Przybędza",
+  "lat": 49.6243,
+  "lon": 19.1236,
+  "radius": 1500
+ },
+ {
+  "slug": "ruda-slaska-4",
+  "name": "Ruda Śląska",
+  "q": "Ruda Śląska",
+  "lat": 50.2509,
+  "lon": 18.9048,
+  "radius": 1500
+ },
+ {
+  "slug": "bedzin",
+  "name": "Będzin",
+  "q": "Będzin",
+  "lat": 50.2998,
+  "lon": 19.1244,
+  "radius": 1500
+ },
+ {
+  "slug": "pyskowice",
+  "name": "Pyskowice",
+  "q": "Pyskowice",
+  "lat": 50.3955,
+  "lon": 18.5947,
+  "radius": 1500
+ },
+ {
+  "slug": "pszczyna-2",
+  "name": "Pszczyna",
+  "q": "Pszczyna",
+  "lat": 49.9949,
+  "lon": 18.9069,
+  "radius": 1500
+ },
+ {
+  "slug": "jastrzebie-zdroj-3",
+  "name": "Jastrzębie-Zdrój",
+  "q": "Jastrzębie-Zdrój",
+  "lat": 49.921,
+  "lon": 18.6054,
+  "radius": 1500
+ },
+ {
+  "slug": "bierun",
+  "name": "Bieruń",
+  "q": "Bieruń",
+  "lat": 50.0712,
+  "lon": 19.1581,
+  "radius": 1500
+ },
+ {
+  "slug": "chorzow",
+  "name": "Chorzów",
+  "q": "Chorzów",
+  "lat": 50.3055,
+  "lon": 18.9735,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa-4",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.8596,
+  "lon": 19.1148,
+  "radius": 1500
+ },
+ {
+  "slug": "tarnowskie-gory-2",
+  "name": "Tarnowskie Góry",
+  "q": "Tarnowskie Góry",
+  "lat": 50.4472,
+  "lon": 18.8152,
+  "radius": 1500
+ },
+ {
+  "slug": "bierna",
+  "name": "Bierna",
+  "q": "Bierna",
+  "lat": 49.72,
+  "lon": 19.1678,
+  "radius": 1500
+ },
+ {
+  "slug": "czestochowa-5",
+  "name": "Częstochowa",
+  "q": "Częstochowa",
+  "lat": 50.7623,
+  "lon": 19.167,
+  "radius": 1500
+ },
+ {
+  "slug": "tychy-2",
+  "name": "Tychy",
+  "q": "Tychy",
+  "lat": 50.1034,
+  "lon": 19.0045,
+  "radius": 1500
+ },
+ {
+  "slug": "kozy",
+  "name": "Kozy",
+  "q": "Kozy",
+  "lat": 49.8542,
+  "lon": 19.134,
+  "radius": 1500
+ },
+ {
+  "slug": "skoczow",
+  "name": "Skoczów",
+  "q": "Skoczów",
+  "lat": 49.7923,
+  "lon": 18.7994,
+  "radius": 1500
+ },
+ {
+  "slug": "chorzow-2",
+  "name": "Chorzów",
+  "q": "Chorzów",
+  "lat": 50.2707,
+  "lon": 18.9509,
+  "radius": 1500
+ },
+ {
+  "slug": "tychy-3",
+  "name": "Tychy",
+  "q": "Tychy",
+  "lat": 50.1487,
+  "lon": 19.0005,
+  "radius": 1500
+ },
+ {
+  "slug": "buczkowice",
+  "name": "Buczkowice",
+  "q": "Buczkowice",
+  "lat": 49.7224,
+  "lon": 19.0629,
+  "radius": 1500
+ },
+ {
+  "slug": "rybarzowice",
+  "name": "Rybarzowice",
+  "q": "Rybarzowice",
+  "lat": 49.725,
+  "lon": 19.0987,
+  "radius": 1500
+ },
+ {
+  "slug": "bielsko-biala-7",
+  "name": "Bielsko-Biała",
+  "q": "Bielsko-Biała",
+  "lat": 49.8742,
+  "lon": 19.0606,
+  "radius": 1500
+ },
+ {
+  "slug": "rybnik-3",
+  "name": "Rybnik",
+  "q": "Rybnik",
+  "lat": 50.0656,
+  "lon": 18.4759,
+  "radius": 1500
+ },
+ {
+  "slug": "rybnik-4",
+  "name": "Rybnik",
+  "q": "Rybnik",
+  "lat": 50.064,
+  "lon": 18.5966,
+  "radius": 1500
  }
 ]
