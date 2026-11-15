@@ -4,8 +4,17 @@ import fs from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import proj4 from 'proj4';
 import * as shapefile from 'shapefile';
-const TER = ['2401', '2465', '2416', '2413', '2409', '2475', '2468', '2471', '2462', '2404', '2407'];
+const TER = JSON.parse(await fs.readFile(new URL('./ter_slask.json', import.meta.url), 'utf8')); // 36 powiatów woj. śląskiego (17 ziemskich + 19 grodzkich)
 const DEF = '+proj=tmerc +lat_0=0 +lon_0=19 +k=0.9993 +x_0=500000 +y_0=-5300000 +ellps=GRS80 +units=m +no_defs';
+// zostawiamy tylko adresy blisko linii elektroenergetycznych (do 120 m) – reszta nie jest potrzebna, a plik byłby ogromny
+const NEAR = []; const CELL = 0.002; const grid = new Map();
+try { const bj = JSON.parse(await fs.readFile(new URL('./bdot.json', import.meta.url), 'utf8'));
+  for (const l of bj.lines) { if (!['NN', 'WN', 'SN'].includes(l.k)) continue;
+    for (let i = 0; i < l.g.length - 1; i++) { const [ax, ay] = l.g[i], [bx, by] = l.g[i + 1]; const n = Math.max(1, Math.ceil(Math.hypot(bx - ax, by - ay) / 0.0004));
+      for (let j = 0; j <= n; j++) { const x = ax + (bx - ax) * j / n, y = ay + (by - ay) * j / n; const key = Math.floor(x / CELL) + ',' + Math.floor(y / CELL); (grid.get(key) || grid.set(key, []).get(key)).push([x, y]) } } }
+} catch (e) { console.log('brak bdot.json – bez filtra') }
+const nearLine = (lat, lon) => { if (!grid.size) return true; const cx = Math.floor(lon / CELL), cy = Math.floor(lat / CELL);
+  for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) for (const [x, y] of grid.get((cx + dx) + ',' + (cy + dy)) || []) { const mx = (x - lon) * 71000, my = (y - lat) * 111000; if (mx * mx + my * my < 14400) return true } return false };
 let old = []; try { old = JSON.parse(await fs.readFile(new URL('./prg.json', import.meta.url), 'utf8')).pts } catch (e) {}
 const pts = []; let shown = false;
 for (const t of TER) { const start = pts.length; try {
@@ -23,6 +32,7 @@ for (const t of TER) { const start = pts.length; try {
     const nr = get('NUMER', 'NUMERPORZADKOWY', 'NUMER_PORZ', 'NR'); if (!nr) continue;
     const mc = get('NAZWA_MSC', 'MIEJSCOWOS', 'MIEJSCOWOSC', 'MIEJSC_NAZ', 'MSC'); const ul = get('NAZWA_ULC', 'ULICA', 'NAZWA_ULIC', 'ULICA_NAZW', 'UL');
     let [x0, y0] = g.coordinates; if (Math.abs(x0) > 190) { if (x0 > y0 && x0 > 1e6) [x0, y0] = [y0, x0]; [x0, y0] = proj4(DEF, 'WGS84', [x0, y0]) }
+    if (!nearLine(+y0, +x0)) continue;
     pts.push([+y0.toFixed(6), +x0.toFixed(6), ul ? `${ul.replace(/^ul\.\s*/i, '')} ${nr}, ${mc}` : `${mc} ${nr}`]);
   }
   console.log(' ', t, pts.length - start);
