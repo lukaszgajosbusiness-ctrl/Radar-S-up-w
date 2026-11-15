@@ -1,5 +1,17 @@
 [
  {
+  "slug": "bargly",
+  "name": "Bargły – Śląska (gm. Poczesna)",
+  "center": [
+   50.704,
+   19.1346
+  ],
+  "radius": 1500,
+  "generated": "2026-11-14T23:46:31.986Z",
+  "parcels": 472,
+  "domy": 9
+ },
+ {
   "slug": "bedzin-grodziec",
   "name": "Będzin – Grodziec / Zagórnego",
   "center": [
@@ -299,6 +311,18 @@
   "gm": "Jaworzno"
  },
  {
+  "slug": "koniecpol",
+  "name": "Koniecpol – Ogrodowa / Szkolna (gm. Koniecpol)",
+  "center": [
+   50.779,
+   19.6915
+  ],
+  "radius": 1500,
+  "generated": "2026-11-14T23:50:03.200Z",
+  "parcels": 459,
+  "domy": 52
+ },
+ {
   "slug": "kuznica-stara",
   "name": "Kuźnica Stara – Brzegowa / Nad Zalewem (gm. Poraj)",
   "center": [
@@ -429,6 +453,18 @@
   "gm": "Ożarowice"
  },
  {
+  "slug": "nowa-wies-poczesna",
+  "name": "Nowa Wieś – Młyńska / Słoneczna (gm. Poczesna)",
+  "center": [
+   50.7312,
+   19.17
+  ],
+  "radius": 1500,
+  "generated": "2026-11-14T23:51:00.343Z",
+  "parcels": 437,
+  "domy": 32
+ },
+ {
   "slug": "nowa-wies-mierzecice",
   "name": "Nowa Wieś (gm. Mierzęcice)",
   "center": [
@@ -440,6 +476,18 @@
   "parcels": 353,
   "domy": 6,
   "gm": "Mierzęcice"
+ },
+ {
+  "slug": "olsztyn-paprociowa",
+  "name": "Olsztyn – Paprociowa / Wrzosowa (gm. Olsztyn)",
+  "center": [
+   50.7567,
+   19.2191
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T00:04:51.949Z",
+  "parcels": 261,
+  "domy": 13
  },
  {
   "slug": "opatowice-tg",
@@ -689,6 +737,18 @@
   "gm": "Tarnowskie Góry"
  },
  {
+  "slug": "srocko",
+  "name": "Srocko – Częstochowska / Mstowska (gm. Mstów)",
+  "center": [
+   50.7977,
+   19.2512
+  ],
+  "radius": 1500,
+  "generated": "2026-11-14T23:52:22.793Z",
+  "parcels": 392,
+  "domy": 14
+ },
+ {
   "slug": "stare-tarnowice",
   "name": "Stare Tarnowice (Tarnowskie Góry)",
   "center": [
@@ -791,6 +851,18 @@
   "parcels": 1329,
   "domy": 23,
   "gm": "Siewierz"
+ },
+ {
+  "slug": "turow",
+  "name": "Turów – Szkolna / Nowa (gm. Olsztyn)",
+  "center": [
+   50.7677,
+   19.3309
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T00:16:39.492Z",
+  "parcels": 514,
+  "domy": 10
  },
  {
   "slug": "warezyn",
