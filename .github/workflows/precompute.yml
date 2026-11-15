@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: 'Obszary po przecinku (slugi z scripts/areas.json), puste = wszystkie'
+        description: 'Obszary po przecinku (slugi z scripts/areas.json), puste = nowe obszary bez danych; „wszystkie” = pełne odświeżenie'
         required: false
 permissions:
   contents: write
@@ -17,11 +17,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: s
+        env: { ONLY: '${{ github.event.inputs.only }}' }
         run: |
-          if [ -n "${{ github.event.inputs.only }}" ]; then echo "slugs=$(node -e "console.log(JSON.stringify(process.argv[1].split(',').map(x=>x.trim()).filter(Boolean)))" '${{ github.event.inputs.only }}')" >> $GITHUB_OUTPUT
-          else echo "slugs=$(node -e "console.log(JSON.stringify(require('./scripts/areas.json').map(a=>a.slug)))")" >> $GITHUB_OUTPUT; fi
+          # ręcznie: podane slugi; wszystkie = pełne odświeżenie (max 250 – limit macierzy GitHuba);
+          # automatycznie: nowe obszary bez danych (max 200 na raz), a w poniedziałek odświeżenie istniejących
+          echo "slugs=$(node -e "
+          const fs=require('fs'),A=require('./scripts/areas.json').map(a=>a.slug),o=(process.env.ONLY||'').trim();
+          const has=s=>fs.existsSync('data/'+s+'.json');let r;
+          if(o==='wszystkie')r=A.slice(0,250);
+          else if(o)r=o.split(',').map(x=>x.trim()).filter(Boolean);
+          else{const miss=A.filter(s=>!has(s));r=miss.length?miss.slice(0,200):(new Date().getUTCDay()===1?A.filter(has).slice(0,250):[])}
+          console.log(JSON.stringify(r))")" >> $GITHUB_OUTPUT
   run:
     needs: list
+    if: needs.list.outputs.slugs != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
@@ -39,8 +48,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: { name: 'area-${{ matrix.slug }}', path: out, if-no-files-found: ignore }
   commit:
-    needs: run
-    if: always()
+    needs: [list, run]
+    if: always() && needs.list.outputs.slugs != '[]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
