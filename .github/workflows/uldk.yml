@@ -1,0 +1,29 @@
+name: Działka po współrzędnych (ULDK)
+on:
+  workflow_dispatch:
+    inputs:
+      xy: { description: 'lon,lat (WGS84)', required: true }
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zapytaj ULDK
+        env: { XY: '${{ github.event.inputs.xy }}' }
+        run: |
+          for pt in "$XY"; do :; done
+          LON=${XY%,*}; LAT=${XY#*,}
+          {
+            echo "punkt: $XY"
+            for d in "0.0" "0.00006,0" "-0.00006,0" "0,0.00006" "0,-0.00006"; do
+              dx=${d%,*}; dy=${d#*,}; [ "$d" = "0.0" ] && dx=0 && dy=0
+              x=$(python3 -c "print($LON+$dx)"); y=$(python3 -c "print($LAT+$dy)")
+              echo "$x,$y -> $(curl -s -m 30 "https://uldk.gugik.gov.pl/?request=GetParcelByXY&xy=$x,$y,4326&result=id,numer,obreb,gmina,powiat&srid=4326" | tr '\n' ' ')"
+            done
+          } | tee scripts/uldk_wynik.txt
+      - name: Zapisz
+        run: |
+          git config user.name "radar-bot"; git config user.email "radar-bot@users.noreply.github.com"
+          git add scripts/uldk_wynik.txt; git commit -q -m "ULDK: wynik zapytania" && git pull --rebase -q && git push
