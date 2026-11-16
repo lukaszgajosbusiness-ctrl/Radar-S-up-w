@@ -13,6 +13,19 @@
   "gm": "Poczesna"
  },
  {
+  "slug": "bakow",
+  "name": "Bąków",
+  "center": [
+   49.8978,
+   18.7283
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:39:26.439Z",
+  "parcels": 277,
+  "domy": 16,
+  "gm": "Strumień"
+ },
+ {
   "slug": "bedzin",
   "name": "Będzin",
   "center": [
@@ -143,6 +156,32 @@
   "gm": "Bielsko-Biała"
  },
  {
+  "slug": "bielsko-biala-8",
+  "name": "Bielsko-Biała",
+  "center": [
+   49.8104,
+   19.0592
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:33:40.242Z",
+  "parcels": 541,
+  "domy": 94,
+  "gm": "Bielsko-Biała"
+ },
+ {
+  "slug": "bielsko-biala-9",
+  "name": "Bielsko-Biała",
+  "center": [
+   49.8326,
+   19.02
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:03:28.384Z",
+  "parcels": 395,
+  "domy": 27,
+  "gm": "Bielsko-Biała"
+ },
+ {
   "slug": "bielsko-biala",
   "name": "Bielsko-Biała",
   "center": [
@@ -234,6 +273,19 @@
   "gm": "Siewierz"
  },
  {
+  "slug": "brzeziny-nowe",
+  "name": "Brzeziny Nowe",
+  "center": [
+   50.7421,
+   19.0946
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:12:51.779Z",
+  "parcels": 477,
+  "domy": 10,
+  "gm": "Częstochowa"
+ },
+ {
   "slug": "buczkowice",
   "name": "Buczkowice",
   "center": [
@@ -245,6 +297,32 @@
   "parcels": 942,
   "domy": 29,
   "gm": "Buczkowice"
+ },
+ {
+  "slug": "bytom-2",
+  "name": "Bytom",
+  "center": [
+   50.4017,
+   18.8579
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:20:39.708Z",
+  "parcels": 198,
+  "domy": 28,
+  "gm": "Bytom"
+ },
+ {
+  "slug": "bytom",
+  "name": "Bytom",
+  "center": [
+   50.3163,
+   18.9311
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:14:23.026Z",
+  "parcels": 209,
+  "domy": 31,
+  "gm": "Chorzów"
  },
  {
   "slug": "bytom-mickiewicza",
@@ -273,6 +351,19 @@
   "gm": "Chorzów"
  },
  {
+  "slug": "chorzow-3",
+  "name": "Chorzów",
+  "center": [
+   50.3235,
+   18.9721
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:15:00.742Z",
+  "parcels": 335,
+  "domy": 30,
+  "gm": "Chorzów"
+ },
+ {
   "slug": "chorzow",
   "name": "Chorzów",
   "center": [
@@ -286,6 +377,32 @@
   "gm": "Chorzów"
  },
  {
+  "slug": "chudow",
+  "name": "Chudów",
+  "center": [
+   50.2147,
+   18.7786
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:46:34.776Z",
+  "parcels": 350,
+  "domy": 36,
+  "gm": "Gierałtowice"
+ },
+ {
+  "slug": "ciagowice-2",
+  "name": "Ciągowice",
+  "center": [
+   50.4459,
+   19.3661
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:10:45.574Z",
+  "parcels": 301,
+  "domy": 17,
+  "gm": "Łazy"
+ },
+ {
   "slug": "ciagowice",
   "name": "Ciągowice (gm. Łazy)",
   "center": [
@@ -297,6 +414,19 @@
   "parcels": 425,
   "domy": 31,
   "gm": "Łazy"
+ },
+ {
+  "slug": "czechowice-dziedzice-2",
+  "name": "Czechowice-Dziedzice",
+  "center": [
+   49.8722,
+   19.0324
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:29:01.762Z",
+  "parcels": 680,
+  "domy": 45,
+  "gm": "Bielsko-Biała"
  },
  {
   "slug": "czechowice-dziedzice",
@@ -403,6 +533,45 @@
   "gm": "Częstochowa"
  },
  {
+  "slug": "czestochowa-6",
+  "name": "Częstochowa",
+  "center": [
+   50.7811,
+   19.0862
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:02:47.919Z",
+  "parcels": 233,
+  "domy": 36,
+  "gm": "Częstochowa"
+ },
+ {
+  "slug": "czestochowa-7",
+  "name": "Częstochowa",
+  "center": [
+   50.7946,
+   19.1572
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:28:22.660Z",
+  "parcels": 98,
+  "domy": 25,
+  "gm": "Częstochowa"
+ },
+ {
+  "slug": "czestochowa-8",
+  "name": "Częstochowa",
+  "center": [
+   50.8718,
+   19.1806
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:03:54.846Z",
+  "parcels": 239,
+  "domy": 18,
+  "gm": "Rędziny"
+ },
+ {
   "slug": "czestochowa",
   "name": "Częstochowa",
   "center": [
@@ -414,6 +583,45 @@
   "parcels": 453,
   "domy": 57,
   "gm": "Częstochowa"
+ },
+ {
+  "slug": "dabrowa-gornicza-2",
+  "name": "Dąbrowa Górnicza",
+  "center": [
+   50.377,
+   19.2344
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:49:30.075Z",
+  "parcels": 289,
+  "domy": 20,
+  "gm": "Dąbrowa Górnicza"
+ },
+ {
+  "slug": "dabrowa-gornicza-3",
+  "name": "Dąbrowa Górnicza",
+  "center": [
+   50.3653,
+   19.2713
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:04:43.256Z",
+  "parcels": 163,
+  "domy": 5,
+  "gm": "Dąbrowa Górnicza"
+ },
+ {
+  "slug": "dabrowa-gornicza",
+  "name": "Dąbrowa Górnicza",
+  "center": [
+   50.3489,
+   19.4387
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:40:09.659Z",
+  "parcels": 516,
+  "domy": 26,
+  "gm": "Dąbrowa Górnicza"
  },
  {
   "slug": "dg-mydlice",
@@ -494,6 +702,45 @@
   "gm": "Siewierz"
  },
  {
+  "slug": "gilowice",
+  "name": "Gilowice",
+  "center": [
+   49.9935,
+   19.0885
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:14:56.113Z",
+  "parcels": 422,
+  "domy": 23,
+  "gm": "Miedźna"
+ },
+ {
+  "slug": "gliwice-2",
+  "name": "Gliwice",
+  "center": [
+   50.3159,
+   18.6928
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:30:50.654Z",
+  "parcels": 160,
+  "domy": 34,
+  "gm": "Gliwice"
+ },
+ {
+  "slug": "gliwice-3",
+  "name": "Gliwice",
+  "center": [
+   50.2875,
+   18.633
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:57:27.909Z",
+  "parcels": 199,
+  "domy": 16,
+  "gm": "Gliwice"
+ },
+ {
   "slug": "gliwice",
   "name": "Gliwice",
   "center": [
@@ -546,6 +793,19 @@
   "gm": "Imielin"
  },
  {
+  "slug": "jankowice-2",
+  "name": "Jankowice",
+  "center": [
+   50.0498,
+   18.548
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:44:52.643Z",
+  "parcels": 485,
+  "domy": 24,
+  "gm": "Świerklany"
+ },
+ {
   "slug": "jankowice",
   "name": "Jankowice",
   "center": [
@@ -557,6 +817,19 @@
   "parcels": 631,
   "domy": 54,
   "gm": "Świerklany"
+ },
+ {
+  "slug": "janowice",
+  "name": "Janowice",
+  "center": [
+   49.8911,
+   19.0825
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:01:27.555Z",
+  "parcels": 292,
+  "domy": 22,
+  "gm": "Bestwina"
  },
  {
   "slug": "jastrzab",
@@ -598,6 +871,45 @@
   "gm": "Jastrzębie-Zdrój"
  },
  {
+  "slug": "jastrzebie-zdroj-4",
+  "name": "Jastrzębie-Zdrój",
+  "center": [
+   49.9341,
+   18.5847
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:37:49.969Z",
+  "parcels": 596,
+  "domy": 88,
+  "gm": "Jastrzębie-Zdrój"
+ },
+ {
+  "slug": "jastrzebie-zdroj-5",
+  "name": "Jastrzębie-Zdrój",
+  "center": [
+   49.963,
+   18.5777
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:36:27.006Z",
+  "parcels": 537,
+  "domy": 69,
+  "gm": "Jastrzębie-Zdrój"
+ },
+ {
+  "slug": "jastrzebie-zdroj-6",
+  "name": "Jastrzębie-Zdrój",
+  "center": [
+   50.0003,
+   18.6475
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:02:43.457Z",
+  "parcels": 503,
+  "domy": 26,
+  "gm": "Jastrzębie-Zdrój"
+ },
+ {
   "slug": "jastrzebie-zdroj",
   "name": "Jastrzębie-Zdrój",
   "center": [
@@ -609,6 +921,32 @@
   "parcels": 728,
   "domy": 134,
   "gm": "Jastrzębie-Zdrój"
+ },
+ {
+  "slug": "jaworzno-2",
+  "name": "Jaworzno",
+  "center": [
+   50.1967,
+   19.3113
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:36:59.713Z",
+  "parcels": 416,
+  "domy": 25,
+  "gm": "Jaworzno"
+ },
+ {
+  "slug": "jaworzno",
+  "name": "Jaworzno",
+  "center": [
+   50.181,
+   19.2342
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:21:38.934Z",
+  "parcels": 663,
+  "domy": 9,
+  "gm": "Jaworzno"
  },
  {
   "slug": "jaworzno-szelonka",
@@ -637,6 +975,32 @@
   "gm": "Jaworzno"
  },
  {
+  "slug": "kaczyce",
+  "name": "Kaczyce",
+  "center": [
+   49.8323,
+   18.593
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:44:47.753Z",
+  "parcels": 438,
+  "domy": 32,
+  "gm": "Zebrzydowice"
+ },
+ {
+  "slug": "kalna",
+  "name": "Kalna",
+  "center": [
+   49.7088,
+   19.1107
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:01:51.168Z",
+  "parcels": 326,
+  "domy": 20,
+  "gm": "Buczkowice"
+ },
+ {
   "slug": "katowice-2",
   "name": "Katowice",
   "center": [
@@ -663,6 +1027,58 @@
   "gm": "Katowice"
  },
  {
+  "slug": "katowice-4",
+  "name": "Katowice",
+  "center": [
+   50.1978,
+   18.9832
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:17:04.924Z",
+  "parcels": 441,
+  "domy": 36,
+  "gm": "Katowice"
+ },
+ {
+  "slug": "katowice-5",
+  "name": "Katowice",
+  "center": [
+   50.2439,
+   19.0226
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:04:50.356Z",
+  "parcels": 108,
+  "domy": 11,
+  "gm": "Katowice"
+ },
+ {
+  "slug": "katowice-6",
+  "name": "Katowice",
+  "center": [
+   50.2612,
+   19.05
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:38:34.134Z",
+  "parcels": 561,
+  "domy": 59,
+  "gm": "Katowice"
+ },
+ {
+  "slug": "katowice-7",
+  "name": "Katowice",
+  "center": [
+   50.229,
+   18.9422
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:15:36.225Z",
+  "parcels": 90,
+  "domy": 18,
+  "gm": "Katowice"
+ },
+ {
   "slug": "katowice",
   "name": "Katowice",
   "center": [
@@ -676,6 +1092,32 @@
   "gm": "Katowice"
  },
  {
+  "slug": "klobuck",
+  "name": "Kłobuck",
+  "center": [
+   50.8927,
+   18.927
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:22:12.505Z",
+  "parcels": 512,
+  "domy": 17,
+  "gm": "Kłobuck"
+ },
+ {
+  "slug": "kobiernice",
+  "name": "Kobiernice",
+  "center": [
+   49.8523,
+   19.2034
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:26:35.504Z",
+  "parcels": 771,
+  "domy": 34,
+  "gm": "Porąbka"
+ },
+ {
   "slug": "koniecpol",
   "name": "Koniecpol – Ogrodowa / Szkolna (gm. Koniecpol)",
   "center": [
@@ -687,6 +1129,19 @@
   "parcels": 460,
   "domy": 52,
   "gm": "Koniecpol"
+ },
+ {
+  "slug": "konczyce-male",
+  "name": "Kończyce Małe",
+  "center": [
+   49.8534,
+   18.6242
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:56:15.442Z",
+  "parcels": 356,
+  "domy": 23,
+  "gm": "Zebrzydowice"
  },
  {
   "slug": "kozy",
@@ -741,6 +1196,19 @@
   "gm": "Tarnowskie Góry"
  },
  {
+  "slug": "ledziny",
+  "name": "Lędziny",
+  "center": [
+   50.1329,
+   19.0979
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:39:53.093Z",
+  "parcels": 329,
+  "domy": 11,
+  "gm": "Lędziny"
+ },
+ {
   "slug": "laziska-gorne",
   "name": "Łaziska Górne",
   "center": [
@@ -752,6 +1220,19 @@
   "parcels": 625,
   "domy": 68,
   "gm": "Łaziska Górne"
+ },
+ {
+  "slug": "laka",
+  "name": "Łąka",
+  "center": [
+   49.9513,
+   18.925
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:36:31.855Z",
+  "parcels": 436,
+  "domy": 11,
+  "gm": "Pszczyna"
  },
  {
   "slug": "mierzecice",
@@ -778,6 +1259,58 @@
   "parcels": 307,
   "domy": 3,
   "gm": "Czernichów"
+ },
+ {
+  "slug": "mikolow-2",
+  "name": "Mikołów",
+  "center": [
+   50.2158,
+   18.8262
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:58:25.335Z",
+  "parcels": 429,
+  "domy": 12,
+  "gm": "Mikołów"
+ },
+ {
+  "slug": "mikolow",
+  "name": "Mikołów",
+  "center": [
+   50.1718,
+   18.8672
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:58:21.617Z",
+  "parcels": 392,
+  "domy": 20,
+  "gm": "Mikołów"
+ },
+ {
+  "slug": "mszana",
+  "name": "Mszana",
+  "center": [
+   49.9666,
+   18.5273
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:25:33.018Z",
+  "parcels": 600,
+  "domy": 21,
+  "gm": "Mszana"
+ },
+ {
+  "slug": "myslowice-2",
+  "name": "Mysłowice",
+  "center": [
+   50.2561,
+   19.1374
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:28:33.303Z",
+  "parcels": 319,
+  "domy": 28,
+  "gm": "Sosnowiec"
  },
  {
   "slug": "myslowice",
@@ -897,6 +1430,19 @@
   "gm": "Mierzęcice"
  },
  {
+  "slug": "ochaby-wielkie",
+  "name": "Ochaby Wielkie",
+  "center": [
+   49.8543,
+   18.7653
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:52:56.108Z",
+  "parcels": 429,
+  "domy": 22,
+  "gm": "Skoczów"
+ },
+ {
   "slug": "olsztyn-paprociowa",
   "name": "Olsztyn – Paprociowa / Wrzosowa (gm. Olsztyn)",
   "center": [
@@ -923,6 +1469,58 @@
   "gm": "Tarnowskie Góry"
  },
  {
+  "slug": "ornontowice",
+  "name": "Ornontowice",
+  "center": [
+   50.1874,
+   18.7549
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:16:07.335Z",
+  "parcels": 373,
+  "domy": 20,
+  "gm": "Ornontowice"
+ },
+ {
+  "slug": "orzesze-2",
+  "name": "Orzesze",
+  "center": [
+   50.1256,
+   18.8063
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:28:50.959Z",
+  "parcels": 440,
+  "domy": 24,
+  "gm": "Orzesze"
+ },
+ {
+  "slug": "orzesze",
+  "name": "Orzesze",
+  "center": [
+   50.1553,
+   18.7665
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T18:58:18.650Z",
+  "parcels": 376,
+  "domy": 43,
+  "gm": "Orzesze"
+ },
+ {
+  "slug": "osiny",
+  "name": "Osiny",
+  "center": [
+   50.6905,
+   19.1872
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:27:01.325Z",
+  "parcels": 423,
+  "domy": 12,
+  "gm": "Kamienica Polska"
+ },
+ {
   "slug": "ozarowice",
   "name": "Ożarowice (gm. Ożarowice)",
   "center": [
@@ -934,6 +1532,19 @@
   "parcels": 362,
   "domy": 0,
   "gm": "Ożarowice"
+ },
+ {
+  "slug": "pielgrzymowice",
+  "name": "Pielgrzymowice",
+  "center": [
+   49.9094,
+   18.6593
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:54:09.698Z",
+  "parcels": 409,
+  "domy": 22,
+  "gm": "Pawłowice"
  },
  {
   "slug": "pietrzykowice",
@@ -988,6 +1599,19 @@
   "gm": "Siewierz"
  },
  {
+  "slug": "pogrzebien",
+  "name": "Pogrzebień",
+  "center": [
+   50.0702,
+   18.3019
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:35:27.533Z",
+  "parcels": 368,
+  "domy": 10,
+  "gm": "Kornowac"
+ },
+ {
   "slug": "poraj",
   "name": "Poraj – Słoneczna / Kosmiczna",
   "center": [
@@ -1012,6 +1636,19 @@
   "parcels": 974,
   "domy": 16,
   "gm": "Mierzęcice"
+ },
+ {
+  "slug": "przegedza",
+  "name": "Przegędza",
+  "center": [
+   50.1175,
+   18.6361
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:40:35.908Z",
+  "parcels": 248,
+  "domy": 7,
+  "gm": "Czerwionka-Leszczyny"
  },
  {
   "slug": "przybedza",
@@ -1053,6 +1690,19 @@
   "gm": "Pszczyna"
  },
  {
+  "slug": "pszczyna-3",
+  "name": "Pszczyna",
+  "center": [
+   49.9954,
+   18.9445
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:31:35.255Z",
+  "parcels": 570,
+  "domy": 53,
+  "gm": "Pszczyna"
+ },
+ {
   "slug": "pszczyna",
   "name": "Pszczyna",
   "center": [
@@ -1079,6 +1729,19 @@
   "gm": "Ożarowice"
  },
  {
+  "slug": "pyskowice-2",
+  "name": "Pyskowice",
+  "center": [
+   50.4029,
+   18.6345
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:44:48.041Z",
+  "parcels": 410,
+  "domy": 30,
+  "gm": "Pyskowice"
+ },
+ {
   "slug": "pyskowice",
   "name": "Pyskowice",
   "center": [
@@ -1103,6 +1766,19 @@
   "parcels": 328,
   "domy": 28,
   "gm": "Racibórz"
+ },
+ {
+  "slug": "radlin-2",
+  "name": "Radlin",
+  "center": [
+   50.0425,
+   18.4316
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:54:27.552Z",
+  "parcels": 549,
+  "domy": 38,
+  "gm": "Radlin"
  },
  {
   "slug": "radlin",
@@ -1196,6 +1872,19 @@
   "gm": "Ruda Śląska"
  },
  {
+  "slug": "ruda-slaska-5",
+  "name": "Ruda Śląska",
+  "center": [
+   50.2578,
+   18.8519
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:25:23.119Z",
+  "parcels": 323,
+  "domy": 43,
+  "gm": "Ruda Śląska"
+ },
+ {
   "slug": "ruda-slaska",
   "name": "Ruda Śląska",
   "center": [
@@ -1222,6 +1911,19 @@
   "gm": "Buczkowice"
  },
  {
+  "slug": "rybnik-2",
+  "name": "Rybnik",
+  "center": [
+   50.1247,
+   18.543
+  ],
+  "radius": 1500,
+  "generated": "2026-11-16T00:38:21.713Z",
+  "parcels": 972,
+  "domy": 96,
+  "gm": "Rybnik"
+ },
+ {
   "slug": "rybnik-3",
   "name": "Rybnik",
   "center": [
@@ -1245,6 +1947,45 @@
   "generated": "2026-11-15T18:06:33.839Z",
   "parcels": 707,
   "domy": 70,
+  "gm": "Rybnik"
+ },
+ {
+  "slug": "rybnik-5",
+  "name": "Rybnik",
+  "center": [
+   50.0917,
+   18.594
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:04:42.393Z",
+  "parcels": 487,
+  "domy": 26,
+  "gm": "Rybnik"
+ },
+ {
+  "slug": "rybnik-6",
+  "name": "Rybnik",
+  "center": [
+   50.1368,
+   18.5967
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:30:38.593Z",
+  "parcels": 379,
+  "domy": 51,
+  "gm": "Rybnik"
+ },
+ {
+  "slug": "rybnik-7",
+  "name": "Rybnik",
+  "center": [
+   50.1031,
+   18.5651
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:34:57.266Z",
+  "parcels": 311,
+  "domy": 31,
   "gm": "Rybnik"
  },
  {
@@ -1274,6 +2015,19 @@
   "gm": "Rydułtowy"
  },
  {
+  "slug": "sarnow-2",
+  "name": "Sarnów",
+  "center": [
+   50.3761,
+   19.1508
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:08:08.813Z",
+  "parcels": 493,
+  "domy": 24,
+  "gm": "Psary"
+ },
+ {
   "slug": "sarnow",
   "name": "Sarnów (gm. Psary)",
   "center": [
@@ -1298,6 +2052,19 @@
   "parcels": 823,
   "domy": 0,
   "gm": "Bobrowniki"
+ },
+ {
+  "slug": "siemianowice-slaskie-2",
+  "name": "Siemianowice Śląskie",
+  "center": [
+   50.3271,
+   19.0037
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:13:24.510Z",
+  "parcels": 218,
+  "domy": 46,
+  "gm": "Siemianowice Śląskie"
  },
  {
   "slug": "siemianowice-slaskie",
@@ -1339,6 +2106,19 @@
   "gm": "Siewierz"
  },
  {
+  "slug": "skoczow-2",
+  "name": "Skoczów",
+  "center": [
+   49.8121,
+   18.8003
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:53:51.521Z",
+  "parcels": 546,
+  "domy": 51,
+  "gm": "Skoczów"
+ },
+ {
   "slug": "skoczow",
   "name": "Skoczów",
   "center": [
@@ -1350,6 +2130,32 @@
   "parcels": 488,
   "domy": 71,
   "gm": "Skoczów"
+ },
+ {
+  "slug": "skrajnica",
+  "name": "Skrajnica",
+  "center": [
+   50.7415,
+   19.2419
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T22:27:31.791Z",
+  "parcels": 200,
+  "domy": 5,
+  "gm": "Olsztyn"
+ },
+ {
+  "slug": "sosnowiec",
+  "name": "Sosnowiec",
+  "center": [
+   50.2919,
+   19.1564
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:08:37.135Z",
+  "parcels": 288,
+  "domy": 40,
+  "gm": "Sosnowiec"
  },
  {
   "slug": "sosnowiec-slawkowska",
@@ -1441,6 +2247,19 @@
   "parcels": 741,
   "domy": 0,
   "gm": "Psary"
+ },
+ {
+  "slug": "swietochlowice",
+  "name": "Świętochłowice",
+  "center": [
+   50.2825,
+   18.9154
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:49:39.377Z",
+  "parcels": 209,
+  "domy": 30,
+  "gm": "Świętochłowice"
  },
  {
   "slug": "tarnowskie-gory-2",
@@ -1586,6 +2405,32 @@
   "gm": "Tychy"
  },
  {
+  "slug": "tychy-4",
+  "name": "Tychy",
+  "center": [
+   50.106,
+   18.9601
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:05:28.872Z",
+  "parcels": 195,
+  "domy": 39,
+  "gm": "Tychy"
+ },
+ {
+  "slug": "tychy-5",
+  "name": "Tychy",
+  "center": [
+   50.1305,
+   19.0492
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:24:32.784Z",
+  "parcels": 211,
+  "domy": 24,
+  "gm": "Tychy"
+ },
+ {
   "slug": "tychy",
   "name": "Tychy",
   "center": [
@@ -1609,6 +2454,19 @@
   "generated": "2026-11-15T15:40:48.528Z",
   "parcels": 466,
   "domy": 72,
+  "gm": "Ustroń"
+ },
+ {
+  "slug": "ustron-3",
+  "name": "Ustroń",
+  "center": [
+   49.7272,
+   18.7934
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:14:07.714Z",
+  "parcels": 554,
+  "domy": 39,
   "gm": "Ustroń"
  },
  {
@@ -1651,6 +2509,45 @@
   "gm": "Wilkowice"
  },
  {
+  "slug": "wisla-2",
+  "name": "Wisła",
+  "center": [
+   49.6462,
+   18.8665
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:44:14.770Z",
+  "parcels": 346,
+  "domy": 23,
+  "gm": "Wisła"
+ },
+ {
+  "slug": "wisla",
+  "name": "Wisła",
+  "center": [
+   49.6812,
+   18.8464
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:06:55.444Z",
+  "parcels": 328,
+  "domy": 34,
+  "gm": "Ustroń"
+ },
+ {
+  "slug": "wodzislaw-slaski",
+  "name": "Wodzisław Śląski",
+  "center": [
+   50.0269,
+   18.4548
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T18:48:35.879Z",
+  "parcels": 485,
+  "domy": 3,
+  "gm": "Wodzisław Śląski"
+ },
+ {
   "slug": "wojkowice-koscielne",
   "name": "Wojkowice Kościelne (gm. Siewierz)",
   "center": [
@@ -1662,6 +2559,32 @@
   "parcels": 1064,
   "domy": 20,
   "gm": "Siewierz"
+ },
+ {
+  "slug": "zabrze-3",
+  "name": "Zabrze",
+  "center": [
+   50.2596,
+   18.7641
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:56:14.221Z",
+  "parcels": 287,
+  "domy": 15,
+  "gm": "Gierałtowice"
+ },
+ {
+  "slug": "zabrze",
+  "name": "Zabrze",
+  "center": [
+   50.2992,
+   18.8216
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:56:27.503Z",
+  "parcels": 281,
+  "domy": 34,
+  "gm": "Zabrze"
  },
  {
   "slug": "zawiercie-losnicka",
@@ -1740,5 +2663,70 @@
   "parcels": 523,
   "domy": 0,
   "gm": "Siewierz"
+ },
+ {
+  "slug": "zory-2",
+  "name": "Żory",
+  "center": [
+   50.0246,
+   18.6935
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T20:02:51.878Z",
+  "parcels": 466,
+  "domy": 20,
+  "gm": "Żory"
+ },
+ {
+  "slug": "zory-3",
+  "name": "Żory",
+  "center": [
+   50.0437,
+   18.7167
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T23:19:24.002Z",
+  "parcels": 398,
+  "domy": 31,
+  "gm": "Żory"
+ },
+ {
+  "slug": "zory",
+  "name": "Żory",
+  "center": [
+   50.0608,
+   18.6667
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:32:00.670Z",
+  "parcels": 576,
+  "domy": 39,
+  "gm": "Żory"
+ },
+ {
+  "slug": "zywiec-2",
+  "name": "Żywiec",
+  "center": [
+   49.6761,
+   19.2454
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T21:55:50.755Z",
+  "parcels": 531,
+  "domy": 31,
+  "gm": "Żywiec"
+ },
+ {
+  "slug": "zywiec",
+  "name": "Żywiec",
+  "center": [
+   49.6942,
+   19.2051
+  ],
+  "radius": 1500,
+  "generated": "2026-11-15T19:27:21.694Z",
+  "parcels": 486,
+  "domy": 40,
+  "gm": "Żywiec"
  }
 ]
