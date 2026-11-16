@@ -1,6 +1,4 @@
-punkt: 19.149268,50.311403
-19.149268,50.311403 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
-19.149328,50.311403 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
-19.149207999999998,50.311403 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
-19.149268,50.311462999999996 -> 0 240101_1.0001.10497|10497|Będzin|Będzin (miasto)|powiat będziński 
-19.149268,50.311343 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
+Będzin 54/4 -> -1 brak wyników  
+Warpie 54/4 -> -1 brak wyników  
+Łagisza 54/4 -> -1 brak wyników  
+Grodziec 54/4 -> 2 160907_5.0006.AR_2.54/4|54/4|Grodziec|Niemodlin| 160908_5.0051.AR_1.54/4|54/4|Grodziec|Ozimek|  
