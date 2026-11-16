@@ -15,6 +15,9 @@ await pg.route('**/*', r => { const u = r.request().url();
   return u.startsWith(base) ? r.continue() : r.abort() });
 await pg.goto(base + '/index.html'); await pg.waitForTimeout(800);
 const tu = await pg.evaluate(async () => { await tuShow(50.3114, 19.1493, 'map'); return document.querySelector('#card').innerText });
+await pg.evaluate(() => { document.querySelector('#tuN').value = 'linia SN nad działką'; document.querySelector('#tuS').click() });
+const sv = await pg.evaluate(() => localStorage.getItem('rs:u:240101_1.0001.10509'));
+if (!/linia SN nad dzia/.test(sv || '') || !/do sprawdzenia/.test(sv)) { console.log('ZAPIS DZIAŁKI TU NIE DZIAŁA', sv); process.exit(1) }
 if (!/Działka 10509/.test(tu) || !/obręb Będzin/.test(tu)) { console.log('DZIAŁKA TU NIE DZIAŁA', tu.slice(0, 200)); process.exit(1) }
 const f0 = await pg.evaluate(() => document.querySelectorAll('#gotowe option').length);
 await pg.fill('#gFilt', 'zawiercie'); await pg.waitForTimeout(200);

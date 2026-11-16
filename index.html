@@ -633,7 +633,9 @@ async function tuShow(lat,lon,src){
   <div class="note" style="margin-top:8px">Pełny identyfikator (z arkuszem mapy): <b>${esc(p.id)}</b>${idPart?'':''}</div>
   <div style="margin-top:8px"><b>Najbliższe linie od tego punktu:</b><br>${lines}</div>
   <div class="note" style="margin-top:8px">${src==='gps'?'Punkt: Twoja lokalizacja.':'Punkt: dotknięte miejsce na mapie.'} Przy granicy działek sprawdź też sąsiednią.</div>
-  <div class="tr-acts" style="margin-top:10px"><button id="tuK" class="pri">Kopiuj numer</button><button id="tuG">Pokaż granice</button></div>`;
+  <div style="margin-top:10px"><textarea id="tuN" rows="2" placeholder="Notatka z terenu (np. linia SN nad działką, 2 słupy)" style="width:100%"></textarea></div>
+  <div class="tr-acts" style="margin-top:8px"><button id="tuK" class="pri">Kopiuj numer</button><button id="tuS">Zapisz jako działkę do sprawdzenia</button><button id="tuG">Pokaż granice</button></div>`;
+  $('#tuS').onclick=()=>{const u=store.get('u:'+p.id,{});const n=$('#tuN').value.trim();u.stat=u.stat||'do sprawdzenia';u.not=[u.not,n&&('['+new Date().toLocaleDateString('pl')+'] '+n)].filter(Boolean).join('\n');u.tu=lat.toFixed(6)+','+lon.toFixed(6);store.set('u:'+p.id,u);status('Zapisano w statusach: działka '+p.num+' (do sprawdzenia).',1)};
   $('#tuX').onclick=()=>c.hidden=true;
   $('#tuK').onclick=()=>{try{navigator.clipboard.writeText(txt);status('Skopiowano: '+txt,1)}catch(e){prompt('Skopiuj:',txt)}};
   $('#tuG').onclick=()=>{try{const rings=p.wkt.replace(/^.*?\(\(\(?/,'').replace(/\)+$/,'').split('),(').map(r=>r.split(',').map(q=>q.trim().split(' ').map(Number)).map(([x,y])=>[y,x]));gPin.clearLayers();L.polygon(rings,{color:'#ffb703',weight:3,fillOpacity:.15}).addTo(gPin);map.fitBounds(L.polygon(rings).getBounds().pad(.5))}catch(e){status('Nie udało się narysować granic.',0)}};
