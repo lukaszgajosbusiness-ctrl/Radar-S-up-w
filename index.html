@@ -184,7 +184,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 'use strict';
 const $=s=>document.querySelector(s);
 const esc=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
-const store={get(k,d){try{const v=localStorage.getItem('rs:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('rs:'+k,JSON.stringify(v));return true}catch(e){return false}}};
+const store={get(k,d){try{const v=localStorage.getItem('rs:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('rs:'+k,JSON.stringify(v));return true}catch(e){if(k.startsWith('u:')&&!store._w){store._w=1;setTimeout(()=>{store._w=0;try{alert('Pamięć telefonu jest pełna – ten zapis się nie udał. Wejdź w CRM, zapisz „Kopię” i usuń stare zrzuty działek.')}catch(x){}},50)}return false}}};
 
 // ---------- mapa ----------
 const map=L.map('map',{zoomControl:true}).setView([50.4336,19.1946],14);
