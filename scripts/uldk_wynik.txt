@@ -1,4 +1,40 @@
-Będzin 54/4 -> -1 brak wyników  
-Warpie 54/4 -> -1 brak wyników  
-Łagisza 54/4 -> -1 brak wyników  
-Grodziec 54/4 -> 2 160907_5.0006.AR_2.54/4|54/4|Grodziec|Niemodlin| 160908_5.0051.AR_1.54/4|54/4|Grodziec|Ozimek|  
+240101_1.0001.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0002.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0003.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0004.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0005.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0006.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0007.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0008.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0009.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0010.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0011.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0012.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0013.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0014.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0015.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0016.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0017.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0018.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0019.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0020.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0021.AR_56.54/4 -> -1 brak wyników usługa nie zwróciła odpowiedzi https://ikerg.powiat.bedzin.pl/bedzin-egibZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0022.AR_56.54/4 -> -1 brak wyników usługa nie zwróciła odpowiedzi https://ikerg.powiat.bedzin.pl/bedzin-egibZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0023.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0024.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0025.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0026.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0027.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0028.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0029.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0030.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0031.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0032.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0033.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0034.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0035.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0036.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0037.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0038.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0039.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
+240101_1.0040.AR_56.54/4 -> -1 brak wyników błędny format odpowiedzi XML, usługa zwróciła odpowiedźZbiorcza baza danych obsłużyła zapytanie.  
