@@ -1,0 +1,6 @@
+punkt: 19.149268,50.311403
+19.149268,50.311403 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
+19.149328,50.311403 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
+19.149207999999998,50.311403 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
+19.149268,50.311462999999996 -> 0 240101_1.0001.10497|10497|Będzin|Będzin (miasto)|powiat będziński 
+19.149268,50.311343 -> 0 240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński 
