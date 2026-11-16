@@ -733,7 +733,7 @@ function trPick(){const cand=RES.concat(EXTRA).filter(r=>{const o=trOld(r);retur
   while(pts.length){let bi=0;for(let i=1;i<pts.length;i++)if(d(cur,pts[i].c)<d(cur,pts[bi].c))bi=i;const p=pts.splice(bi,1)[0];km+=d(cur,p.c);out.push(p);cur=p.c}
   return{stops:out,km}}
 function dzisN(){const d=TODAY();let o=0,z=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k.startsWith('rs:u:'))continue;const u=JSON.parse(localStorage.getItem(k)||'{}');if(u.trDay===d&&u.trasa){o++;if(u.trasa==='zainteresowany')z++}}}catch(e){}return{o,z}}
-function dzisUp(){const b=$('#dzis');if(!b)return;const G=+store.get('cel',10)||10,{o,z}=dzisN();b.innerHTML=`Dziś: ${o}/${G}<small>${z} zainteresowanych</small>`;b.classList.toggle('ok',o>=G)}
+function dzisUp(){const b=$('#dzis');if(!b)return;const G=+store.get('cel',10)||10,{o,z}=dzisN();b.innerHTML=`Dziś: ${o}/${G}<small>${z} zainteresowanych</small>`;b.classList.toggle('ok',o>=G);if(o>=G&&store.get('celOk','')!==TODAY()){store.set('celOk',TODAY());try{status(`Cel dnia zrobiony: ${o} działek odwiedzonych. Dobra robota.`,1)}catch(e){}}}
 function trMonth(){const m=new Date().toISOString().slice(0,7);let z=0,o=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k.startsWith('rs:u:'))continue;const u=JSON.parse(localStorage.getItem(k)||'{}');if(u.trDay&&u.trDay.startsWith(m)&&u.trasa){o++;if(u.trasa==='zainteresowany')z++}}}catch(e){}return{z,o}}
 function trStatAll(r){return(store.get('u:'+r.id,{}).trasa)||''}
 function trStat(r){const u=store.get('u:'+r.id,{});if(u.trasa==='nikogo'&&u.trDay&&u.trDay<new Date().toISOString().slice(0,10))return'';return u.trasa||''}
