@@ -98,6 +98,16 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
 .btnlike span{display:inline-block;padding:6px 12px;border:1px solid var(--line,#ccc);border-radius:8px;cursor:pointer}
 .qn{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px}.qn .chip{font-size:13px;min-height:34px;padding:6px 10px;opacity:.85}.qn .note{width:100%}
 #dzis{position:fixed;left:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:1200;background:#14324a;color:#fff;border:2px solid #ffb703;border-radius:999px;padding:10px 16px;font:700 17px system-ui,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.35)}#dzis.ok{background:#1f7a3d;border-color:#fff}#dzis small{font-weight:500;font-size:13px;margin-left:6px;opacity:.9}
+#crm{position:fixed;z-index:1060;inset:0;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}#crm[hidden]{display:none}
+#crm .ch{display:flex;gap:8px;align-items:center;padding:12px 14px;background:#14324a;color:#fff}#crm .ch h2{margin:0;font-size:18px;flex:1}#crm .ch button{font-size:15px;padding:8px 12px}
+#crm .cb{overflow:auto;padding:12px 14px calc(24px + env(safe-area-inset-bottom));display:grid;gap:14px}
+#crm .kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}#crm .kp div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;color:#4a5a68}#crm .kp b{display:block;font-size:26px;color:#14324a;line-height:1.1}
+#crm .bar{height:12px;background:#e3e9ee;border-radius:6px;overflow:hidden}#crm .bar i{display:block;height:100%;background:#1f7a3d}
+#crm .fn{display:grid;gap:6px}#crm .fn div{display:flex;align-items:center;gap:8px;font-size:14px}#crm .fn span{flex:0 0 150px}#crm .fn i{display:block;height:20px;border-radius:4px;min-width:3px}#crm .fn em{font-style:normal;font-weight:700}
+#crm .dn{display:flex;align-items:flex-end;gap:4px;height:70px}#crm .dn div{flex:1;background:#1c6fd1;border-radius:3px 3px 0 0;min-height:2px;position:relative}#crm .dn div.t{background:#ffb703}
+#crm .fl{display:flex;gap:6px;flex-wrap:wrap}#crm .fl button{font-size:14px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:#fff}#crm .fl button.on{background:#14324a;color:#fff}
+#crm ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}#crm li{background:#fff;border:1px solid var(--line);border-left:6px solid #d4a20d;border-radius:8px;padding:10px 12px}#crm li h3{margin:0 0 2px;font-size:15px}#crm li .m{font-size:12px;color:#5b6b78}#crm li pre{white-space:pre-wrap;font:13px system-ui;margin:6px 0 0}#crm li .a{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}#crm li .a button,#crm li .a a{font-size:13px;padding:6px 10px}
+@media (min-width:801px){#crm{inset:0 0 0 auto;width:560px;border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(0,0,0,.18)}}
 </style>
 </head>
 <body>
@@ -108,6 +118,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <select id="rad" aria-label="Promień"><option value="800">0,8 km</option><option value="1500" selected>1,5 km</option><option value="2500">2,5 km</option><option value="4000">4 km</option></select>
   <button class="pri" id="go">Szukaj działek</button>
   <button id="instBtn" hidden title="Dodaj Radar na ekran telefonu">Zainstaluj</button>
+  <button id="crmBtn" title="Twoje leady, statusy i wyniki">CRM</button>
   <button id="trasaBtn" title="Najmocniejsze działki z domem pod linią, ułożone w kolejności przejazdu">Trasa na dzień</button>
   <button id="goView" class="extra" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
   <input id="gFilt" type="search" placeholder="Szukaj gminy / miejscowości…" aria-label="Szukaj obszaru" hidden style="margin-bottom:6px"><select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
@@ -139,6 +150,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   </div>
 </div>
 <section id="trasa" hidden aria-label="Trasa na dzień"></section>
+<section id="crm" hidden aria-label="CRM"></section>
 <div id="nrPanel" hidden style="position:fixed;z-index:1100;inset:70px 12px auto auto;width:min(420px,calc(100% - 24px));background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--acc);border-radius:8px;padding:12px;box-shadow:0 6px 24px rgba(0,0,0,.25)">
   <b>Sprawdź działki po numerze</b>
   <p class="note" style="margin:4px 0 8px">Jedna działka w linii: obręb i numer (np. <code>Tuliszów 90</code>, <code>Przeczyce 223/1</code>) albo pełny identyfikator (<code>240107_5.0010.90</code>).</p>
@@ -384,7 +396,7 @@ function openCard(r){
   <div class="btns"><a href="${navUrl(r)}" target="_blank" rel="noopener"><button class="pri">Nawiguj do działki</button></a><a href="${geo}" target="_blank" rel="noopener"><button>Otwórz w Geoportalu</button></a><button id="kopiuj">Kopiuj pola do kalkulatora</button><button id="share">Link do działki</button><button id="zap" class="pri">Zapisz</button></div>
   <p class="note">Notatki i zrzuty zapisują się tylko na tym urządzeniu.</p>`;
   $('#x').onclick=()=>c.hidden=true;$('#share').onclick=()=>{const u=location.origin+location.pathname+'?dz='+encodeURIComponent(r.id);(navigator.share?navigator.share({title:`Działka ${r.num} (${r.obr})`,url:u}):navigator.clipboard.writeText(u).then(()=>$('#share').textContent='Skopiowano link')).catch(()=>alertBox(u))};fillAddr(r);bindResv(r);
-  const save=()=>{const v={grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(USER&&RESV[r.id]?.mine&&v.stat!==(u.stat||''))api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:v.stat}).catch(()=>{});if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
+  const save=()=>{const v={...u,lab:`${r.obr} ${r.num}`,gm:r.gm||'',upd:Date.now(),grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(USER&&RESV[r.id]?.mine&&v.stat!==(u.stat||''))api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:v.stat}).catch(()=>{});if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
   $('#zap').onclick=()=>{save();$('#zap').textContent='Zapisano'};
   ['#grunt','#stat'].forEach(s=>$(s).onchange=()=>{save();openCard(r)});
   $('#img').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=Math.min(1,900/im.width);const cv=document.createElement('canvas');cv.width=im.width*s;cv.height=im.height*s;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);u.img=cv.toDataURL('image/jpeg',.7);save();openCard(r)};im.src=URL.createObjectURL(f)};
@@ -637,7 +649,7 @@ async function tuShow(lat,lon,src){
   <div class="note" style="margin-top:8px">${src==='gps'?'Punkt: Twoja lokalizacja.':'Punkt: dotknięte miejsce na mapie.'} Przy granicy działek sprawdź też sąsiednią.</div>
   <div style="margin-top:10px"><textarea id="tuN" rows="2" placeholder="Notatka z terenu (np. linia SN nad działką, 2 słupy)" style="width:100%"></textarea></div>
   <div class="tr-acts" style="margin-top:8px"><button id="tuK" class="pri">Kopiuj numer</button><button id="tuS">Zapisz jako działkę do sprawdzenia</button><button id="tuG">Pokaż granice</button></div>`;
-  $('#tuS').onclick=()=>{const u=store.get('u:'+p.id,{});const n=$('#tuN').value.trim();u.stat=u.stat||'do sprawdzenia';u.not=[u.not,n&&('['+new Date().toLocaleDateString('pl')+'] '+n)].filter(Boolean).join('\n');u.tu=lat.toFixed(6)+','+lon.toFixed(6);store.set('u:'+p.id,u);status('Zapisano w statusach: działka '+p.num+' (do sprawdzenia).',1)};
+  $('#tuS').onclick=()=>{const u=store.get('u:'+p.id,{});const n=$('#tuN').value.trim();u.lab=`${p.obr} ${p.num}`;u.gm=p.gm||'';u.upd=Date.now();u.stat=u.stat||'do sprawdzenia';u.not=[u.not,n&&('['+new Date().toLocaleDateString('pl')+'] '+n)].filter(Boolean).join('\n');u.tu=lat.toFixed(6)+','+lon.toFixed(6);store.set('u:'+p.id,u);status('Zapisano w statusach: działka '+p.num+' (do sprawdzenia).',1)};
   $('#tuX').onclick=()=>c.hidden=true;
   $('#tuK').onclick=()=>{try{navigator.clipboard.writeText(txt);status('Skopiowano: '+txt,1)}catch(e){prompt('Skopiuj:',txt)}};
   $('#tuG').onclick=()=>{try{const rings=p.wkt.replace(/^.*?\(\(\(?/,'').replace(/\)+$/,'').split('),(').map(r=>r.split(',').map(q=>q.trim().split(' ').map(Number)).map(([x,y])=>[y,x]));gPin.clearLayers();L.polygon(rings,{color:'#ffb703',weight:3,fillOpacity:.15}).addTo(gPin);map.fitBounds(L.polygon(rings).getBounds().pad(.5))}catch(e){status('Nie udało się narysować granic.',0)}};
@@ -724,7 +736,7 @@ function dzisUp(){const b=$('#dzis');if(!b)return;const G=+store.get('cel',10)||
 function trMonth(){const m=new Date().toISOString().slice(0,7);let z=0,o=0;try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k.startsWith('rs:u:'))continue;const u=JSON.parse(localStorage.getItem(k)||'{}');if(u.trDay&&u.trDay.startsWith(m)&&u.trasa){o++;if(u.trasa==='zainteresowany')z++}}}catch(e){}return{z,o}}
 function trStatAll(r){return(store.get('u:'+r.id,{}).trasa)||''}
 function trStat(r){const u=store.get('u:'+r.id,{});if(u.trasa==='nikogo'&&u.trDay&&u.trDay<new Date().toISOString().slice(0,10))return'';return u.trasa||''}
-function trSet(r,v){const u=store.get('u:'+r.id,{});u.trasa=u.trasa===v?'':v;u.trDay=new Date().toISOString().slice(0,10);if(u.trasa==='zainteresowany')u.stat=u.stat||'kontakt z właścicielem';store.set('u:'+r.id,u);dzisUp();if(u.trasa&&typeof USER!=='undefined'&&USER&&API)api('/api/feedback',{parcel_id:r.id,label:`${r.num} ${r.obr}`,verdict:'trasa: '+u.trasa,note:u.not||'',snap:trWhy(r).replace(/<[^>]+>/g,'')}).catch(()=>{});trShow();try{render()}catch(e){}}
+function trSet(r,v){const u=store.get('u:'+r.id,{});u.lab=`${r.obr} ${r.num}`;u.gm=r.gm||'';u.upd=Date.now();u.trasa=u.trasa===v?'':v;u.trDay=new Date().toISOString().slice(0,10);if(u.trasa==='zainteresowany')u.stat=u.stat||'kontakt z właścicielem';store.set('u:'+r.id,u);dzisUp();if(u.trasa&&typeof USER!=='undefined'&&USER&&API)api('/api/feedback',{parcel_id:r.id,label:`${r.num} ${r.obr}`,verdict:'trasa: '+u.trasa,note:u.not||'',snap:trWhy(r).replace(/<[^>]+>/g,'')}).catch(()=>{});trShow();try{render()}catch(e){}}
 function trShow(){const el=$('#trasa');
   if(!RES.length){el.innerHTML=`<div class="tr-head"><h2>Trasa na dzień</h2><p>Najpierw wybierz obszar.</p><button class="x" id="trX">Zamknij</button></div><p class="tr-empty">Wybierz „Gotowe obszary” albo wyszukaj miejscowość, a potem otwórz trasę jeszcze raz.</p>`;el.hidden=false;$('#trX').onclick=trClose;return}
   const {stops,km}=trPick();const zrob=stops.filter(p=>trStat(p.r)).length;const cnt=v=>stops.filter(p=>trStat(p.r)===v).length;const wyn=zrob?` Zainteresowani: ${cnt('zainteresowany')}, nikogo: ${cnt('nikogo')}, inna firma: ${cnt('inna firma')}.`:'';
@@ -752,6 +764,33 @@ function trShow(){const el=$('#trasa');
   gTr.clearLayers();if(stops.length){gTr.addLayer(L.polyline((ME?[ME]:[]).concat(stops.map(p=>p.c)),{color:'#14324a',weight:3,dashArray:'6 6'}));
     stops.forEach((p,i)=>gTr.addLayer(L.marker(p.c,{icon:L.divIcon({className:'',html:`<div class="pyl ${trStat(p.r)?'done':''}" style="width:26px;height:26px;font-size:13px;box-shadow:0 0 0 2px #fff">${i+1}</div>`,iconSize:[26,26]})}).on('click',()=>openCard(p.r))))}}
 function trClose(){$('#trasa').hidden=true}
+
+/* ===== CRM: wszystko z zapisów w telefonie (rs:u:*) ===== */
+const CRM_ST=['do sprawdzenia','sprawdzona – pasuje','kontakt z właścicielem','umowa','odrzucona'];
+const CRM_COL={'do sprawdzenia':'#d4a20d','sprawdzona – pasuje':'#1c6fd1','kontakt z właścicielem':'#e0561b','umowa':'#1f8a4c','odrzucona':'#7d8a96'};
+let CRM_F='';
+function crmAll(){const L=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k.startsWith('rs:u:'))continue;let u;try{u=JSON.parse(localStorage.getItem(k)||'{}')}catch(e){continue}if(!(u.stat||u.trasa||u.not))continue;L.push({id:k.slice(5),u})}}catch(e){}return L}
+function crmStat(u){return u.stat||(u.trasa==='zainteresowany'?'kontakt z właścicielem':u.trasa?'odwiedzona':'')}
+function crmDays(n){const o=[];for(let i=n-1;i>=0;i--){const d=new Date(Date.now()-i*864e5);o.push(d.toISOString().slice(0,10))}return o}
+function crmShow(){const el=$('#crm'),L=crmAll(),T=TODAY(),M=T.slice(0,7),wk=crmDays(7);
+  const odw=L.filter(x=>x.u.trasa&&x.u.trDay),dz=odw.filter(x=>x.u.trDay===T).length,tyg=odw.filter(x=>wk.includes(x.u.trDay)).length,mie=odw.filter(x=>x.u.trDay.startsWith(M)).length;
+  const zint=odw.filter(x=>x.u.trasa==='zainteresowany'&&x.u.trDay.startsWith(M)).length,konw=mie?Math.round(100*zint/mie):0;
+  const cel=+store.get('cel',10)||10,celM=cel*15;
+  const cnt={};CRM_ST.forEach(s=>cnt[s]=L.filter(x=>x.u.stat===s).length);const mx=Math.max(1,...Object.values(cnt));
+  const dd=crmDays(14).map(d=>({d,n:odw.filter(x=>x.u.trDay===d).length}));const dm=Math.max(1,...dd.map(x=>x.n));
+  const vis=L.filter(x=>!CRM_F||crmStat(x.u)===CRM_F).sort((a,b)=>(b.u.upd||0)-(a.u.upd||0)).slice(0,80);
+  el.innerHTML=`<div class="ch"><h2>CRM – moje leady</h2><button id="crmCsv" type="button">CSV</button><button id="crmX" type="button">Zamknij</button></div><div class="cb">
+  <div class="kp"><div><b>${dz}/${cel}</b>dziś odwiedzone</div><div><b>${tyg}</b>ostatnie 7 dni</div><div><b>${mie}</b>w tym miesiącu</div><div><b>${zint}</b>zainteresowanych (${konw}%)</div><div><b>${cnt['umowa']}</b>umów</div><div><b>${cnt['kontakt z właścicielem']}</b>w kontakcie</div></div>
+  <div><div style="display:flex;justify-content:space-between;font-size:13px"><span>Cel miesiąca: ${cel} dziennie × 15 dni roboczych</span><b>${mie}/${celM}</b></div><div class="bar"><i style="width:${Math.min(100,100*mie/celM)}%"></i></div></div>
+  <div><h3 style="margin:0 0 6px;font-size:15px">Lejek</h3><div class="fn">${CRM_ST.map(s=>`<div><span>${s}</span><i style="width:${Math.max(1,100*cnt[s]/mx*0.55)}%;background:${CRM_COL[s]}"></i><em>${cnt[s]}</em></div>`).join('')}</div></div>
+  <div><h3 style="margin:0 0 6px;font-size:15px">Odwiedzone, ostatnie 14 dni</h3><div class="dn">${dd.map(x=>`<div class="${x.d===T?'t':''}" style="height:${Math.max(3,100*x.n/dm)}%" title="${x.d}: ${x.n}"></div>`).join('')}</div></div>
+  <div class="fl"><button data-f="" class="${CRM_F?'':'on'}">Wszystkie ${L.length}</button>${CRM_ST.concat(['odwiedzona']).map(s=>`<button data-f="${s}" class="${CRM_F===s?'on':''}">${s}</button>`).join('')}</div>
+  <ul>${vis.length?vis.map(x=>{const u=x.u,st=crmStat(u),ll=(u.tu||'').split(',');return`<li style="border-left-color:${CRM_COL[st]||'#14324a'}"><h3>${esc(u.lab||x.id)}</h3><div class="m">${esc(st)}${u.gm?' · '+esc(u.gm):''}${u.trDay?' · '+u.trDay:''}${u.trasa?' · '+esc(u.trasa):''}</div>${u.not?`<pre>${esc(u.not)}</pre>`:''}<div class="a">${ll.length===2?`<a href="https://www.google.com/maps/dir/?api=1&destination=${ll[0]},${ll[1]}" target="_blank" rel="noopener">Nawiguj</a>`:''}<select data-id="${x.id}" aria-label="Zmień status">${[''].concat(CRM_ST).map(s=>`<option${(u.stat||'')===s?' selected':''}>${s}</option>`).join('')}</select></div></li>`}).join(''):'<li>Brak leadów w tym widoku. Odwiedzone działki i zapisy z „Działka tu” pojawią się tutaj.</li>'}</ul></div>`;
+  el.hidden=false;$('#crmX').onclick=()=>{el.hidden=true};
+  el.querySelectorAll('.fl button').forEach(b=>b.onclick=()=>{CRM_F=b.dataset.f;crmShow()});
+  el.querySelectorAll('select[data-id]').forEach(s=>s.onchange=()=>{const u=store.get('u:'+s.dataset.id,{});u.stat=s.value;u.upd=Date.now();store.set('u:'+s.dataset.id,u);crmShow()});
+  $('#crmCsv').onclick=()=>{const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const rows=[['działka','gmina','status','trasa','data','notatka','współrzędne']].concat(L.map(x=>[x.u.lab||x.id,x.u.gm,crmStat(x.u),x.u.trasa,x.u.trDay,x.u.not,x.u.tu]));const b=new Blob(['﻿'+rows.map(r=>r.map(q).join(';')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='leady-'+T+'.csv';a.click()}}
+$('#crmBtn').onclick=crmShow;
 $('#trasaBtn').onclick=trShow;$('#dzis').onclick=trShow;dzisUp();
 </script>
 <script>
