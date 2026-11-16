@@ -1710,5 +1710,13 @@
   "lat": 50.0437,
   "lon": 18.7167,
   "radius": 1500
+ },
+ {
+  "slug": "bedzin-wapienna",
+  "name": "Będzin – Wapienna / Warpie",
+  "q": "Będzin Wapienna",
+  "lat": 50.3114,
+  "lon": 19.1493,
+  "radius": 1500
  }
 ]

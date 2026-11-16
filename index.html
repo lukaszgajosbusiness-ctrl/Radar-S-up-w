@@ -615,6 +615,36 @@ function locate(after){if(!navigator.geolocation)return status('Ten telefon nie 
     e=>status('Nie udało się ustalić lokalizacji: '+(e.code===1?'brak zgody w przeglądarce.':e.message),0),{enableHighAccuracy:true,timeout:15000})}
 const LocCtl=L.Control.extend({options:{position:'topleft'},onAdd(){const b=L.DomUtil.create('div','locbtn');b.title='Gdzie jestem';b.textContent='◎';L.DomEvent.on(b,'click',e=>{L.DomEvent.stop(e);locate()});return b}});
 map.addControl(new LocCtl());
+// ---------- Działka tu (GPS / dotknięcie mapy → numer działki i odległość do linii) ----------
+let PICK=false;
+function distToNets(lat,lon){const c=Math.cos(lat*Math.PI/180),K=111320,best={};
+  for(const n of (typeof NETS!=='undefined'?NETS:[])){const g=n.g;for(let i=1;i<g.length;i++){const A=[(g[i-1][0]-lon)*K*c,(g[i-1][1]-lat)*K],B=[(g[i][0]-lon)*K*c,(g[i][1]-lat)*K],dx=B[0]-A[0],dy=B[1]-A[1];let t=(-A[0]*dx-A[1]*dy)/(dx*dx+dy*dy||1);t=Math.max(0,Math.min(1,t));const d=Math.hypot(A[0]+t*dx,A[1]+t*dy);if(!best[n.k]||d<best[n.k])best[n.k]=d}}return best}
+async function tuShow(lat,lon,src){
+  const c=$('#card');c.hidden=false;c.innerHTML='<h2>Działka tu</h2><div class="note">Pytam GUGiK o działkę…</div>';
+  let p=null;try{p=await uldkXY(lon,lat)}catch(e){}
+  if(!p){c.innerHTML=`<div style="display:flex;justify-content:space-between"><h2>Działka tu</h2><button id="tuX">Zamknij</button></div><div class="note">Nie udało się pobrać działki (brak zasięgu lub GUGiK nie odpowiada). Spróbuj za chwilę.</div>`;$('#tuX').onclick=()=>c.hidden=true;return}
+  const idPart=(p.id||'').split('.').slice(1).join(' · ');
+  const d=distToNets(lat,lon),ks=Object.keys(d).sort((a,b)=>d[a]-d[b]);
+  const lines=ks.length?ks.map(k=>`${TYPES[k]?TYPES[k].n:k}: ${Math.round(d[k])} m`).join('<br>'):'Brak danych o liniach w załadowanym obszarze (wybierz obszar z listy albo sprawdź na miejscu).';
+  const txt=`Działka ${p.num}, obręb ${p.obr}, gm. ${p.gm} (${p.id})`;
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px"><div><h2>Działka ${esc(p.num)}</h2><div class="note">obręb ${esc(p.obr)} · ${esc(p.gm)} · ${esc(p.pow||'')}</div></div><button id="tuX">Zamknij</button></div>
+  <div class="note" style="margin-top:8px">Pełny identyfikator (z arkuszem mapy): <b>${esc(p.id)}</b>${idPart?'':''}</div>
+  <div style="margin-top:8px"><b>Najbliższe linie od tego punktu:</b><br>${lines}</div>
+  <div class="note" style="margin-top:8px">${src==='gps'?'Punkt: Twoja lokalizacja.':'Punkt: dotknięte miejsce na mapie.'} Przy granicy działek sprawdź też sąsiednią.</div>
+  <div class="tr-acts" style="margin-top:10px"><button id="tuK" class="pri">Kopiuj numer</button><button id="tuG">Pokaż granice</button></div>`;
+  $('#tuX').onclick=()=>c.hidden=true;
+  $('#tuK').onclick=()=>{try{navigator.clipboard.writeText(txt);status('Skopiowano: '+txt,1)}catch(e){prompt('Skopiuj:',txt)}};
+  $('#tuG').onclick=()=>{try{const rings=p.wkt.replace(/^.*?\(\(\(?/,'').replace(/\)+$/,'').split('),(').map(r=>r.split(',').map(q=>q.trim().split(' ').map(Number)).map(([x,y])=>[y,x]));gPin.clearLayers();L.polygon(rings,{color:'#ffb703',weight:3,fillOpacity:.15}).addTo(gPin);map.fitBounds(L.polygon(rings).getBounds().pad(.5))}catch(e){status('Nie udało się narysować granic.',0)}};
+}
+function tuGps(){if(!navigator.geolocation)return status('Ten telefon nie udostępnia lokalizacji.',0);status('Ustalam lokalizację…',.2);
+  navigator.geolocation.getCurrentPosition(p=>{ME=[p.coords.latitude,p.coords.longitude];if(meMark)map.removeLayer(meMark);meMark=L.circleMarker(ME,{radius:8,color:'#fff',weight:3,fillColor:'#1c6fd1',fillOpacity:1}).addTo(map).bindTooltip('Tu jesteś');map.setView(ME,Math.max(map.getZoom(),17));status('Lokalizacja ustalona.',1);tuShow(ME[0],ME[1],'gps')},
+    e=>status('Nie udało się ustalić lokalizacji: '+(e.code===1?'brak zgody w przeglądarce.':e.message),0),{enableHighAccuracy:true,timeout:15000})}
+function tuMenu(){const c=$('#card');c.hidden=false;c.innerHTML=`<div style="display:flex;justify-content:space-between"><h2>Działka tu</h2><button id="tuX">Zamknij</button></div><div class="note" style="margin:6px 0">Numer działki dla punktu. Wybierz, skąd wziąć punkt:</div><div class="tr-acts"><button id="tuGps" class="pri">Z mojej lokalizacji</button><button id="tuMap">Dotknę na mapie</button></div>`;
+  $('#tuX').onclick=()=>c.hidden=true;$('#tuGps').onclick=tuGps;$('#tuMap').onclick=()=>{PICK=true;c.hidden=true;status('Dotknij na mapie miejsce domu.',.5)}}
+map.on('click',e=>{if(!PICK)return;PICK=false;tuShow(e.latlng.lat,e.latlng.lng,'map')});
+const TuCtl=L.Control.extend({options:{position:'topleft'},onAdd(){const b=L.DomUtil.create('div','locbtn');b.title='Działka tu (numer działki)';b.textContent='▦';L.DomEvent.on(b,'click',e=>{L.DomEvent.stop(e);tuMenu()});return b}});
+map.addControl(new TuCtl());
+
 $('#fNear').onchange=()=>{if($('#fNear').checked&&!ME)locate(render);else render()};
 
 $('#moreBtn').onclick=()=>{document.querySelector('header').classList.toggle('short');setTimeout(()=>map.invalidateSize(),50)};

@@ -11,8 +11,11 @@ const b = await chromium.launch(); const pg = await b.newPage(); const errs = []
 await pg.route('**/*', r => { const u = r.request().url();
   if (u.includes('leaflet') && u.endsWith('.js')) return r.fulfill({ contentType: 'application/javascript', body: stub });
   if (u.includes('leaflet') && u.endsWith('.css')) return r.fulfill({ contentType: 'text/css', body: '' });
+  if (u.includes('uldk.gugik.gov.pl')) return r.fulfill({ contentType: 'text/plain', body: '0\n240101_1.0001.10509|10509|Będzin|Będzin (miasto)|powiat będziński|POLYGON((19.1 50.3,19.2 50.3,19.2 50.4,19.1 50.3))' });
   return u.startsWith(base) ? r.continue() : r.abort() });
 await pg.goto(base + '/index.html'); await pg.waitForTimeout(800);
+const tu = await pg.evaluate(async () => { await tuShow(50.3114, 19.1493, 'map'); return document.querySelector('#card').innerText });
+if (!/Działka 10509/.test(tu) || !/obręb Będzin/.test(tu)) { console.log('DZIAŁKA TU NIE DZIAŁA', tu.slice(0, 200)); process.exit(1) }
 const f0 = await pg.evaluate(() => document.querySelectorAll('#gotowe option').length);
 await pg.fill('#gFilt', 'zawiercie'); await pg.waitForTimeout(200);
 const f1 = await pg.evaluate(() => document.querySelectorAll('#gotowe option').length);
