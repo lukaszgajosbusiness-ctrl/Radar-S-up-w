@@ -78,6 +78,19 @@
   "gm": "Będzin"
  },
  {
+  "slug": "bedzin-wapienna",
+  "name": "Będzin – Wapienna / Warpie",
+  "center": [
+   50.3114,
+   19.1493
+  ],
+  "radius": 1500,
+  "generated": "2026-11-16T14:44:33.931Z",
+  "parcels": 424,
+  "domy": 58,
+  "gm": "Będzin"
+ },
+ {
   "slug": "bielsko-biala-2",
   "name": "Bielsko-Biała",
   "center": [
