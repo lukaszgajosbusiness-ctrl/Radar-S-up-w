@@ -2561,6 +2561,19 @@
   "gm": "Siewierz"
  },
  {
+  "slug": "zabrze-2",
+  "name": "Zabrze",
+  "center": [
+   50.3592,
+   18.7698
+  ],
+  "radius": 1500,
+  "generated": "2026-11-16T08:20:12.225Z",
+  "parcels": 245,
+  "domy": 18,
+  "gm": "Zabrze"
+ },
+ {
   "slug": "zabrze-3",
   "name": "Zabrze",
   "center": [
