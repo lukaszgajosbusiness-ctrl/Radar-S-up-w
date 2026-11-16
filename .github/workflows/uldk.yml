@@ -2,7 +2,8 @@ name: Działka po współrzędnych (ULDK)
 on:
   workflow_dispatch:
     inputs:
-      xy: { description: 'lon,lat (WGS84)', required: true }
+      xy: { description: 'lon,lat (WGS84)', required: false }
+      nr: { description: 'numery po przecinku, np. Będzin 54/4;Łagisza 54/4', required: false }
 permissions:
   contents: write
 jobs:
@@ -11,8 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Zapytaj ULDK
-        env: { XY: '${{ github.event.inputs.xy }}' }
+        env: { XY: '${{ github.event.inputs.xy }}', NR: '${{ github.event.inputs.nr }}' }
         run: |
+          if [ -n "$NR" ]; then
+            { IFS=';'; for n in $NR; do echo "$n -> $(curl -s -m 30 --get 'https://uldk.gugik.gov.pl/' --data-urlencode 'request=GetParcelByIdOrNr' --data-urlencode "id=$n" --data-urlencode 'result=id,numer,obreb,gmina,wkt' | cut -c1-200 | tr '\n' ' ')"; done; } | tee scripts/uldk_wynik.txt
+            git config user.name radar-bot; git config user.email radar-bot@users.noreply.github.com; git add scripts/uldk_wynik.txt; git commit -q -m 'ULDK: wynik' && git pull --rebase -q && git push
+            exit 0
+          fi
           for pt in "$XY"; do :; done
           LON=${XY%,*}; LAT=${XY#*,}
           {
