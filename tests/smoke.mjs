@@ -23,6 +23,9 @@ const f0 = await pg.evaluate(() => document.querySelectorAll('#gotowe option').l
 await pg.fill('#gFilt', 'zawiercie'); await pg.waitForTimeout(200);
 const f1 = await pg.evaluate(() => document.querySelectorAll('#gotowe option').length);
 if (!(f1 > 1 && f1 < f0)) { console.log('FILTR OBSZARÓW NIE DZIAŁA', f0, f1); process.exit(1) }
+await pg.fill('#gFilt', 'bielsko'); await pg.waitForTimeout(200);
+const bb = await pg.evaluate(() => [...document.querySelectorAll('#gotowe option')].map(o => o.textContent));
+if (!bb.some(t => / nr 2 ·/.test(t))) { console.log('BRAK NUMERACJI POWTÓRZONYCH OBSZARÓW', bb.slice(0, 4)); process.exit(1) }
 await pg.fill('#gFilt', '');
 const o = await pg.evaluate(async () => {
   await loadArea('tuliszow');
