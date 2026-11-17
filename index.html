@@ -386,7 +386,7 @@ function openCard(r){
   <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.pas?`linia nie przecina działki, oś ${s.odl} m od granicy – w pasie technicznym, sprawdź w terenie, czy przewody wiszą nad działką`:`${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}`}<br><span class="note">${s.op||'operator ?'}${s.k==='SN'&&!s.v&&!s.bd&&!s.reczne?' · napięcie nieznane w OSM (sprawdź słupy)':''}${s.bd?' · potwierdzone w BDOT10k (GUGiK)':''}</span></td></tr>`).join('')}</table>
   ${resvBlock(r)}
   <table><tr><td>Status</td><td><select id="stat">${['','do sprawdzenia','sprawdzona – pasuje','odrzucona','kontakt z właścicielem','umowa'].map(v=>`<option${(u.stat||'')===v?' selected':''}>${v}</option>`).join('')}</select></td></tr>
-  <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea></td></tr>
+  <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea>${(window.SpeechRecognition||window.webkitSpeechRecognition)?'<button type="button" id="mic" class="extra" style="margin-top:4px">🎤 Podyktuj</button>':''}</td></tr>
   <tr><td>Zrzut z kalkulatora</td><td><input type="file" id="img" accept="image/*">${u.img?`<img src="${u.img}" style="margin-top:6px;border-radius:6px">`:''}</td></tr></table>
   ${r.las?'<p class="note" style="color:var(--warn)">Środek działki leży w lesie wg OSM. Sprawdź, zanim zaproponujesz.</p>':''}
   ${r.domPrzyLinii?`<p class="note" style="color:var(--ok)">Na działce stoi budynek ${r.domOdl!=null?'ok. '+r.domOdl+' m':'bliżej niż 40 m'} od osi linii (baza budynków GUGiK).</p>`:''}
@@ -399,6 +399,9 @@ function openCard(r){
   $('#x').onclick=()=>c.hidden=true;$('#share').onclick=()=>{const u=location.origin+location.pathname+'?dz='+encodeURIComponent(r.id);(navigator.share?navigator.share({title:`Działka ${r.num} (${r.obr})`,url:u}):navigator.clipboard.writeText(u).then(()=>$('#share').textContent='Skopiowano link')).catch(()=>alertBox(u))};fillAddr(r);bindResv(r);
   const save=()=>{const v={...u,lab:`${r.obr} ${r.num}`,gm:r.gm||'',upd:Date.now(),grunt:$('#grunt').value,cena:$('#cena').value,podzial:$('#podzial').value,stat:$('#stat').value,not:$('#not').value,img:u.img,recznieTyp:$('#rTyp').value,recznieLen:$('#rLen').value,recznieOdl:$('#rOdl').value};if(v.recznieTyp&&(!r.sieci.length||r.sieci[0].reczne))r.sieci=[{id:0,k:v.recznieTyp,kind:['gaz','woda'].includes(v.recznieTyp)?'podziemna':'napowietrzna',len:+v.recznieLen||0,maxd:+v.recznieOdl||0,reczne:true}];if(USER&&RESV[r.id]?.mine&&v.stat!==(u.stat||''))api('/api/reserve',{parcel_id:r.id,label:`${r.obr} ${r.num}`,status:v.stat}).catch(()=>{});if(!store.set('u:'+r.id,v))alertBox('Brak miejsca w pamięci przeglądarki (zbyt duży zrzut?).');score(r);render();};
   $('#zap').onclick=()=>{save();$('#zap').textContent='Zapisano'};
+  if($('#mic'))$('#mic').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition,rc=new SR();rc.lang='pl-PL';rc.interimResults=false;const m=$('#mic');m.textContent='🎤 Słucham…';
+    rc.onresult=e=>{const t=e.results[0][0].transcript;const n=$('#not');n.value=(n.value?n.value.trim()+' ':'')+t;save()};
+    rc.onerror=()=>{status('Nie udało się nagrać, spróbuj jeszcze raz.',0)};rc.onend=()=>{m.textContent='🎤 Podyktuj'};try{rc.start()}catch(_){}};
   ['#grunt','#stat'].forEach(s=>$(s).onchange=()=>{save();openCard(r)});
   $('#img').onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{const s=Math.min(1,900/im.width);const cv=document.createElement('canvas');cv.width=im.width*s;cv.height=im.height*s;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);u.img=cv.toDataURL('image/jpeg',.7);save();openCard(r)};im.src=URL.createObjectURL(f)};
   $('#fbS').onclick=()=>{const t=`UWAGA Z TERENU – Radar Słupów\nDziałka ${r.num}, obręb ${r.obr}, gm. ${r.gm} (${r.id})\nOcena: ${$('#fbW').value}\nUwaga: ${$('#fbT').value||'—'}\nApka pokazała: ${r.sieci.map(x=>x.k+' '+x.len+' m / do '+x.maxd+' m od granicy').join(' + ')||'brak sieci'}; dom przy linii: ${r.domPrzyLinii?'tak ('+(r.domOdl??'?')+' m)':'nie'}; grunt: ${(r.mpzpGrunt||$('#grunt').value||'?')}; wynik: ${r.score}\nLink: ${location.origin+location.pathname}?dz=${encodeURIComponent(r.id)}`;if(USER&&API){api('/api/feedback',{parcel_id:r.id,label:`${r.obr} ${r.num}`,verdict:$('#fbW').value,note:$('#fbT').value,snap:t.split('\n').slice(4,5).join(' ')}).then(()=>{$('#fbS').textContent='Wysłano – widzi to kierownik'},e=>{(navigator.share?navigator.share({title:'Uwaga z terenu – Radar Słupów',text:t}):navigator.clipboard.writeText(t)).catch(()=>alertBox(t))});return}(navigator.share?navigator.share({title:'Uwaga z terenu – Radar Słupów',text:t}):navigator.clipboard.writeText(t).then(()=>{$('#fbS').textContent='Skopiowano – wklej w wiadomość'})).catch(()=>alertBox(t))};
@@ -815,6 +818,10 @@ S.onclick=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=loc
  const n=Object.keys(o).length;if(!n){alert('Nie ma jeszcze żadnych statusów do zapisania.');return}
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({radar:1,data:new Date().toISOString(),u:o})],{type:'application/json'}));a.download='radar-kopia-'+new Date().toISOString().slice(0,10)+'.json';a.click()};
 Ld.onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());if(!j.radar||!j.u)throw 0;let n=0;for(const[k,v]of Object.entries(j.u))if(k.startsWith('rs:u:')){localStorage.setItem(k,v);n++}alert('Wczytano statusy: '+n+'. Odświeżam apkę.');location.reload()}catch(err){alert('To nie jest plik kopii z Radaru.')}}})();
+</script>
+<script>
+(function(){let wl=null;async function lock(){try{if('wakeLock' in navigator&&document.visibilityState==='visible')wl=await navigator.wakeLock.request('screen')}catch(_){}}
+lock();document.addEventListener('visibilitychange',lock)})();
 </script>
 </body>
 </html>
