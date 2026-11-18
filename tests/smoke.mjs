@@ -108,6 +108,10 @@ if (wo.err || !/Najnowsze/.test(wo.o2) || typeof wo.t !== 'string') fail.push('w
 const an = await pg.evaluate(() => { try { openCard(RES.find(x => x.ok) || RES[0]); crmShow(); trShow() } catch (e) {} const bad = [...document.querySelectorAll('button')].filter(b => !((b.textContent || '').trim() || b.getAttribute('aria-label') || b.getAttribute('title'))).map(b => b.id || b.className || b.outerHTML.slice(0, 60)); return bad });
 console.log('bez nazwy', JSON.stringify(an));
 if (an.length) fail.push('przyciski bez nazwy: ' + JSON.stringify(an));
+// Przypomnienie o kopii: komunikat po celu dnia, bez kopii dziś
+const bk = await pg.evaluate(() => { localStorage.setItem('rs:celOk', '""'); localStorage.setItem('rs:bakDay', '""'); localStorage.setItem('rs:cel', '1'); const k = 'rs:u:__bk'; localStorage.setItem(k, JSON.stringify({ trasa: 'byłem', trDay: TODAY(), lab: 'test' })); let msg = ''; const old = window.status; try { window.status = m => { msg = m }; } catch (e) {} dzisUp(); const st = document.getElementById('status'); localStorage.removeItem(k); localStorage.setItem('rs:cel', '10'); localStorage.setItem('rs:celOk', '""'); dzisUp(); return { fn: dzisUp.toString().includes('bakDay'), crm: crmShow.toString().includes("store.set('bakDay'") } });
+console.log('kopia', JSON.stringify(bk));
+if (!bk.fn || !bk.crm) fail.push('przypomnienie o kopii: ' + JSON.stringify(bk));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
