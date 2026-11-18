@@ -13,6 +13,7 @@
 /* Układ: mapa na górze, lista działek pod spodem (telefon) / mapa obok listy (komputer) */
 :root{--bg:#f3f5f7;--panel:#fff;--fg:#14202b;--mute:#5d6b78;--line:#d9e0e6;--acc:#14324a;--nn:#b0182b;--wn:#e0561b;--sn:#d4a20d;--nnN:#7d8a96;--gaz:#c9a400;--woda:#1c6fd1;--ok:#1f8a4c;--warn:#b86e00;
 --f:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--fc:"Barlow Condensed","Barlow",system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+body.sun{--bg:#fff;--panel:#fff;--fg:#000;--mute:#222;--line:#555;--acc:#004a8f;color-scheme:light}body.sun button,body.sun select,body.sun a.nav,body.sun .chip{min-height:48px;font-size:17px;font-weight:700;border:2px solid #000}body.sun .st-b h3{font-size:19px}body.sun .why{font-size:16px;color:#000}
 @media (prefers-color-scheme:dark){:root{--bg:#0f161c;--panel:#17212a;--fg:#e6edf3;--mute:#93a3b1;--line:#2a3743;--acc:#8fc1ea;color-scheme:dark}.why b{color:#ff8a8a}}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
@@ -119,6 +120,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <button class="pri" id="go">Szukaj działek</button>
   <button id="instBtn" hidden title="Dodaj Radar na ekran telefonu">Zainstaluj</button>
   <button id="crmBtn" title="Twoje leady, statusy i wyniki">CRM</button>
+  <button id="sunBtn" type="button" aria-pressed="false" title="Tryb dzienny: duże przyciski i mocny kontrast w słońcu">☀ Słońce</button>
   <button id="terBtn" title="Podpowiada, gdzie najbliżej jest najwięcej domów przy linii">Teren na dziś</button>
   <button id="trasaBtn" title="Najmocniejsze działki z domem pod linią, ułożone w kolejności przejazdu">Trasa na dzień</button>
   <button id="goView" class="extra" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
@@ -842,5 +844,6 @@ Ld.onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.pa
 (function(){let wl=null;async function lock(){try{if('wakeLock' in navigator&&document.visibilityState==='visible')wl=await navigator.wakeLock.request('screen')}catch(_){}}
 lock();document.addEventListener('visibilitychange',lock)})();
 </script>
+<script>(function(){var b=document.getElementById('sunBtn');if(!b)return;function ap(on){document.body.classList.toggle('sun',on);b.setAttribute('aria-pressed',on);b.textContent=on?'☀ Słońce: wł.':'☀ Słońce'}var on=false;try{on=localStorage.getItem('rs:sun')==='1'}catch(e){}ap(on);b.onclick=function(){on=!on;try{localStorage.setItem('rs:sun',on?'1':'0')}catch(e){}ap(on)}})()</script>
 </body>
 </html>

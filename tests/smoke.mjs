@@ -54,6 +54,10 @@ if (e2.length) fail.push('błędy JS (link): ' + e2.join('; '));
 const mo = await pg2.evaluate(async () => { trShow(); const b = document.querySelector('#trMore'); if (!b) return { err: 'brak przycisku' }; const before = trFix().length; b.click(); await new Promise(r => setTimeout(r, 300)); return { before, after: trFix().length, first: trFix().slice(0, 3) } });
 console.log('more', JSON.stringify(mo));
 if (mo.err || mo.after <= mo.before || mo.after > mo.before + 4 || JSON.stringify(mo.first) !== JSON.stringify(ids)) fail.push('Dopisz kolejne 4: ' + JSON.stringify(mo));
+// Tryb dzienny
+const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
+console.log('sun', JSON.stringify(sun));
+if (sun.err || !sun.on || !sun.off) fail.push('Tryb dzienny: ' + JSON.stringify(sun));
 // Teren na dziś: z pozycji w Tuliszowie podpowiada obszar z domami
 const ter = await pg2.evaluate(async () => { navigator.geolocation.getCurrentPosition = ok => ok({ coords: { latitude: 50.4393, longitude: 19.198 } }); $('#terBtn').click(); await new Promise(r => setTimeout(r, 1500)); const o = document.getElementById('ter'); return o ? { t: o.innerText.slice(0, 160), btn: o.querySelectorAll('[data-s]').length } : null });
 console.log('teren', JSON.stringify(ter));
