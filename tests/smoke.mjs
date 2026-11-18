@@ -74,6 +74,8 @@ if (!un.btn || un.b1 !== 'nikogo' || un.b2 !== un.b0) fail.push('cofnij status: 
 const nx = await pg2.evaluate(() => { trShow(); const a = document.querySelector('#trNext'); return a ? { h: a.getAttribute('href'), t: a.textContent } : { err: 'brak' } });
 console.log('next', JSON.stringify(nx));
 if (nx.err || !/maps\/dir/.test(nx.h) || !/Nawiguj do następnej/.test(nx.t)) fail.push('nawiguj do następnej: ' + JSON.stringify(nx));
+// Service worker: kafelki i dane offline, składnia
+{ const fs = await import('node:fs'); const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8'); try { new Function(sw) } catch (e) { fail.push('sw.js składnia: ' + e.message) } if (!sw.includes("radar-tiles") || !sw.includes("radar-data")) fail.push('sw.js: brak cache kafelków/danych') }
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
