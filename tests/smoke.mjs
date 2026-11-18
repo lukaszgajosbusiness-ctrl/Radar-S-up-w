@@ -50,6 +50,10 @@ const lt = await pg2.evaluate(() => { try { return { n: trPick().stops.map(s => 
 console.log('lista', JSON.stringify(lt), e2);
 if (lt.err || JSON.stringify(lt.n) !== JSON.stringify(ids)) fail.push('trasa z linku: ' + JSON.stringify(lt));
 if (e2.length) fail.push('błędy JS (link): ' + e2.join('; '));
+// Teren na dziś: z pozycji w Tuliszowie podpowiada obszar z domami
+const ter = await pg2.evaluate(async () => { navigator.geolocation.getCurrentPosition = ok => ok({ coords: { latitude: 50.4393, longitude: 19.198 } }); $('#terBtn').click(); await new Promise(r => setTimeout(r, 1500)); const o = document.getElementById('ter'); return o ? { t: o.innerText.slice(0, 160), btn: o.querySelectorAll('[data-s]').length } : null });
+console.log('teren', JSON.stringify(ter));
+if (!ter || ter.btn < 1) fail.push('Teren na dziś: brak podpowiedzi ' + JSON.stringify(ter));
 await b.close(); srv.close();
 if (fail.length) { console.error('NIEPOWODZENIE:\n- ' + fail.join('\n- ')); process.exit(1) }
 console.log('OK');
