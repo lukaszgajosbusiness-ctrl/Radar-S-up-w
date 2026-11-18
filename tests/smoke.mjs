@@ -66,6 +66,10 @@ if (!bar.al || !/Dziś \d+ z 10/.test(bar.al)) fail.push('licznik dnia: ' + JSON
 const sm = await pg2.evaluate(() => { crmShow(); const b = document.getElementById('crmSum'); if (!b) return { err: 'brak' }; try { b.click() } catch (e) {} return { t: window.__sum || '' } });
 console.log('sum', JSON.stringify(sm));
 if (sm.err || !/^Radar Słupów, \d{4}-\d\d-\d\d: odwiedzone \d+/.test(sm.t) || /\d{3}[ -]?\d{3}[ -]?\d{3}/.test(sm.t)) fail.push('podsumowanie dnia: ' + JSON.stringify(sm));
+// Cofnij ostatni status
+const un = await pg2.evaluate(() => { const r = trPick().stops[0].r, k = 'rs:u:' + r.id; const g = () => (JSON.parse(localStorage.getItem(k) || '{}').trasa || ''); const b0 = g(); trSet(r, 'nikogo'); const b1 = g(); const btn = document.querySelector('#trUndo'); if (btn) btn.click(); return { b0, b1, b2: g(), btn: !!btn } });
+console.log('undo', JSON.stringify(un));
+if (!un.btn || un.b1 !== 'nikogo' || un.b2 !== un.b0) fail.push('cofnij status: ' + JSON.stringify(un));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
