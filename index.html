@@ -122,6 +122,7 @@ button.pri{background:#ffb703;color:#14202b;border:0;font-weight:600}
   <button id="trasaBtn" title="Najmocniejsze działki z domem pod linią, ułożone w kolejności przejazdu">Trasa na dzień</button>
   <button id="goView" class="extra" title="Szukaj w obszarze widocznym na mapie">W widoku mapy</button>
   <input id="gFilt" type="search" placeholder="Szukaj gminy / miejscowości…" aria-label="Szukaj obszaru" hidden style="margin-bottom:6px"><select id="gotowe" aria-label="Gotowe obszary" hidden><option value="">Gotowe obszary…</option></select>
+  <button id="addPt" class="extra" title="Dopisz miejsce z terenu (np. domek, którego nie ma w aplikacji) w miejscu, gdzie stoisz">Dodaj miejsce tutaj</button>
   <button id="offBtn" class="extra" hidden title="Pobierz wszystkie gotowe obszary do pamięci telefonu (kilka MB, najlepiej na Wi-Fi)">Offline</button>
   <button id="demoBtn" class="extra" hidden>Przykładowy lead</button>
   <button id="nrBtn" class="extra">Po numerze</button>
@@ -386,7 +387,7 @@ function openCard(r){
   <table>${r.sieci.map(s=>`<tr><td><span class="t ${s.k}">${s.k}</span> ${s.kind}</td><td>${s.pas?`linia nie przecina działki, oś ${s.odl} m od granicy – w pasie technicznym, sprawdź w terenie, czy przewody wiszą nad działką`:`${s.len} m · do ${s.maxd} m od granicy ${s.ok?'✓':`✗ (min. ${r.prog} m)`}`}<br><span class="note">${s.op||'operator ?'}${s.k==='SN'&&!s.v&&!s.bd&&!s.reczne?' · napięcie nieznane w OSM (sprawdź słupy)':''}${s.bd?' · potwierdzone w BDOT10k (GUGiK)':''}</span></td></tr>`).join('')}</table>
   ${resvBlock(r)}
   <table><tr><td>Status</td><td><select id="stat">${['','do sprawdzenia','sprawdzona – pasuje','odrzucona','kontakt z właścicielem','umowa'].map(v=>`<option${(u.stat||'')===v?' selected':''}>${v}</option>`).join('')}</select></td></tr>
-  <tr><td>Notatka</td><td><textarea id="not" rows="3">${u.not??''}</textarea>${(window.SpeechRecognition||window.webkitSpeechRecognition)?'<button type="button" id="mic" class="extra" style="margin-top:4px">🎤 Podyktuj</button>':''}</td></tr>
+  <tr><td>Notatka</td><td><textarea id="not" rows="3" placeholder="Tylko opis działki – bez imion, telefonów i adresów osób">${u.not??''}</textarea>${(window.SpeechRecognition||window.webkitSpeechRecognition)?'<button type="button" id="mic" class="extra" style="margin-top:4px">🎤 Podyktuj</button>':''}</td></tr>
   <tr><td>Zrzut z kalkulatora</td><td><input type="file" id="img" accept="image/*">${u.img?`<img src="${u.img}" style="margin-top:6px;border-radius:6px">`:''}</td></tr></table>
   ${r.las?'<p class="note" style="color:var(--warn)">Środek działki leży w lesie wg OSM. Sprawdź, zanim zaproponujesz.</p>':''}
   ${r.domPrzyLinii?`<p class="note" style="color:var(--ok)">Na działce stoi budynek ${r.domOdl!=null?'ok. '+r.domOdl+' m':'bliżej niż 40 m'} od osi linii (baza budynków GUGiK).</p>`:''}
@@ -801,6 +802,10 @@ function crmShow(){const el=$('#crm'),L=crmAll(),T=TODAY(),M=T.slice(0,7),wk=crm
   $('#crmImp').onclick=()=>{const f=document.createElement('input');f.type='file';f.accept='application/json,.json';f.onchange=async()=>{try{const o=JSON.parse(await f.files[0].text());let n=0;for(const[k,v]of Object.entries(o.u||{})){const cur=store.get('u:'+k,null),inc=typeof v==='string'?JSON.parse(v):v;if(!cur||(inc.upd||0)>(cur.upd||0)){store.set('u:'+k,inc);n++}}if(o.cel)store.set('cel',o.cel);alert('Wczytano '+n+' leadów (nowsze zapisy nadpisują starsze).');crmShow();dzisUp()}catch(e){alert('Nie udało się wczytać pliku kopii.')}};f.click()};
   $('#crmCsv').onclick=()=>{const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const rows=[['działka','gmina','status','trasa','data','notatka','współrzędne','wrócić']].concat(L.map(x=>[x.u.lab||x.id,x.u.gm,crmStat(x.u),x.u.trasa,x.u.trDay,x.u.not,x.u.tu,x.u.nxt]));const b=new Blob(['﻿'+rows.map(r=>r.map(q).join(';')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='leady-'+T+'.csv';a.click()}}
 $('#crmBtn').onclick=crmShow;
+$('#addPt').onclick=()=>{if(!navigator.geolocation)return status('Ten telefon nie udostępnia lokalizacji.',0);status('Ustalam lokalizację…',.2);
+  navigator.geolocation.getCurrentPosition(p=>{const la=p.coords.latitude,lo=p.coords.longitude;let n=prompt('Opis miejsca (tylko opis, bez imion i telefonów), np. „domek letniskowy, słup NN za budynkiem”:','');if(n===null)return;
+    const id='u:miejsce-'+Date.now();store.set(id,{lab:'Miejsce z terenu',gm:'',upd:Date.now(),stat:'do sprawdzenia',not:(n||'').trim(),tu:la.toFixed(6)+','+lo.toFixed(6)});
+    ME=[la,lo];try{if(meMark)map.removeLayer(meMark);meMark=L.circleMarker(ME,{radius:8,color:'#fff',weight:3,fillColor:'#1c6fd1',fillOpacity:1}).addTo(map)}catch(e){}status('Miejsce zapisane w CRM ('+la.toFixed(5)+', '+lo.toFixed(5)+').',1)},()=>status('Nie udało się ustalić lokalizacji. Włącz GPS i spróbuj jeszcze raz.',0),{enableHighAccuracy:true,timeout:15000})};
 $('#trasaBtn').onclick=trShow;$('#dzis').onclick=trShow;dzisUp();
 </script>
 <script>
