@@ -41,6 +41,15 @@ if (!o.fb) fail.push('brak bloku uwag z terenu w karcie');
 if (!o.nowyDzien.bezA || !o.nowyDzien.bNaPoczatku || !o.nowyDzien.bCzysty) fail.push('trasa: nowy dzień ' + JSON.stringify(o.nowyDzien));
 if (!o.crm.ok) fail.push('CRM: ' + JSON.stringify(o.crm));
 if (!(o.trasa >= 5)) fail.push('trasa na dzień ma za mało przystanków: ' + o.trasa);
+// Trasa z linku (?lista=obszar:id,...) — kolejność jak w linku, wszystkie przystanki
+const ids = ['240107_5.0010.91/10','240107_5.0010.112','240107_4.0001.8787'];
+const pg2 = await b.newPage(); const e2 = []; pg2.on('pageerror', e => e2.push(e.message));
+await pg2.route('**/*', r => { const u = r.request().url(); if (u.includes('leaflet') && u.endsWith('.js')) return r.fulfill({ contentType: 'application/javascript', body: stub }); if (u.includes('leaflet') && u.endsWith('.css')) return r.fulfill({ contentType: 'text/css', body: '' }); return u.startsWith(base) ? r.continue() : r.abort() });
+await pg2.goto(base + '/index.html?lista=tuliszow:' + ids.map(encodeURIComponent).join(',')); await pg2.waitForTimeout(2500);
+const lt = await pg2.evaluate(() => { try { return { n: trPick().stops.map(s => s.r.id), fix: !!trFix(), auto: !!document.querySelector('#trAuto') } } catch (e) { return { err: e.message } } });
+console.log('lista', JSON.stringify(lt), e2);
+if (lt.err || JSON.stringify(lt.n) !== JSON.stringify(ids)) fail.push('trasa z linku: ' + JSON.stringify(lt));
+if (e2.length) fail.push('błędy JS (link): ' + e2.join('; '));
 await b.close(); srv.close();
 if (fail.length) { console.error('NIEPOWODZENIE:\n- ' + fail.join('\n- ')); process.exit(1) }
 console.log('OK');
