@@ -96,6 +96,10 @@ if (ln.err || !ln.ok) fail.push('linia do następnego: ' + JSON.stringify(ln));
 const op = await pg.evaluate(() => { const r = RES.find(x => x.ok) || RES[0]; if (typeof openCard === 'function') { try { openCard(r) } catch (e) {} } const b = document.getElementById('opis'); if (!b) return { err: 'brak przycisku' }; try { b.click() } catch (e) {} return { t: window.__opis || '' } });
 console.log('opis', JSON.stringify(op));
 if (op.err || !/^Działka /.test(op.t)) fail.push('opis działki: ' + JSON.stringify(op));
+// Licznik: zostało N przystanków
+const lf = await pg.evaluate(() => { trShow(); const e = document.getElementById('trLeft'); const r = e ? e.textContent : ''; trClose(); return r });
+console.log('zostało', lf);
+if (!/^zostało \d+$/.test(lf)) fail.push('licznik zostało: ' + lf);
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
