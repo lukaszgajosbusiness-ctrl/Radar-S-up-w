@@ -88,6 +88,10 @@ if (of.err || of.a !== 'none') fail.push('wskaźnik offline: ' + JSON.stringify(
 const fd = await pg.evaluate(() => { localStorage.setItem('rs:trDom', '1'); const a = trPick().stops; const ok = a.every(p => p.r.domPrzyLinii); localStorage.setItem('rs:trDom', '0'); return { n: a.length, ok } });
 console.log('trDom', JSON.stringify(fd));
 if (!fd.ok) fail.push('filtr dom pod linią: ' + JSON.stringify(fd));
+// Linia od mojej pozycji do następnego przystanku (bez błędów JS)
+const ln = await pg.evaluate(() => { try { ME = [50.4393, 19.198]; trShow(); const ok = Array.isArray(window.__trLine); trClose(); return { ok } } catch (e) { return { err: e.message } } });
+console.log('linia', JSON.stringify(ln));
+if (ln.err || !ln.ok) fail.push('linia do następnego: ' + JSON.stringify(ln));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
