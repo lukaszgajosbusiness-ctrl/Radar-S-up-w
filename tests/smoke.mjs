@@ -100,6 +100,10 @@ if (op.err || !/^Działka /.test(op.t)) fail.push('opis działki: ' + JSON.strin
 const lf = await pg.evaluate(() => { trShow(); const e = document.getElementById('trLeft'); const r = e ? e.textContent : ''; trClose(); return r });
 console.log('zostało', lf);
 if (!/^zostało \d+$/.test(lf)) fail.push('licznik zostało: ' + lf);
+// Wróć po 17: sortowanie i kopiowanie numerów
+const wo = await pg.evaluate(() => { crmShow(); const o = document.getElementById('wrOld'), c = document.getElementById('wrCp'); if (!o || !c) return { err: 'brak przycisków' }; o.click(); const o2 = document.getElementById('wrOld').textContent; document.getElementById('wrCp').click(); const t = window.__wr; document.getElementById('wrOld').click(); return { o2, t } });
+console.log('wr', JSON.stringify(wo));
+if (wo.err || !/Najnowsze/.test(wo.o2) || typeof wo.t !== 'string') fail.push('wróć po 17 sort/kopiuj: ' + JSON.stringify(wo));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
