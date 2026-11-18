@@ -92,6 +92,10 @@ if (!fd.ok) fail.push('filtr dom pod linią: ' + JSON.stringify(fd));
 const ln = await pg.evaluate(() => { try { ME = [50.4393, 19.198]; trShow(); const ok = Array.isArray(window.__trLine); trClose(); return { ok } } catch (e) { return { err: e.message } } });
 console.log('linia', JSON.stringify(ln));
 if (ln.err || !ln.ok) fail.push('linia do następnego: ' + JSON.stringify(ln));
+// Kopiuj opis działki (bez danych osób)
+const op = await pg.evaluate(() => { const r = RES.find(x => x.ok) || RES[0]; if (typeof openCard === 'function') { try { openCard(r) } catch (e) {} } const b = document.getElementById('opis'); if (!b) return { err: 'brak przycisku' }; try { b.click() } catch (e) {} return { t: window.__opis || '' } });
+console.log('opis', JSON.stringify(op));
+if (op.err || !/^Działka /.test(op.t)) fail.push('opis działki: ' + JSON.stringify(op));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
