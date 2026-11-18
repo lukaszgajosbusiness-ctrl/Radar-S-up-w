@@ -76,6 +76,10 @@ console.log('next', JSON.stringify(nx));
 if (nx.err || !/maps\/dir/.test(nx.h) || !/Nawiguj do następnej/.test(nx.t)) fail.push('nawiguj do następnej: ' + JSON.stringify(nx));
 // Service worker: kafelki i dane offline, składnia
 { const fs = await import('node:fs'); const sw = fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8'); try { new Function(sw) } catch (e) { fail.push('sw.js składnia: ' + e.message) } if (!sw.includes("radar-tiles") || !sw.includes("radar-data")) fail.push('sw.js: brak cache kafelków/danych') }
+// Status Karteczka zostawiona
+const kt = await pg2.evaluate(() => { const r = trPick().stops[1].r; trSet(r, 'karteczka'); const u = JSON.parse(localStorage.getItem('rs:u:' + r.id) || '{}'); const chip = !!document.querySelector('[data-v="karteczka"]'); return { s: u.trasa, chip, o: dzisN().o } });
+console.log('karteczka', JSON.stringify(kt));
+if (kt.s !== 'karteczka' || !kt.chip || kt.o < 1) fail.push('karteczka: ' + JSON.stringify(kt));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
