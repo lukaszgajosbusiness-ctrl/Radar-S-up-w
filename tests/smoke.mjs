@@ -54,6 +54,10 @@ if (e2.length) fail.push('błędy JS (link): ' + e2.join('; '));
 const mo = await pg2.evaluate(async () => { trShow(); const b = document.querySelector('#trMore'); if (!b) return { err: 'brak przycisku' }; const before = trFix().length; b.click(); await new Promise(r => setTimeout(r, 300)); return { before, after: trFix().length, first: trFix().slice(0, 3) } });
 console.log('more', JSON.stringify(mo));
 if (mo.err || mo.after <= mo.before || mo.after > mo.before + 4 || JSON.stringify(mo.first) !== JSON.stringify(ids)) fail.push('Dopisz kolejne 4: ' + JSON.stringify(mo));
+// Ostrzeżenie o danych osobowych
+const os = await pg2.evaluate(() => ({ tel: !!osobowe('tel 600 123 456'), mail: !!osobowe('a@b.pl'), pan: !!osobowe('Pan Kowalski wróci po 17'), ok: !osobowe('dom pod linią, wróć po 17, pies na posesji') }));
+console.log('osobowe', JSON.stringify(os));
+if (!os.tel || !os.mail || !os.pan || !os.ok) fail.push('ostrzeżenie osobowe: ' + JSON.stringify(os));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
