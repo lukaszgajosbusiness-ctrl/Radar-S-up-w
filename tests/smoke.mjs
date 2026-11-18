@@ -80,6 +80,10 @@ if (nx.err || !/maps\/dir/.test(nx.h) || !/Nawiguj do następnej/.test(nx.t)) fa
 const kt = await pg2.evaluate(() => { const r = trPick().stops[1].r; trSet(r, 'karteczka'); const u = JSON.parse(localStorage.getItem('rs:u:' + r.id) || '{}'); const chip = !!document.querySelector('[data-v="karteczka"]'); return { s: u.trasa, chip, o: dzisN().o } });
 console.log('karteczka', JSON.stringify(kt));
 if (kt.s !== 'karteczka' || !kt.chip || kt.o < 1) fail.push('karteczka: ' + JSON.stringify(kt));
+// Wskaźnik offline
+const of = await pg2.evaluate(() => { const e = document.getElementById('offl'); if (!e) return { err: 'brak' }; const a = getComputedStyle(e).display; window.dispatchEvent(new Event('offline')); return { a, ok: true } });
+console.log('offline', JSON.stringify(of));
+if (of.err || of.a !== 'none') fail.push('wskaźnik offline: ' + JSON.stringify(of));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
