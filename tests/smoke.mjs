@@ -58,6 +58,10 @@ if (mo.err || mo.after <= mo.before || mo.after > mo.before + 4 || JSON.stringif
 const os = await pg2.evaluate(() => ({ tel: !!osobowe('tel 600 123 456'), mail: !!osobowe('a@b.pl'), pan: !!osobowe('Pan Kowalski wróci po 17'), ok: !osobowe('dom pod linią, wróć po 17, pies na posesji') }));
 console.log('osobowe', JSON.stringify(os));
 if (!os.tel || !os.mail || !os.pan || !os.ok) fail.push('ostrzeżenie osobowe: ' + JSON.stringify(os));
+// Pasek postępu licznika dnia
+const bar = await pg2.evaluate(() => { localStorage.setItem('cel', '10'); dzisUp(); const b = document.getElementById('dzis'); return { bg: b.style.backgroundImage, al: b.getAttribute('aria-label') } });
+console.log('bar', JSON.stringify(bar));
+if (!bar.al || !/Dziś \d+ z 10/.test(bar.al)) fail.push('licznik dnia: ' + JSON.stringify(bar));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
