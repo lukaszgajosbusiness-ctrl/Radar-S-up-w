@@ -70,6 +70,10 @@ if (sm.err || !/^Radar Słupów, \d{4}-\d\d-\d\d: odwiedzone \d+/.test(sm.t) || 
 const un = await pg2.evaluate(() => { const r = trPick().stops[0].r, k = 'rs:u:' + r.id; const g = () => (JSON.parse(localStorage.getItem(k) || '{}').trasa || ''); const b0 = g(); trSet(r, 'nikogo'); const b1 = g(); const btn = document.querySelector('#trUndo'); if (btn) btn.click(); return { b0, b1, b2: g(), btn: !!btn } });
 console.log('undo', JSON.stringify(un));
 if (!un.btn || un.b1 !== 'nikogo' || un.b2 !== un.b0) fail.push('cofnij status: ' + JSON.stringify(un));
+// Nawiguj do następnej
+const nx = await pg2.evaluate(() => { trShow(); const a = document.querySelector('#trNext'); return a ? { h: a.getAttribute('href'), t: a.textContent } : { err: 'brak' } });
+console.log('next', JSON.stringify(nx));
+if (nx.err || !/maps\/dir/.test(nx.h) || !/Nawiguj do następnej/.test(nx.t)) fail.push('nawiguj do następnej: ' + JSON.stringify(nx));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
