@@ -84,6 +84,10 @@ if (kt.s !== 'karteczka' || !kt.chip || kt.o < 1) fail.push('karteczka: ' + JSON
 const of = await pg2.evaluate(() => { const e = document.getElementById('offl'); if (!e) return { err: 'brak' }; const a = getComputedStyle(e).display; window.dispatchEvent(new Event('offline')); return { a, ok: true } });
 console.log('offline', JSON.stringify(of));
 if (of.err || of.a !== 'none') fail.push('wskaźnik offline: ' + JSON.stringify(of));
+// Filtr Tylko dom pod linią (trasa automatyczna)
+const fd = await pg.evaluate(() => { localStorage.setItem('rs:trDom', '1'); const a = trPick().stops; const ok = a.every(p => p.r.domPrzyLinii); localStorage.setItem('rs:trDom', '0'); return { n: a.length, ok } });
+console.log('trDom', JSON.stringify(fd));
+if (!fd.ok) fail.push('filtr dom pod linią: ' + JSON.stringify(fd));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
