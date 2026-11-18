@@ -104,6 +104,10 @@ if (!/^zostało \d+$/.test(lf)) fail.push('licznik zostało: ' + lf);
 const wo = await pg.evaluate(() => { crmShow(); const o = document.getElementById('wrOld'), c = document.getElementById('wrCp'); if (!o || !c) return { err: 'brak przycisków' }; o.click(); const o2 = document.getElementById('wrOld').textContent; document.getElementById('wrCp').click(); const t = window.__wr; document.getElementById('wrOld').click(); return { o2, t } });
 console.log('wr', JSON.stringify(wo));
 if (wo.err || !/Najnowsze/.test(wo.o2) || typeof wo.t !== 'string') fail.push('wróć po 17 sort/kopiuj: ' + JSON.stringify(wo));
+// Dostępność: każdy przycisk ma nazwę (tekst, aria-label albo title)
+const an = await pg.evaluate(() => { try { openCard(RES.find(x => x.ok) || RES[0]); crmShow(); trShow() } catch (e) {} const bad = [...document.querySelectorAll('button')].filter(b => !((b.textContent || '').trim() || b.getAttribute('aria-label') || b.getAttribute('title'))).map(b => b.id || b.className || b.outerHTML.slice(0, 60)); return bad });
+console.log('bez nazwy', JSON.stringify(an));
+if (an.length) fail.push('przyciski bez nazwy: ' + JSON.stringify(an));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
