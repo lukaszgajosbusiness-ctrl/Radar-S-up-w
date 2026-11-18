@@ -62,6 +62,10 @@ if (!os.tel || !os.mail || !os.pan || !os.ok) fail.push('ostrzeżenie osobowe: '
 const bar = await pg2.evaluate(() => { localStorage.setItem('cel', '10'); dzisUp(); const b = document.getElementById('dzis'); return { bg: b.style.backgroundImage, al: b.getAttribute('aria-label') } });
 console.log('bar', JSON.stringify(bar));
 if (!bar.al || !/Dziś \d+ z 10/.test(bar.al)) fail.push('licznik dnia: ' + JSON.stringify(bar));
+// Podsumowanie dnia w CRM
+const sm = await pg2.evaluate(() => { crmShow(); const b = document.getElementById('crmSum'); if (!b) return { err: 'brak' }; try { b.click() } catch (e) {} return { t: window.__sum || '' } });
+console.log('sum', JSON.stringify(sm));
+if (sm.err || !/^Radar Słupów, \d{4}-\d\d-\d\d: odwiedzone \d+/.test(sm.t) || /\d{3}[ -]?\d{3}[ -]?\d{3}/.test(sm.t)) fail.push('podsumowanie dnia: ' + JSON.stringify(sm));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
