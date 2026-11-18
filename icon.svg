@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#14324a"/><path d="M256 70 196 440h30l30-150 30 150h30L256 70zm-120 90h240M156 230h200" stroke="#ffb703" stroke-width="22" fill="none" stroke-linejoin="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><radialGradient id="g" cx="50%" cy="58%" r="70%"><stop offset="0" stop-color="#1d4c6e"/><stop offset="1" stop-color="#0f2638"/></radialGradient></defs>
+<rect width="512" height="512" fill="url(#g)"/>
+<g fill="none" stroke="#ffb703" stroke-linecap="round" stroke-linejoin="round">
+<g opacity=".28" stroke-width="3"><circle cx="256" cy="300" r="70"/><circle cx="256" cy="300" r="125"/><circle cx="256" cy="300" r="180"/><path d="M256 300V120M256 300 100 390M256 300 412 390" stroke-dasharray="4 10"/></g>
+<path d="M256 300 400 217A168 168 0 0 0 256 132Z" fill="#ffb703" opacity=".16" stroke="none"/>
+<g stroke-width="14"><path d="M222 432 248 172M290 432 264 172M248 172 256 136 264 172"/><path d="M178 216H334M150 268H362" stroke-width="12"/></g>
+<g stroke-width="8"><path d="M227 404 285 334M285 404 229 334M237 334 277 268M279 334 241 268M236 300H276M244 236H268"/><path d="M178 216v24M334 216v24M150 268v24M362 268v24"/></g>
+<g stroke-width="5" opacity=".9"><path d="M150 292Q80 318 6 306M362 292Q432 318 506 306M178 240Q110 258 6 246M334 240Q402 258 506 246"/></g>
+</g>
+<circle cx="256" cy="136" r="11" fill="#ffb703"/><circle cx="256" cy="136" r="22" fill="none" stroke="#ffb703" stroke-width="4" opacity=".6"/>
+</svg>
