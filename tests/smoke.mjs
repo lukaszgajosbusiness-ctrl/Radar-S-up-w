@@ -133,6 +133,10 @@ if (gl && gl.length > 12) fail.push('etykieta gruntu za długa: ' + gl);
 const sl = await pg.evaluate(() => { const s = document.getElementById('stat'); return s ? { t: s.options[0].textContent, v: s.options[0].value } : null });
 console.log('status', JSON.stringify(sl));
 if (sl && (sl.v !== '' || !sl.t.trim())) fail.push('pusty status bez etykiety: ' + JSON.stringify(sl));
+// Cele dotykowe: przyciski karty i paska trasy mają min. 38 px
+const tap = await pg.evaluate(() => { const bad = []; document.querySelectorAll('#card button, .tr-acts button, .tr-acts a').forEach(e => { if (e.offsetParent && e.getBoundingClientRect().height < 38) bad.push((e.textContent || '').trim().slice(0, 14) + ':' + Math.round(e.getBoundingClientRect().height)) }); return bad });
+console.log('tap', JSON.stringify(tap));
+if (tap.length) fail.push('za małe cele dotykowe: ' + tap.join(', '));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
