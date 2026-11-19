@@ -129,6 +129,10 @@ if (!wd) fail.push('Wróć po 17: brak informacji ile dni temu');
 const gl = await pg.evaluate(() => { const s = document.getElementById('grunt'); return s ? s.options[0].textContent : '' });
 console.log('grunt', gl);
 if (gl && gl.length > 12) fail.push('etykieta gruntu za długa: ' + gl);
+// Karta: pusty status ma czytelną etykietę
+const sl = await pg.evaluate(() => { const s = document.getElementById('stat'); return s ? { t: s.options[0].textContent, v: s.options[0].value } : null });
+console.log('status', JSON.stringify(sl));
+if (sl && (sl.v !== '' || !sl.t.trim())) fail.push('pusty status bez etykiety: ' + JSON.stringify(sl));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
