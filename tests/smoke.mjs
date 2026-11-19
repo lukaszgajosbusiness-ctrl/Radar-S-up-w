@@ -121,8 +121,9 @@ const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn
 console.log('sun', JSON.stringify(sun));
 if (sun.err || !sun.on || !sun.off) fail.push('Tryb dzienny: ' + JSON.stringify(sun));
 // Teren na dziś: z pozycji w Tuliszowie podpowiada obszar z domami
-const ter = await pg2.evaluate(async () => { navigator.geolocation.getCurrentPosition = ok => ok({ coords: { latitude: 50.4393, longitude: 19.198 } }); $('#terBtn').click(); await new Promise(r => setTimeout(r, 1500)); const o = document.getElementById('ter'); return o ? { t: o.innerText.slice(0, 160), btn: o.querySelectorAll('[data-s]').length } : null });
+const ter = await pg2.evaluate(async () => { localStorage.setItem('rs:u:__wr1', JSON.stringify({ trasa: 'nikogo', stat: 'do sprawdzenia', lab: 'Tuliszów 1/1' })); navigator.geolocation.getCurrentPosition = ok => ok({ coords: { latitude: 50.4393, longitude: 19.198 } }); $('#terBtn').click(); await new Promise(r => setTimeout(r, 1500)); const o = document.getElementById('ter'); return o ? { t: o.innerText.slice(0, 160), btn: o.querySelectorAll('[data-s]').length } : null });
 console.log('teren', JSON.stringify(ter));
+if (ter && !/do powrotu po 17: 1/.test(ter.all || ter.t || '')) console.log('uwaga: brak licznika powrotu w skrócie');
 if (!ter || ter.btn < 1) fail.push('Teren na dziś: brak podpowiedzi ' + JSON.stringify(ter));
 await b.close(); srv.close();
 if (fail.length) { console.error('NIEPOWODZENIE:\n- ' + fail.join('\n- ')); process.exit(1) }
