@@ -122,6 +122,9 @@ console.log('mapy', JSON.stringify(gmT));
 // CRM: kafelek karteczek dziś
 const kt2 = await pg.evaluate(() => { crmShow(); return /karteczek dziś/.test(document.getElementById('crm').innerText) });
 if (!kt2) fail.push('brak kafelka karteczek dziś w CRM');
+// Wróć po 17: ile dni temu
+const wd = await pg.evaluate(() => { localStorage.setItem('rs:u:__wd', JSON.stringify({ trasa: 'nikogo', stat: 'do sprawdzenia', lab: 'Test 9/9', trDay: '2026-11-17' })); crmShow(); return /dni temu|dzień temu|dziś\)/.test(document.getElementById('crm').innerText) });
+if (!wd) fail.push('Wróć po 17: brak informacji ile dni temu');
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
