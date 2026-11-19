@@ -119,6 +119,9 @@ if (wk.n !== 14 || !/^\d{1,2}$/.test(wk.last)) fail.push('wykres 14 dni: ' + JSO
 // Mapy: link pomija odwiedzone przystanki
 const gmT = await pg.evaluate(() => { const a = [...document.querySelectorAll('#trasa .tr-acts a.pri')].map(x => x.textContent); return { a } });
 console.log('mapy', JSON.stringify(gmT));
+// CRM: kafelek karteczek dziś
+const kt2 = await pg.evaluate(() => { crmShow(); return /karteczek dziś/.test(document.getElementById('crm').innerText) });
+if (!kt2) fail.push('brak kafelka karteczek dziś w CRM');
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
