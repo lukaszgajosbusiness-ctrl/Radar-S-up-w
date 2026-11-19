@@ -116,6 +116,9 @@ if (!bk.fn || !bk.crm) fail.push('przypomnienie o kopii: ' + JSON.stringify(bk))
 const wk = await pg.evaluate(() => { crmShow(); const l = [...document.querySelectorAll('#crm .dl span')].map(x => x.textContent); return { n: l.length, last: l[l.length - 1] } });
 console.log('wykres', JSON.stringify(wk));
 if (wk.n !== 14 || !/^\d{1,2}$/.test(wk.last)) fail.push('wykres 14 dni: ' + JSON.stringify(wk));
+// Mapy: link pomija odwiedzone przystanki
+const gmT = await pg.evaluate(() => { const a = [...document.querySelectorAll('#trasa .tr-acts a.pri')].map(x => x.textContent); return { a } });
+console.log('mapy', JSON.stringify(gmT));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
