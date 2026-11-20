@@ -137,6 +137,10 @@ if (sl && (sl.v !== '' || !sl.t.trim())) fail.push('pusty status bez etykiety: '
 const tap = await pg.evaluate(() => { const bad = []; document.querySelectorAll('#card button, .tr-acts button, .tr-acts a').forEach(e => { if (e.offsetParent && e.getBoundingClientRect().height < 38) bad.push((e.textContent || '').trim().slice(0, 14) + ':' + Math.round(e.getBoundingClientRect().height)) }); return bad });
 console.log('tap', JSON.stringify(tap));
 if (tap.length) fail.push('za małe cele dotykowe: ' + tap.join(', '));
+// Wróć w sobotę: chip, lista w CRM i brak w trasie w tygodniu
+const sb = await pg.evaluate(() => { const chips = [...document.querySelectorAll('#trasa .qn .chip')].map(x => x.dataset.t); localStorage.setItem('rs:u:__sb1', JSON.stringify({ stat: 'do sprawdzenia', not: 'Wróć w sobotę, domek letniskowy', lab: 'Sobota 1/1', trasa: 'nikogo', trDay: '2026-11-19' })); crmShow(); const t = document.getElementById('crm').innerText; return { chip: chips.includes('Wróć w sobotę'), crm: /Wróć w sobotę \(\d+\)/.test(t), satFn: typeof satNote === 'function' } });
+console.log('sobota', JSON.stringify(sb));
+if (!sb.crm || !sb.satFn) fail.push('Wróć w sobotę: ' + JSON.stringify(sb));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
