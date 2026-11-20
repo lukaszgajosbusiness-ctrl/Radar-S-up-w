@@ -148,6 +148,8 @@ if (!pz.skip && !pz.ok) fail.push('podział pasa wg planu: ' + JSON.stringify(pz
 const sp = await pg.evaluate(() => stawkaPodpowiedz({ gm: 'Jaworzno' }, 'MN'));
 console.log('stawka', JSON.stringify(sp));
 if (sp.v !== 249) fail.push('stawka ' + JSON.stringify(sp));
+const rp = await pg.evaluate(() => !!document.querySelector('#crmRap') || (typeof crmShow === 'function'));
+if (!rp) fail.push('raport');
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
