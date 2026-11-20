@@ -3,7 +3,7 @@ PWA: działki z siecią przesyłową (dane publiczne: OpenStreetMap, ULDK/GUGiK,
 
 Aplikacja PWA do planowania pracy w terenie: pokazuje działki z liniami energetycznymi i domami pod nimi lub obok, układa trasę i prowadzi do drzwi. Korzysta wyłącznie z danych publicznych (OSM, ULDK, BDOT10k, PRG). Przechowuje tylko opisy działek (numer, status, krótka notatka); imion, telefonów i adresów osób nie zapisuje.
 
-## Nowości v94–v145
+## Nowości v94–v146
 - „Wróć w sobotę” obok „Wróć po 17”: w trasie takie działki pojawiają się tylko w sobotę, w CRM mają własną listę.
 - Przycisk „Podziel wg planu” szacuje, ile metrów pasa leży na jakim przeznaczeniu (MPZP).
 - Przycisk „Podpowiedz stawkę” wpisuje zł/m² ze źródłem i nigdy nie nadpisuje wartości bez pytania.
@@ -13,6 +13,7 @@ Aplikacja PWA do planowania pracy w terenie: pokazuje działki z liniami energet
 - „Działka tu”: przycisk „Kopiuj lead” (obręb, numer, gmina) do wklejenia w CRM.
 - „Działka tu”: przycisk „Nawiguj tu” otwiera trasę dojazdu do tego punktu w Mapach.
 - Trasa: przyciski wyniku wizyty zebrane pod podpisem „Wynik wizyty”, z ikonami i kolorowym paskiem (karteczka niebieska, zainteresowany zielony); „Nawiguj” wyróżnione.
+- Trasa: rzadziej używane przyciski schowane w „Więcej opcji”, lista przystanków zaczyna się wyżej.
 - Karta „Działka tu” (▦): przycisk „Sprawdź plan tutaj” pokazuje plan, typ gruntu i podpowiedź stawki. Gdy planu brak, komunikat podpowiada sprawdzenie WZ w BIP gminy lub Geoportalu (usługa planów może nie mieć danych dla gminy).
 
 - Trasa: „Dopisz 4”, cofnięcie ostatniej zmiany, pasek „następny punkt”, filtr „tylko domy przy linii”, przypięta trasa na jeden dzień.
