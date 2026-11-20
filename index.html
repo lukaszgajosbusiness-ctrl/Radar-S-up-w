@@ -196,7 +196,7 @@ const store={get(k,d){try{const v=localStorage.getItem('rs:'+k);return v?JSON.pa
 
 // ---------- mapa ----------
 const map=L.map('map',{zoomControl:true}).setView([50.4336,19.1946],14);
-const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© współtwórcy <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 const orto=L.tileLayer.wms('https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution',{layers:'Raster',format:'image/jpeg',maxZoom:20,attribution:'Ortofoto © GUGiK'});
 const wms=(url,layers,o={})=>L.tileLayer.wms(url,Object.assign({layers,format:'image/png',transparent:true,version:'1.3.0',maxZoom:20,minZoom:13},o));
 const ewid=wms('https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow','dzialki,numery_dzialek',{attribution:'EGiB © GUGiK'});

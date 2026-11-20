@@ -3,7 +3,12 @@ PWA: działki z siecią przesyłową (dane publiczne: OpenStreetMap, ULDK/GUGiK,
 
 Aplikacja PWA do planowania pracy w terenie: pokazuje działki z liniami energetycznymi i domami pod nimi lub obok, układa trasę i prowadzi do drzwi. Korzysta wyłącznie z danych publicznych (OSM, ULDK, BDOT10k, PRG). Przechowuje tylko opisy działek (numer, status, krótka notatka); imion, telefonów i adresów osób nie zapisuje.
 
-## Nowości v94–v131
+## Nowości v94–v138
+- „Wróć w sobotę” obok „Wróć po 17”: w trasie takie działki pojawiają się tylko w sobotę, w CRM mają własną listę.
+- Przycisk „Podziel wg planu” szacuje, ile metrów pasa leży na jakim przeznaczeniu (MPZP).
+- Przycisk „Podpowiedz stawkę” wpisuje zł/m² ze źródłem i nigdy nie nadpisuje wartości bez pytania.
+- Notatka zapisuje się sama; na dole karty jest „← Wróć do mapy”; tytuł działki na trasie otwiera kartę.
+- CRM: przycisk „Raport” pobiera CSV z polami kalkulatora (bez danych osobowych).
 
 - Trasa: „Dopisz 4”, cofnięcie ostatniej zmiany, pasek „następny punkt”, filtr „tylko domy przy linii”, przypięta trasa na jeden dzień.
 - Status „karteczka” i „inna firma”, lista „Wróć po 17” (sortowanie i kopiowanie numerów działek).
