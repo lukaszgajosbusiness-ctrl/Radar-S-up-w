@@ -150,6 +150,9 @@ console.log('stawka', JSON.stringify(sp));
 if (sp.v !== 249) fail.push('stawka ' + JSON.stringify(sp));
 const rp = await pg.evaluate(() => !!document.querySelector('#crmRap') || (typeof crmShow === 'function'));
 if (!rp) fail.push('raport');
+const pkh = await pg.evaluate(() => pukajHint({ sieci: [{ ok: true, k: Object.keys(TYPES)[0], len: 20 }] }, 'R', 7));
+console.log('pukaj', pkh);
+if (!/Mała sprawa/.test(pkh)) fail.push('pukaj: ' + pkh);
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));

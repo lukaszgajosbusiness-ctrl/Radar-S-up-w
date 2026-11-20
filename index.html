@@ -384,6 +384,7 @@ function openCard(r){
   <tr><td>Wartość zł/m² (RCN, transakcyjna)</td><td><input id="cena" type="number" inputmode="decimal" placeholder="wpisz ręcznie" value="${u.cena??''}"> <button type="button" id="stawka" class="chip">Podpowiedz stawkę</button><div id="stawkaN" class="note"></div></td></tr>
   <tr><td>Długość pasa (m)</td><td><b>${main.len} m</b> <span class="note">(${main.reczne?'wpisane ręcznie':'szacunek z OSM'})</span></td></tr>
   <tr><td>Długość wg przeznaczenia</td><td><input id="podzial" placeholder="np. 160 m MN + 14 m R" value="${u.podzial??''}"> <button type="button" id="podz" class="chip">Podziel wg planu</button> <span id="podzN" class="note"></span></td></tr>
+  <tr><td>Czy warto pukać</td><td><span id="pukaj" class="note"></span></td></tr>
   <tr><td>Słupy na działce</td><td><b>${r.slupy?'tak (wg OSM)':'brak w OSM – sprawdź na ortofoto'}</b></td></tr></table></div>
   <details${r.sieci.length&&!r.sieci[0].reczne?'':' open'}><summary class="note">Wpisz sieć ręcznie (gdy brak w OSM – odczyt z KIUT/Geoportalu)</summary><table>
   <tr><td>Typ sieci</td><td><select id="rTyp"><option value="">—</option>${Object.keys(TYPES).map(k=>`<option value="${k}"${u.recznieTyp===k?' selected':''}>${TYPES[k].n}</option>`).join('')}</select></td></tr>
@@ -417,6 +418,7 @@ function openCard(r){
   $('#fbS').onclick=()=>{const t=`UWAGA Z TERENU – Radar Słupów\nDziałka ${r.num}, obręb ${r.obr}, gm. ${r.gm} (${r.id})\nOcena: ${$('#fbW').value}\nUwaga: ${$('#fbT').value||'—'}\nApka pokazała: ${r.sieci.map(x=>x.k+' '+x.len+' m / do '+x.maxd+' m od granicy').join(' + ')||'brak sieci'}; dom przy linii: ${r.domPrzyLinii?'tak ('+(r.domOdl??'?')+' m)':'nie'}; grunt: ${(r.mpzpGrunt||$('#grunt').value||'?')}; wynik: ${r.score}\nLink: ${location.origin+location.pathname}?dz=${encodeURIComponent(r.id)}`;if(USER&&API){api('/api/feedback',{parcel_id:r.id,label:`${r.obr} ${r.num}`,verdict:$('#fbW').value,note:$('#fbT').value,snap:t.split('\n').slice(4,5).join(' ')}).then(()=>{$('#fbS').textContent='Wysłano – widzi to kierownik'},e=>{(navigator.share?navigator.share({title:'Uwaga z terenu – Radar Słupów',text:t}):navigator.clipboard.writeText(t)).catch(()=>alertBox(t))});return}(navigator.share?navigator.share({title:'Uwaga z terenu – Radar Słupów',text:t}):navigator.clipboard.writeText(t).then(()=>{$('#fbS').textContent='Skopiowano – wklej w wiadomość'})).catch(()=>alertBox(t))};
   if($('#podz'))$('#podz').onclick=async()=>{const b=$('#podz'),nn=$('#podzN');b.disabled=true;nn.textContent='Sprawdzam plan wzdłuż linii…';try{const z=await stripSplit(r);if(!z||!z.tot){nn.textContent=z&&z.bad?'Usługa planów nie odpowiada, spróbuj z zasięgiem.':'Brak linii na tej działce w danych.'}else{$('#podzial').value=z.text;nn.textContent=`Wpisano (${Math.round(z.tot)} m linii na działce). To szacunek, sprawdź w planie.`}}catch(e){nn.textContent='Nie udało się pobrać planu.'}b.disabled=false};
   $('#stawka').onclick=()=>{const z=stawkaPodpowiedz(r,$('#grunt').value||grunt);if($('#cena').value&&!confirm('Pole ma już wartość. Zastąpić?'))return;$('#cena').value=z.v;$('#stawkaN').textContent=z.txt};
+  {const pk=()=>{$('#pukaj').textContent=pukajHint(r,$('#grunt').value||grunt,$('#cena').value)};pk();['#cena','#grunt'].forEach(q=>$(q).addEventListener('input',pk));$('#stawka').addEventListener('click',pk)}
   $('#kopiuj').onclick=()=>{const t=`Działka ${r.num}, obręb ${r.obr}, gm. ${r.gm} (${r.id})\nKategoria: ${main.kind}\nTyp: ${TN(main.k)}${main.v?' '+(+String(main.v).split(';')[0]/1000)+' kV':''}\nTyp gruntu: ${$('#grunt').value}\nWartość zł/m²: ${$('#cena').value||'?'}\nDługość pasa: ${main.len} m\nSłupy na działce: ${r.slupy?'tak':'?'}`;navigator.clipboard?.writeText(t).then(()=>$('#kopiuj').textContent='Skopiowano',()=>alertBox(t))};
 }
 function alertBox(t){const c=$('#card');c.hidden=false;c.insertAdjacentHTML('afterbegin',`<pre style="white-space:pre-wrap;background:var(--bg);padding:8px">${t}</pre>`)}
@@ -509,6 +511,11 @@ const STAWKI=[
 function stawkaPodpowiedz(r,g){const w=STAWKI.find(x=>x.gm.test(r.gm||'')&&x.g.includes(g))||STAWKI.find(x=>x.g.includes(g));
  if(!w)return{v:'',txt:'Brak źródła dla tego typu gruntu – wpisz ręcznie.'};
  return{v:w.v,txt:'Szacunek '+w.v+' zł/m²: '+w.src+'. Sprawdź w RCN.'}}
+const PUKAJ_SZER=30,PUKAJ_MALA=5000,PUKAJ_DUZA=30000;
+function pukajHint(r,grunt,cena){const m=(r.sieci||[]).filter(n=>n.ok).sort((a,b)=>TYPES[b.k].w-TYPES[a.k].w)[0];const len=m?Math.round(m.len||0):0;const c=+String(cena).replace(',','.');
+ if(!len)return'Brak długości pasa – wpisz ją ręcznie, a policzę rząd wielkości.';if(!c)return'Wpisz stawkę zł/m² (lub „Podpowiedz stawkę”), a pokażę rząd wielkości.';
+ const w=len*PUKAJ_SZER*c,k=w>=PUKAJ_DUZA?'Warto zapukać.':w>=PUKAJ_MALA?'Zapukaj, jeśli ktoś jest pod ręką.':'Mała sprawa – nie jedź specjalnie.';
+ return k+' Grunt w pasie: ok. '+Math.round(w/100)*100+' zł ('+len+' m × ok. '+PUKAJ_SZER+' m × '+c+' zł/m²). To rząd wielkości wartości gruntu, nie wycena ani kwota roszczenia.'}
 async function enrichMpzp(list){
   let n=0;await pool(list,6,async r=>{
     // punkt w środku działki najbliżej sieci: bierzemy środek ciężkości pierwszego pierścienia
