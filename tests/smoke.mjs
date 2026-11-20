@@ -145,6 +145,9 @@ if (!sb.crm || !sb.satFn) fail.push('Wróć w sobotę: ' + JSON.stringify(sb));
 const pz = await pg.evaluate(async () => { const r = RES.find(x => x.sieci && x.sieci.length && x.sieci.some(s => s.len > 40)) || RES[0]; if (!r) return { skip: true }; const old = mpzpAt; let i = 0; mpzpAt = async () => ({ symbol: (i++ % 2) ? '3MN' : '1R', plan: 'x' }); let z = null, err = ''; try { z = await stripSplit(r) } catch (e) { err = String(e) } mpzpAt = old; return { ok: !!(z && z.tot), text: z && z.text, err } });
 console.log('podzial', JSON.stringify(pz));
 if (!pz.skip && !pz.ok) fail.push('podział pasa wg planu: ' + JSON.stringify(pz));
+const sp = await pg.evaluate(() => stawkaPodpowiedz({ gm: 'Jaworzno' }, 'MN'));
+console.log('stawka', JSON.stringify(sp));
+if (sp.v !== 249) fail.push('stawka ' + JSON.stringify(sp));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
