@@ -141,6 +141,10 @@ if (tap.length) fail.push('za małe cele dotykowe: ' + tap.join(', '));
 const sb = await pg.evaluate(() => { const chips = [...document.querySelectorAll('#trasa .qn .chip')].map(x => x.dataset.t); localStorage.setItem('rs:u:__sb1', JSON.stringify({ stat: 'do sprawdzenia', not: 'Wróć w sobotę, domek letniskowy', lab: 'Sobota 1/1', trasa: 'nikogo', trDay: '2026-11-19' })); crmShow(); const t = document.getElementById('crm').innerText; return { chip: chips.includes('Wróć w sobotę'), crm: /Wróć w sobotę \(\d+\)/.test(t), satFn: typeof satNote === 'function' } });
 console.log('sobota', JSON.stringify(sb));
 if (!sb.crm || !sb.satFn) fail.push('Wróć w sobotę: ' + JSON.stringify(sb));
+// Podział pasa wg MPZP (z atrapą usługi planów)
+const pz = await pg.evaluate(async () => { const r = RES.find(x => x.sieci && x.sieci.length && x.sieci.some(s => s.len > 40)) || RES[0]; if (!r) return { skip: true }; const old = mpzpAt; let i = 0; mpzpAt = async () => ({ symbol: (i++ % 2) ? '3MN' : '1R', plan: 'x' }); let z = null, err = ''; try { z = await stripSplit(r) } catch (e) { err = String(e) } mpzpAt = old; return { ok: !!(z && z.tot), text: z && z.text, err } });
+console.log('podzial', JSON.stringify(pz));
+if (!pz.skip && !pz.ok) fail.push('podział pasa wg planu: ' + JSON.stringify(pz));
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
 console.log('sun', JSON.stringify(sun));
