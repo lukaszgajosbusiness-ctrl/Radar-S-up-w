@@ -155,6 +155,7 @@ console.log('pukaj', pkh);
 if (!/Mała sprawa/.test(pkh)) fail.push('pukaj: ' + pkh);
 const tup = await pg.evaluate(() => typeof stawkaPodpowiedz === 'function' && /tuP/.test(tuShow.toString()));
 const tul = await pg.evaluate(() => /tuL/.test(tuShow.toString())); if (!tul) fail.push("brak przycisku Kopiuj lead");
+const tuv = await pg.evaluate(() => /tuV/.test(tuShow.toString())); if (!tuv) fail.push("brak przycisku Nawiguj tu");
 if (!tup) fail.push('Sprawdź plan tutaj');
 // Tryb dzienny
 const sun = await pg2.evaluate(() => { const b = document.getElementById('sunBtn'); if (!b) return { err: 'brak' }; b.click(); const on = document.body.classList.contains('sun'); b.click(); return { on, off: !document.body.classList.contains('sun') } });
